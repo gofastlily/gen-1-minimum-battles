@@ -157,6 +157,7 @@ StartNewGameDebug:
 	ld a, LIGHT_BALL_GSC
 	ld [wPartyMon1CatchRate], a
 
+	call ClearScreen
 	ld hl, wd732
 	set 0, [hl]  ; Start the game clock
 

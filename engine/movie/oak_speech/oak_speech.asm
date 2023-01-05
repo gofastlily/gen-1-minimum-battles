@@ -40,6 +40,7 @@ SetDefaultNames:
 	call CopyData ; rip optimizations
 	ret
 
+
 OakSpeech:
 	call StopAllMusic ; stop music
 	ld a, BANK(Music_Routes2)
@@ -61,32 +62,11 @@ OakSpeech:
 	call SpecialWarpIn
 	xor a
 	ldh [hTileAnimations], a
-	ld a, [wd732]
-	bit 1, a ; possibly a debug mode bit
-	jp nz, .skipChoosingNames
-	ld de, ProfOakPic
-	lb bc, BANK(ProfOakPic), $00
-	call IntroDisplayPicCenteredOrUpperRight
-	call FadeInIntroPic
-	ld hl, OakSpeechText1
-	call PrintText
-	call GBFadeOutToWhite
-	call ClearScreen
-	ld a, STARTER_PIKACHU
-	ld [wd0b5], a
-	ld [wcf91], a
-	call GetMonHeader
-	hlcoord 6, 4
-	call LoadFlippedFrontSpriteByMonIndex
-	call MovePicLeft
-	ld hl, OakSpeechText2
-	call PrintText
-	call GBFadeOutToWhite
 	call ClearScreen
 	ld de, RedPicFront
 	lb bc, BANK(RedPicFront), $00
 	call IntroDisplayPicCenteredOrUpperRight
-	call MovePicLeft
+	call FadeInIntroPic
 	ld hl, IntroducePlayerText
 	call PrintText
 	call ChoosePlayerName
@@ -100,81 +80,19 @@ OakSpeech:
 	call PrintText
 	call ChooseRivalName
 .skipChoosingNames
-	call GBFadeOutToWhite
-	call ClearScreen
-	ld de, RedPicFront
-	lb bc, BANK(RedPicFront), $00
-	call IntroDisplayPicCenteredOrUpperRight
-	call GBFadeInFromWhite
-	ld a, [wd72d]
-	and a
-	jr nz, .next
-	ld hl, OakSpeechText3
-	call PrintText
-.next
-	ldh a, [hLoadedROMBank]
-	push af
-	ld a, SFX_SHRINK
-	call PlaySound
-	pop af
-	call BankswitchCommon
-	ld c, 4
-	call DelayFrames
-	ld hl, vSprites
-	ld de, RedSprite
-	ld b, BANK(RedSprite)
-	ld c, $0C
-	call CopyVideoData
-	ld de, ShrinkPic1
-	lb bc, BANK(ShrinkPic1), $00
-	call IntroDisplayPicCenteredOrUpperRight
-	ld c, 4
-	call DelayFrames
-	ld de, ShrinkPic2
-	lb bc, BANK(ShrinkPic2), $00
-	call IntroDisplayPicCenteredOrUpperRight
-	call ResetPlayerSpriteData
-	ldh a, [hLoadedROMBank]
-	push af
-	ld a, BANK(Music_PalletTown)
-	ld [wAudioROMBank], a
-	ld [wAudioSavedROMBank], a
-	ld a, 10
-	ld [wAudioFadeOutControl], a
-	call StopAllMusic
-	pop af
-	call BankswitchCommon
-	ld c, 20
-	call DelayFrames
-	hlcoord 6, 5
-	lb bc, 7, 7
-	call ClearScreenArea
-	call LoadTextBoxTilePatterns
-	ld a, 1
-	ld [wUpdateSpritesEnabled], a
-	ld c, 50
-	call DelayFrames
-	call GBFadeOutToWhite
 	call ClearScreen ; rip more tail-end optimizations
 	ret
 
-OakSpeechText1:
-	text_far _OakSpeechText1
-	text_end
-OakSpeechText2:
-	text_far _OakSpeechText2A
-	sound_cry_pikachu
-	text_far _OakSpeechText2B
-	text_end
+
 IntroducePlayerText:
 	text_far _IntroducePlayerText
 	text_end
+
+
 IntroduceRivalText:
 	text_far _IntroduceRivalText
 	text_end
-OakSpeechText3:
-	text_far _OakSpeechText3
-	text_end
+
 
 FadeInIntroPic:
 	ld hl, IntroFadePalettes
@@ -197,22 +115,6 @@ IntroFadePalettes:
 	db %11110100
 	db %11100100
 
-MovePicLeft:
-	ld a, 119
-	ldh [rWX], a
-	call DelayFrame
-
-	ld a, %11100100
-	ldh [rBGP], a
-	call UpdateGBCPal_BGP
-.next
-	call DelayFrame
-	ldh a, [rWX]
-	sub 8
-	cp $FF
-	ret z
-	ldh [rWX], a
-	jr .next
 
 DisplayPicCenteredOrUpperRight:
 	call GetPredefRegisters

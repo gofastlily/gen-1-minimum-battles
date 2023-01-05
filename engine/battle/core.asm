@@ -3447,6 +3447,8 @@ GetOutText:
 	text_end
 
 IsGhostBattle:
+	ld a, 1
+	and a
 	ret
 
 ; checks for various status conditions affecting the player mon

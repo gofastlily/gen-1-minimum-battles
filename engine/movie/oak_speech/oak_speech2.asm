@@ -214,6 +214,3 @@ GetDefaultName:
 	jp CopyData
 
 INCLUDE "data/player_names_list.asm"
-
-LinkMenuEmptyText:
-	text_end
