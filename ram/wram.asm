@@ -2299,6 +2299,12 @@ wMenuChoicesCount:: db
 wMenuActionsItems:: ds MENU_CAPACITY * 2 + 1
 wMenuTextItems:: ds MENU_CAPACITY * 2 + 1
 
+; Extra options
+; bit 7 = Nickname on acquisition
+; 0: Yes
+; 1: No
+wExtraOptions:: db
+
 
 ; unused
 	ds 29

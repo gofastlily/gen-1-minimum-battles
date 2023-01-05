@@ -101,6 +101,8 @@ InitOptions:
 	ld [wOptions], a
 	ld a, 64
 	ld [wPrinterSettings], a
+	ld a, %10000000  ; nicknaming off
+	ld [wExtraOptions], a
 	ret
 
 Func_5cc1:
