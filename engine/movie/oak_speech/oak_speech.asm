@@ -70,7 +70,6 @@ OakSpeech:
 	ld hl, IntroducePlayerText
 	call PrintText
 	call ChoosePlayerName
-	call GBFadeOutToWhite
 	call ClearScreen
 	ld de, Rival1Pic
 	lb bc, BANK(Rival1Pic), $00

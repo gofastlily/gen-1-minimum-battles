@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Animation: Off
     - Battle Style: Set
     - Nickname: Off
+- Select default player names by default
 
 ### Removed
 - Oak's intro dialogue

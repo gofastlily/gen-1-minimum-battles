@@ -173,9 +173,9 @@ DisplayIntroNameTextBox:
 	call PlaceString
 	call UpdateSprites
 	xor a
-	ld [wCurrentMenuItem], a
 	ld [wLastMenuItem], a
 	inc a
+	ld [wCurrentMenuItem], a
 	ld [wTopMenuItemX], a
 	ld [wMenuWatchedKeys], a ; A_BUTTON
 	inc a
