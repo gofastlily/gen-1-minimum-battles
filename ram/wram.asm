@@ -2293,7 +2293,15 @@ wRoute18Gate1FCurScript:: db
 	ds 78
 wGameProgressFlagsEnd::
 
-	ds 56
+
+; Menu values
+wMenuChoicesCount:: db
+wMenuActionsItems:: ds MENU_CAPACITY * 2 + 1
+wMenuTextItems:: ds MENU_CAPACITY * 2 + 1
+
+
+; unused
+	ds 29
 
 wObtainedHiddenItemsFlags:: flag_array 112
 

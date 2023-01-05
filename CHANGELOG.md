@@ -11,6 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Go to Hall of Fame on a win
 - Re-battle Rival 1 on a loss
 
+### Changed
+- Refactored the main menu to leverage the new `MenuCore`
+- Options
+    - Text speed: Fast
+    - Animation: Off
+    - Battle Style: Set
+
 ### Removed
 - Oak's intro dialogue
 - A lot of unused data

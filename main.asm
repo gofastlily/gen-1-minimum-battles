@@ -334,3 +334,8 @@ INCLUDE "engine/gfx/animated_objects.asm"
 SECTION "Overworld Pikachu", ROMX
 
 INCLUDE "engine/pikachu/pikachu_status.asm"
+
+
+SECTION "Minimum Battles", romx
+
+INCLUDE "engine/menus/menu_core.asm"
