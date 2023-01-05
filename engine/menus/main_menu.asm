@@ -154,6 +154,48 @@ StartNewGameDebug:
 	ld c, 20
 	call DelayFrames
 
+	; Add Starter Pikachu to the player's team
+	xor a
+	ld [wMonDataLocation], a
+	ld a, 5
+	ld [wCurEnemyLVL], a
+	ld a, STARTER_PIKACHU
+	ld [wd11e], a
+	ld [wcf91], a
+	call AddPartyMon
+	ld a, LIGHT_BALL_GSC
+	ld [wPartyMon1CatchRate], a
+
+	ld hl, wd732
+	set 0, [hl]  ; Start the game clock
+
+	; Face Rival 1
+.faceOpponent
+	predef HealParty
+	ld a, OPP_RIVAL1
+	ld [wCurOpponent], a
+	ld a, $1
+	ld [wTrainerNo], a
+	call NewBattle
+
+	; if the battle was a loss, try again
+	ld a, [wBattleResult]
+	cp a, $00
+	jr nz, .faceOpponent
+
+	; Load into the Hall of Fame
+	predef HallOfFamePC
+	ld b, 5
+.delayLoop
+	ld c, 600 / 5
+	call DelayFrames
+	dec b
+	jr nz, .delayLoop
+	call WaitForTextScrollButtonPress
+
+	; Reset
+	jp SoftReset
+
 ; enter map after using a special warp or loading the game from the main menu
 SpecialEnterMap::
 	xor a
