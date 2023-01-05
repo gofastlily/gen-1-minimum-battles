@@ -1703,8 +1703,6 @@ DidPlayerGetAHighScore:
 	jr nz, .high_score
 .not_high_score
 	call WaitForSoundToFinish
-	ldpikacry e, PikachuCry28
-	call SurfingMinigame_PlayPikaCryIfSurfingPikaInParty
 	and a
 	ret
 
@@ -1714,8 +1712,6 @@ DidPlayerGetAHighScore:
 	ld a, [wSurfingMinigameTotalScore + 1]
 	ld [wSurfingMinigameHiScore + 1], a
 	call WaitForSoundToFinish
-	ldpikacry e, PikachuCry34
-	call SurfingMinigame_PlayPikaCryIfSurfingPikaInParty
 	ld a, SFX_GET_ITEM2_4_2
 	call PlaySound
 	scf
@@ -1726,7 +1722,6 @@ SurfingMinigame_PlayPikaCryIfSurfingPikaInParty:
 	callfar IsSurfingPikachuInThePlayersParty
 	pop de
 	ret nc
-	callfar PlayPikachuSoundClip
 	ret
 
 SurfingMinigame_IncreaseRadnessMeter:

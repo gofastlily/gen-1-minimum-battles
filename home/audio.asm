@@ -69,22 +69,6 @@ PlayDefaultMusicCommon::
 	jp PlaySound
 
 CheckForNoBikingMusicMap::
-; probably used to not change music upon getting on bike
-	ld a, [wCurMap]
-	cp ROUTE_23
-	jr z, .found
-	cp VICTORY_ROAD_1F
-	jr z, .found
-	cp VICTORY_ROAD_2F
-	jr z, .found
-	cp VICTORY_ROAD_3F
-	jr z, .found
-	cp INDIGO_PLATEAU
-	jr z, .found
-	and a
-	ret
-.found
-	scf
 	ret
 
 UpdateMusic6Times::

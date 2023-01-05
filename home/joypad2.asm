@@ -63,15 +63,6 @@ WaitForTextScrollButtonPress::
 	ldh [hDownArrowBlinkCount2], a
 .loop
 	push hl
-	ld a, [wTownMapSpriteBlinkingEnabled]
-	and a
-	jr z, .skipAnimation
-	push de
-	push bc
-	callfar TownMapSpriteBlinkingAnimation
-	pop bc
-	pop de
-.skipAnimation
 	hlcoord 18, 16
 	call HandleDownArrowBlinkTiming
 	pop hl

@@ -32,59 +32,7 @@ IsPlayerStandingOnWarp::
 	ret
 
 CheckForceBikeOrSurf::
-	ld hl, wd732
-	bit 5, [hl]
-	ret nz
-	ld hl, ForcedBikeOrSurfMaps
-	ld a, [wYCoord]
-	ld b, a
-	ld a, [wXCoord]
-	ld c, a
-	ld a, [wCurMap]
-	ld d, a
-.loop
-	ld a, [hli]
-	cp $ff
-	ret z ;if we reach FF then it's not part of the list
-	cp d ;compare to current map
-	jr nz, .incorrectMap
-	ld a, [hli]
-	cp b ;compare y-coord
-	jr nz, .incorrectY
-	ld a, [hli]
-	cp c ;compare x-coord
-	jr nz, .loop ; incorrect x-coord, check next item
-	ld a, [wCurMap]
-	cp SEAFOAM_ISLANDS_B3F
-	ld a, $2
-	ld [wSeafoamIslandsB3FCurScript], a
-	jr z, .forceSurfing
-	ld a, [wCurMap]
-	cp SEAFOAM_ISLANDS_B4F
-	ld a, $2
-	ld [wSeafoamIslandsB4FCurScript], a
-	jr z, .forceSurfing
-	;force bike riding
-	ld hl, wd732
-	set 5, [hl]
-	ld a, $1
-	ld [wWalkBikeSurfState], a
-	ld [wWalkBikeSurfStateCopy], a
-	call ForceBikeOrSurf
 	ret
-.incorrectMap
-	inc hl
-.incorrectY
-	inc hl
-	jr .loop
-.forceSurfing
-	ld a, $2
-	ld [wWalkBikeSurfState], a
-	ld [wWalkBikeSurfStateCopy], a
-	call ForceBikeOrSurf
-	ret
-
-INCLUDE "data/maps/force_bike_surf.asm"
 
 IsPlayerFacingEdgeOfMap::
 	push hl
@@ -153,42 +101,7 @@ IsPlayerFacingEdgeOfMap::
 	ret
 
 IsWarpTileInFrontOfPlayer::
-	push hl
-	push de
-	push bc
-	call _GetTileAndCoordsInFrontOfPlayer
-	ld a, [wCurMap]
-	cp SS_ANNE_BOW
-	jr z, IsSSAnneBowWarpTileInFrontOfPlayer
-	ld a, [wSpritePlayerStateData1FacingDirection]
-	srl a
-	ld c, a
-	ld b, 0
-	ld hl, WarpTileListPointers
-	add hl, bc
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-	ld a, [wTileInFrontOfPlayer]
-	ld de, $1
-	call IsInArray
-.done
-	pop bc
-	pop de
-	pop hl
 	ret
-
-INCLUDE "data/tilesets/warp_carpet_tile_ids.asm"
-
-IsSSAnneBowWarpTileInFrontOfPlayer:
-	ld a, [wTileInFrontOfPlayer]
-	cp $15
-	jr nz, .notSSAnne5Warp
-	scf
-	jr IsWarpTileInFrontOfPlayer.done
-.notSSAnne5Warp
-	and a
-	jr IsWarpTileInFrontOfPlayer.done
 
 IsPlayerStandingOnDoorTileOrWarpTile::
 	push hl
@@ -220,41 +133,7 @@ IsPlayerStandingOnDoorTileOrWarpTile::
 INCLUDE "data/tilesets/warp_tile_ids.asm"
 
 PrintSafariZoneSteps::
-	ld a, [wCurMap]
-	cp SAFARI_ZONE_EAST
-	ret c
-	cp CERULEAN_CAVE_2F
-	ret nc
-	hlcoord 0, 0
-	lb bc, 3, 7
-	call TextBoxBorder
-	hlcoord 1, 1
-	ld de, wSafariSteps
-	lb bc, 2, 3
-	call PrintNumber
-	hlcoord 4, 1
-	ld de, SafariSteps
-	call PlaceString
-	hlcoord 1, 3
-	ld de, SafariBallText
-	call PlaceString
-	ld a, [wNumSafariBalls]
-	cp 10
-	jr nc, .tenOrMore
-	hlcoord 5, 3
-	ld a, " "
-	ld [hl], a
-.tenOrMore
-	hlcoord 6, 3
-	ld de, wNumSafariBalls
-	lb bc, 1, 2
-	jp PrintNumber
-
-SafariSteps:
-	db "/500@"
-
-SafariBallText:
-	db "BALL×× @"
+	ret
 
 GetTileAndCoordsInFrontOfPlayer:
 	call GetPredefRegisters

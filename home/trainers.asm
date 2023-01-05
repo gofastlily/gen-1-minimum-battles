@@ -127,10 +127,6 @@ TalkToTrainer::
 
 ; checks if any trainers are seeing the player and wanting to fight
 CheckFightingMapTrainers::
-IF DEF(_DEBUG)
-	call DebugPressedOrHeldB
-	jr nz, .trainerNotEngaging
-ENDC
 	call CheckForEngagingTrainers
 	ld a, [wSpriteIndex]
 	cp $ff
@@ -197,18 +193,6 @@ EndTrainerBattle::
 	ld c, a
 	ld b, FLAG_SET
 	call TrainerFlagAction   ; flag trainer as fought
-	ld a, [wEnemyMonOrTrainerClass]
-	cp OPP_ID_OFFSET
-	jr nc, .skipRemoveSprite    ; test if trainer was fought (in that case skip removing the corresponding sprite)
-	ld hl, wMissableObjectList
-	ld de, $2
-	ld a, [wSpriteIndex]
-	call IsInArray              ; search for sprite ID
-	inc hl
-	ld a, [hl]
-	ld [wMissableObjectIndex], a               ; load corresponding missable object index and remove it
-	predef HideObject
-.skipRemoveSprite
 	ld hl, wd730
 	bit 4, [hl]
 	res 4, [hl]
@@ -225,7 +209,7 @@ ResetButtonPressedAndMapScript::
 
 ; calls TrainerWalkUpToPlayer
 TrainerWalkUpToPlayer_Bank0::
-	farjp TrainerWalkUpToPlayer
+	ret
 
 ; sets opponent type and mon set/lvl based on the engaging trainer data
 InitBattleEnemyParameters::
@@ -240,24 +224,6 @@ InitBattleEnemyParameters::
 .noTrainer
 	ld [wCurEnemyLVL], a
 	ret
-
-GetSpritePosition1::
-	ld hl, _GetSpritePosition1
-	jr SpritePositionBankswitch
-
-GetSpritePosition2::
-	ld hl, _GetSpritePosition2
-	jr SpritePositionBankswitch
-
-SetSpritePosition1::
-	ld hl, _SetSpritePosition1
-	jr SpritePositionBankswitch
-
-SetSpritePosition2::
-	ld hl, _SetSpritePosition2
-SpritePositionBankswitch::
-	ld b, BANK(_GetSpritePosition1) ; BANK(_GetSpritePosition2), BANK(_SetSpritePosition1), BANK(_SetSpritePosition2)
-	jp Bankswitch ; indirect jump to one of the four functions
 
 CheckForEngagingTrainers::
 	xor a
@@ -292,7 +258,6 @@ CheckForEngagingTrainers::
 	ld a, [wSpriteIndex]
 	swap a
 	ld [wTrainerSpriteOffset], a
-	predef TrainerEngage
 	pop de
 	pop hl
 	ld a, [wTrainerSpriteOffset]

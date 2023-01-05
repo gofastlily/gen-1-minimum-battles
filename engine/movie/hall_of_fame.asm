@@ -156,12 +156,6 @@ HoFDisplayAndRecordMonInfo:
 	call HoFDisplayMonInfo
 	ld a, [wHoFPartyMonIndex]
 	ld [wWhichPokemon], a
-	callfar IsThisPartymonStarterPikachu_Party
-	jr nc, .asm_70336
-	ld e, $22
-	callfar PlayPikachuSoundClip
-	jr .asm_7033c
-.asm_70336
 	ld a, [wHoFMonSpecies]
 	call PlayCry
 .asm_7033c
@@ -225,7 +219,6 @@ HoFLoadMonPlayerPicTileIDs:
 
 HoFDisplayPlayerStats:
 	SetEvent EVENT_HALL_OF_FAME_DEX_RATING
-	predef DisplayDexRating
 	hlcoord 0, 4
 	lb bc, 6, 10
 	call TextBoxBorder

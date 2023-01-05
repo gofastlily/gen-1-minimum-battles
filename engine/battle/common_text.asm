@@ -2,23 +2,6 @@ PrintBeginningBattleText:
 	ld a, [wIsInBattle]
 	dec a
 	jr nz, .trainerBattle
-	ld a, [wCurMap]
-	cp POKEMON_TOWER_3F
-	jr c, .notPokemonTower
-	cp POKEMON_TOWER_7F + 1
-	jr c, .pokemonTower
-.notPokemonTower
-	ld a, [wBattleType]
-	cp BATTLE_TYPE_PIKACHU
-	jr nz, .notPikachuBattle
-	callfar IsPlayerPikachuAsleepInParty
-	ld e, $24
-	jr c, .asm_f4026
-	ld e, $a
-.asm_f4026
-	callfar PlayPikachuSoundClip
-	jr .continue
-.notPikachuBattle
 	ld a, [wEnemyMonSpecies2]
 	call PlayCry
 .continue
@@ -44,36 +27,6 @@ PrintBeginningBattleText:
 .doNotDrawPokeballs
 	call PrintText
 	jr .done
-.pokemonTower
-	ld b, SILPH_SCOPE
-	call IsItemInBag
-	ld a, [wEnemyMonSpecies2]
-	ld [wcf91], a
-	cp RESTLESS_SOUL
-	jr z, .isMarowak
-	ld a, b
-	and a
-	jr z, .noSilphScope
-	callfar LoadEnemyMonData
-	jr .notPokemonTower
-.noSilphScope
-	ld hl, EnemyAppearedText
-	call PrintText
-	ld hl, GhostCantBeIDdText
-	call PrintText
-	jr .done
-.isMarowak
-	ld a, b
-	and a
-	jr z, .noSilphScope
-	ld hl, EnemyAppearedText
-	call PrintText
-	ld hl, UnveiledGhostText
-	call PrintText
-	callfar LoadEnemyMonData
-	callfar MarowakAnim
-	ld hl, WildMonAppearedText
-	call PrintText
 
 .playSFX
 	xor a

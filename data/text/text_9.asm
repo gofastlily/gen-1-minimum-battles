@@ -429,14 +429,3 @@ _AfterTrade3Text::
 	text " is"
 	line "doing great!"
 	done
-
-_NothingToCutText::
-	text "There isn't"
-	line "anything to CUT!"
-	prompt
-
-_UsedCutText::
-	text_ram wcd6d
-	text " hacked"
-	line "away with CUT!"
-	prompt

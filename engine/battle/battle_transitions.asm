@@ -119,36 +119,9 @@ GetBattleTransitionID_CompareLevels:
 	ret
 
 GetBattleTransitionID_IsDungeonMap:
-	ld a, [wCurMap]
-	ld e, a
-	ld hl, DungeonMaps1
-.loop1
-	ld a, [hli]
-	cp $ff
-	jr z, .noMatch1
-	cp e
-	jr nz, .loop1
-.match
-	set 2, c
-	ret
-.noMatch1
-	ld hl, DungeonMaps2
-.loop2
-	ld a, [hli]
-	cp $ff
-	jr z, .noMatch2
-	ld d, a
-	ld a, [hli]
-	cp e
-	jr c, .loop2
-	ld a, e
-	cp d
-	jr nc, .match
-.noMatch2
 	res 2, c
 	ret
 
-INCLUDE "data/maps/dungeon_maps.asm"
 
 LoadBattleTransitionTile:
 	ld hl, vChars1 tile $7f

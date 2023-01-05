@@ -18,20 +18,6 @@ _TrainerNameText::
 	text ": @"
 	text_end
 
-_NoNibbleText::
-	text "Not even a nibble!"
-	prompt
-
-_NothingHereText::
-	text "Looks like there's"
-	line "nothing here."
-	prompt
-
-_ItsABiteText::
-	text "Oh!"
-	line "It's a bite!"
-	prompt
-
 _ExclamationText::
 	text "!"
 	done

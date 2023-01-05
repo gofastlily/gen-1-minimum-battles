@@ -26,8 +26,6 @@ DisplayTextID::
 	ld [wSpriteIndex], a
 
 	dict TEXT_START_MENU,       DisplayStartMenu
-	dict TEXT_PIKACHU_ANIM,     DisplayPikachuEmotion
-	dict TEXT_SAFARI_GAME_OVER, DisplaySafariGameOverText
 	dict TEXT_MON_FAINTED,      DisplayPokemonFaintedText
 	dict TEXT_BLACKED_OUT,      DisplayPlayerBlackedOutText
 	dict TEXT_REPEL_WORE_OFF,   DisplayRepelWoreOffText
@@ -74,11 +72,8 @@ MACRO dict2
 ENDM
 
 	dict  TX_SCRIPT_MART,                    DisplayPokemartDialogue
-	dict  TX_SCRIPT_POKECENTER_NURSE,        DisplayPokemonCenterDialogue
 	dict  TX_SCRIPT_PLAYERS_PC,              TextScript_ItemStoragePC
 	dict  TX_SCRIPT_BILLS_PC,                TextScript_BillsPC
-	dict  TX_SCRIPT_POKECENTER_PC,           TextScript_PokemonCenterPC
-	dict2 TX_SCRIPT_VENDING_MACHINE,         farcall VendingMachineMenu
 	dict  TX_SCRIPT_PRIZE_VENDOR,            TextScript_GameCornerPrizeMenu
 	dict2 TX_SCRIPT_CABLE_CLUB_RECEPTIONIST, callfar CableClubNPC
 
@@ -164,21 +159,6 @@ LoadItemList::
 	jr nz, .loop
 	ret
 
-DisplayPokemonCenterDialogue::
-; zeroing these doesn't appear to serve any purpose
-	xor a
-	ldh [hItemPrice], a
-	ldh [hItemPrice + 1], a
-	ldh [hItemPrice + 2], a
-
-	inc hl
-	homecall DisplayPokemonCenterDialogue_
-	jp AfterDisplayingTextID
-
-DisplaySafariGameOverText::
-	callfar PrintSafariGameOverText
-	jp AfterDisplayingTextID
-
 DisplayPokemonFaintedText::
 	ld hl, PokemonFaintedText
 	call PrintText
@@ -219,6 +199,3 @@ RepelWoreOffText::
 	text_far _RepelWoreOffText
 	text_end
 
-DisplayPikachuEmotion::
-	callfar TalkToPikachu
-	jp CloseTextDisplay

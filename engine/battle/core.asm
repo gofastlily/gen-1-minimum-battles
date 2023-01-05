@@ -1053,15 +1053,8 @@ RemoveFaintedPlayerMon:
 
 	ld a, [wPlayerMonNumber]
 	ld [wWhichPokemon], a
-	callfar IsThisPartymonStarterPikachu_Party
-	jr nc, .notPlayerPikachu
-	ld e, $3
-	callfar PlayPikachuSoundClip
-	jr .printText
-.notPlayerPikachu
 	ld a, [wBattleMonSpecies]
 	call PlayCry
-.printText
 	ld hl, PlayerMonFaintedText
 	call PrintText
 	ld a, [wPlayerMonNumber]
@@ -1183,9 +1176,7 @@ HandlePlayerBlackOut:
 	call DelayFrames
 	ld hl, Rival1WinText
 	call PrintText
-	ld a, [wCurMap]
-	cp OAKS_LAB
-	ret z            ; starter battle in oak's lab: don't black out
+	ret
 .notRival1Battle
 	ld b, SET_PAL_BATTLE_BLACK
 	call RunPaletteCommand
@@ -1808,18 +1799,9 @@ SendOutMon:
 	ldh [hWhoseTurn], a
 	ld a, $1
 	ldh [hAutoBGTransferEnabled], a
-	callfar StarterPikachuBattleEntranceAnimation
-	callfar IsPlayerPikachuAsleepInParty
-	ld e, $24
-	jr c, .asm_3cd81
-	ld e, $a
-.asm_3cd81
-	callfar PlayPikachuSoundClip
-	jr .done
 .playRegularCry
 	ld a, [wcf91]
 	call PlayCry
-.done
 	call PrintEmptyString
 	jp SaveScreenTilesToBuffer1
 
@@ -3465,20 +3447,6 @@ GetOutText:
 	text_end
 
 IsGhostBattle:
-	ld a, [wIsInBattle]
-	dec a
-	ret nz
-	ld a, [wCurMap]
-	cp POKEMON_TOWER_1F
-	jr c, .next
-	cp POKEMON_TOWER_7F + 1
-	jr nc, .next
-	ld b, SILPH_SCOPE
-	call IsItemInBag
-	ret z
-.next
-	ld a, 1
-	and a
 	ret
 
 ; checks for various status conditions affecting the player mon

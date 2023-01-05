@@ -10,20 +10,17 @@ INCLUDE "data/text/unused_names.asm"
 INCLUDE "engine/gfx/sprite_oam.asm"
 INCLUDE "engine/link/print_waiting_text.asm"
 INCLUDE "engine/overworld/sprite_collisions.asm"
-INCLUDE "engine/events/pick_up_item.asm"
 INCLUDE "engine/overworld/movement.asm"
 INCLUDE "engine/link/cable_club.asm"
 INCLUDE "engine/menus/main_menu.asm"
 INCLUDE "engine/movie/oak_speech/oak_speech.asm"
 INCLUDE "engine/overworld/special_warps.asm"
-INCLUDE "engine/debug/debug_party.asm"
 INCLUDE "engine/menus/naming_screen.asm"
 INCLUDE "engine/movie/oak_speech/oak_speech2.asm"
 INCLUDE "engine/items/subtract_paid_money.asm"
 INCLUDE "engine/menus/swap_items.asm"
 INCLUDE "engine/events/pokemart.asm"
 INCLUDE "engine/pokemon/learn_move.asm"
-INCLUDE "engine/events/pokecenter.asm"
 INCLUDE "engine/events/set_blackout_map.asm"
 INCLUDE "engine/menus/display_text_id_init.asm"
 INCLUDE "engine/menus/draw_start_menu.asm"
@@ -32,7 +29,6 @@ INCLUDE "engine/menus/text_box.asm"
 INCLUDE "engine/battle/move_effects/drain_hp.asm"
 INCLUDE "engine/menus/players_pc.asm"
 INCLUDE "engine/pokemon/remove_mon.asm"
-INCLUDE "engine/events/display_pokedex.asm"
 
 
 SECTION "bank3", ROMX
@@ -40,31 +36,18 @@ SECTION "bank3", ROMX
 INCLUDE "engine/joypad.asm"
 INCLUDE "engine/overworld/clear_variables.asm"
 INCLUDE "engine/overworld/player_state.asm"
-INCLUDE "engine/events/poison.asm"
 INCLUDE "engine/overworld/tilesets.asm"
-INCLUDE "engine/overworld/daycare_exp.asm"
-INCLUDE "data/maps/hide_show_data.asm"
 INCLUDE "engine/overworld/wild_mons.asm"
 INCLUDE "engine/items/item_effects.asm"
 INCLUDE "engine/menus/draw_badges.asm"
 INCLUDE "engine/overworld/update_map.asm"
-INCLUDE "engine/overworld/cut.asm"
-INCLUDE "engine/overworld/missable_objects.asm"
-INCLUDE "engine/overworld/push_boulder.asm"
 INCLUDE "engine/pokemon/add_mon.asm"
 INCLUDE "engine/flag_action.asm"
 INCLUDE "engine/events/heal_party.asm"
 INCLUDE "engine/math/bcd.asm"
 INCLUDE "engine/movie/oak_speech/init_player_data.asm"
 INCLUDE "engine/items/get_bag_item_quantity.asm"
-INCLUDE "engine/overworld/pathfinding.asm"
 INCLUDE "engine/gfx/hp_bar.asm"
-INCLUDE "engine/events/hidden_objects/bookshelves.asm"
-INCLUDE "engine/events/hidden_objects/indigo_plateau_statues.asm"
-INCLUDE "engine/events/hidden_objects/book_or_sculpture.asm"
-INCLUDE "engine/events/hidden_objects/elevator.asm"
-INCLUDE "engine/events/hidden_objects/town_map.asm"
-INCLUDE "engine/events/hidden_objects/pokemon_stuff.asm"
 
 
 SECTION "bank4", ROMX
@@ -88,19 +71,16 @@ INCLUDE "engine/battle/move_effects/haze.asm"
 
 SECTION "bank5", ROMX
 
-INCLUDE "engine/gfx/load_pokedex_tiles.asm"
 INCLUDE "engine/overworld/map_sprites.asm"
 
 
 SECTION "Battle Engine 2", ROMX
 
 INCLUDE "engine/battle/move_effects/substitute.asm"
-INCLUDE "engine/menus/pc.asm"
 
 
 SECTION "Doors and Ledges", ROMX
 
-INCLUDE "engine/overworld/auto_movement.asm"
 INCLUDE "engine/overworld/doors.asm"
 INCLUDE "engine/overworld/ledges.asm"
 
@@ -112,15 +92,6 @@ INCLUDE "engine/events/elevator.asm"
 
 
 SECTION "Hidden Objects 1", ROMX
-
-INCLUDE "engine/menus/oaks_pc.asm"
-INCLUDE "engine/events/hidden_objects/new_bike.asm"
-INCLUDE "engine/events/hidden_objects/oaks_lab_posters.asm"
-INCLUDE "engine/events/hidden_objects/safari_game.asm"
-INCLUDE "engine/events/hidden_objects/cinnabar_gym_quiz.asm"
-INCLUDE "engine/events/hidden_objects/magazines.asm"
-INCLUDE "engine/events/hidden_objects/bills_house_pc.asm"
-INCLUDE "engine/events/hidden_objects/oaks_lab_email.asm"
 
 
 SECTION "Bill's PC", ROMX
@@ -144,9 +115,7 @@ SECTION "Battle Engine 5", ROMX
 
 INCLUDE "engine/battle/display_effectiveness.asm"
 INCLUDE "engine/items/tmhm.asm"
-INCLUDE "engine/pikachu/respawn_overworld_pikachu.asm"
 INCLUDE "engine/battle/scale_sprites.asm"
-INCLUDE "engine/slots/game_corner_slots2.asm"
 
 
 SECTION "Slot Machines", ROMX
@@ -185,8 +154,6 @@ INCLUDE "engine/menus/options.asm"
 
 SECTION "Pokédex Rating", ROMX
 
-INCLUDE "engine/events/pokedex_rating.asm"
-
 
 SECTION "Dungeon Warps", ROMX
 
@@ -195,11 +162,7 @@ INCLUDE "engine/overworld/dungeon_warps.asm"
 
 SECTION "Hidden Objects 2", ROMX
 
-INCLUDE "engine/events/card_key.asm"
 INCLUDE "engine/events/prize_menu.asm"
-INCLUDE "engine/events/hidden_objects/school_notebooks.asm"
-INCLUDE "engine/events/hidden_objects/fighting_dojo.asm"
-INCLUDE "engine/events/hidden_objects/indigo_plateau_hq.asm"
 
 
 SECTION "Battle Engine 7", ROMX
@@ -214,8 +177,6 @@ INCLUDE "engine/events/diploma.asm"
 
 SECTION "Trainer Sight", ROMX
 
-INCLUDE "engine/overworld/trainer_sight.asm"
-
 
 SECTION "bank16", ROMX
 
@@ -226,38 +187,20 @@ INCLUDE "engine/events/oaks_aide.asm"
 
 SECTION "Saffron Guards", ROMX
 
-INCLUDE "engine/events/saffron_guards.asm"
-
 
 SECTION "Starter Dex", ROMX
-
-INCLUDE "engine/events/starter_dex.asm"
 
 
 SECTION "Hidden Objects 3", ROMX
 
 INCLUDE "engine/movie/evolution.asm"
 INCLUDE "engine/pokemon/set_types.asm"
-INCLUDE "engine/events/hidden_objects/reds_room.asm"
-INCLUDE "engine/events/hidden_objects/route_15_binoculars.asm"
-INCLUDE "engine/events/hidden_objects/museum_fossils.asm"
-INCLUDE "engine/events/hidden_objects/fanclub_pictures.asm"
-INCLUDE "engine/events/hidden_objects/museum_fossils2.asm"
-INCLUDE "engine/events/hidden_objects/school_blackboard.asm"
-INCLUDE "engine/events/hidden_objects/vermilion_gym_trash.asm"
 
 
 SECTION "Cinnabar Lab Fossils", ROMX
 
-INCLUDE "engine/events/cinnabar_lab.asm"
-
 
 SECTION "Hidden Objects 4", ROMX
-
-INCLUDE "engine/events/hidden_objects/gym_statues.asm"
-INCLUDE "engine/events/hidden_objects/bench_guys.asm"
-INCLUDE "engine/events/hidden_objects/blues_room.asm"
-INCLUDE "engine/events/hidden_objects/pokecenter_pc.asm"
 
 
 SECTION "Version Graphics", ROMX
@@ -269,9 +212,6 @@ SECTION "bank1C", ROMX
 
 INCLUDE "engine/movie/splash.asm"
 INCLUDE "engine/movie/hall_of_fame.asm"
-INCLUDE "engine/overworld/healing_machine.asm"
-INCLUDE "engine/overworld/player_animations.asm"
-INCLUDE "engine/battle/ghost_marowak_anim.asm"
 INCLUDE "engine/battle/battle_transitions.asm"
 INCLUDE "engine/items/town_map.asm"
 INCLUDE "engine/gfx/mon_icons.asm"
@@ -282,12 +222,8 @@ INCLUDE "engine/menus/save.asm"
 
 SECTION "Itemfinder 1", ROMX
 
-INCLUDE "engine/items/itemfinder.asm"
-
 
 SECTION "Vending Machine", ROMX
-
-INCLUDE "engine/events/vending_machine.asm"
 
 
 SECTION "Itemfinder 2", ROMX
@@ -300,9 +236,6 @@ INCLUDE "engine/events/hidden_items.asm"
 SECTION "bank1E", ROMX
 
 INCLUDE "engine/battle/animations.asm"
-INCLUDE "engine/overworld/cut2.asm"
-INCLUDE "engine/overworld/dust_smoke.asm"
-INCLUDE "gfx/fishing.asm"
 INCLUDE "data/moves/animations.asm"
 INCLUDE "data/battle_anims/subanimations.asm"
 INCLUDE "data/battle_anims/frame_blocks.asm"
@@ -325,11 +258,6 @@ ENDC
 
 SECTION "bank30", ROMX
 
-; This whole bank is garbage data.
-IF !DEF(_DEBUG)
-	INCBIN "garbage/bank30.bin"
-ENDC
-
 
 SECTION "bank3A", ROMX
 
@@ -344,28 +272,19 @@ INCLUDE "engine/overworld/npc_movement_2.asm"
 
 SECTION "Pikachu PCM", ROMX
 
-INCLUDE "engine/pikachu/pikachu_pcm.asm"
 INCLUDE "engine/overworld/advance_player_sprite.asm"
 INCLUDE "engine/events/black_out.asm"
-INCLUDE "engine/overworld/specific_script_flags.asm"
 
 
 SECTION "Try Pikachu Movement", ROMX
 
-INCLUDE "engine/overworld/unused_load_missable_object_data.asm"
-INCLUDE "engine/events/try_pikachu_movement.asm"
-
 
 SECTION "Credits", ROMX
 
-INCLUDE "engine/events/pokecenter_chansey.asm"
 INCLUDE "engine/movie/credits.asm"
 
 
 SECTION "Hidden Objects Core", ROMX
-
-INCLUDE "engine/overworld/hidden_objects.asm"
-INCLUDE "engine/events/hidden_objects/vermilion_gym_trash2.asm"
 
 
 SECTION "Battle Engine 8", ROMX
@@ -387,7 +306,6 @@ INCLUDE "engine/menus/unused_input.asm"
 INCLUDE "engine/overworld/field_move_messages.asm"
 INCLUDE "engine/items/inventory.asm"
 INCLUDE "gfx/trainer_card.asm"
-INCLUDE "engine/items/super_rod.asm"
 INCLUDE "engine/battle/init_battle.asm"
 INCLUDE "engine/battle/init_battle_variables.asm"
 INCLUDE "engine/battle/move_effects/focus_energy.asm"
@@ -415,12 +333,4 @@ INCLUDE "engine/gfx/animated_objects.asm"
 
 SECTION "Overworld Pikachu", ROMX
 
-INCLUDE "data/maps/songs.asm"
-INCLUDE "data/maps/map_header_pointers.asm"
-INCLUDE "data/maps/map_header_banks.asm"
-INCLUDE "engine/pikachu/pikachu_follow.asm"
 INCLUDE "engine/pikachu/pikachu_status.asm"
-INCLUDE "engine/pikachu/pikachu_emotions.asm"
-INCLUDE "engine/pikachu/pikachu_movement.asm"
-INCLUDE "engine/pikachu/pikachu_pic_animation.asm"
-INCLUDE "engine/debug/debug_menu.asm"

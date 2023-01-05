@@ -47,11 +47,6 @@ bankswitchAndContinue::
 	call Bankswitch
 	jp HoldTextDisplayOpen        ; continue to main text-engine function
 
-TextScript_PokemonCenterPC::
-	ld b, BANK(ActivatePC)
-	ld hl, ActivatePC
-	jr bankswitchAndContinue
-
 StartSimulatingJoypadStates::
 	xor a
 	ld [wOverrideSimulatedJoypadStatesMask], a
@@ -123,10 +118,6 @@ Func_3467::
 	set 7, a
 	ld [wd472], a
 	ret
-
-DisplayPokedex::
-	ld [wd11e], a
-	farjp _DisplayPokedex
 
 SetSpriteFacingDirectionAndDelay::
 	call SetSpriteFacingDirection

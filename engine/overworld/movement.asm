@@ -447,7 +447,6 @@ Func_5033:
 
 ; tests if sprite is off screen or otherwise unable to do anything
 CheckSpriteAvailability:
-	predef IsObjectHidden
 	ldh a, [hIsHiddenMissableObject]
 	and a
 	jp nz, .spriteInvisible

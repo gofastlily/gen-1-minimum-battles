@@ -9,45 +9,9 @@
 ; If there is an inner loop, Y is the inner loop index, i.e. y#SPRITESTATEDATA1_* and
 ; y#SPRITESTATEDATA2_* denote fields of the sprite slots iterated over in the inner loop.
 _InitMapSprites::
-	call InitOutsideMapSprites
-	ret c ; return if the map is an outside map (already handled by above call)
-; if the map is an inside map (i.e. mapID >= FIRST_INDOOR_MAP)
 	call LoadSpriteSetFromMapHeader
 	call LoadMapSpriteTilePatterns
 	call Func_14150
-	ret
-
-; Loads sprite set for outside maps (cities and routes) and sets VRAM slots.
-; sets carry if the map is a city or route, unsets carry if not
-InitOutsideMapSprites:
-	ld a, [wCurMap]
-	cp FIRST_INDOOR_MAP ; is the map a city or a route?
-	ret nc ; if not, return
-	call GetSplitMapSpriteSetID
-; if so, choose the appropriate one
-	ld b, a ; b = spriteSetID
-	ld a, [wFontLoaded]
-	bit 0, a ; reloading upper half of tile patterns after displaying text?
-	jr nz, .loadSpriteSet ; if so, forcibly reload the sprite set
-	ld a, [wSpriteSetID]
-	cp b ; has the sprite set ID changed?
-	jr z, .skipLoadingSpriteSet ; if not, don't load it again
-.loadSpriteSet
-	ld a, b
-	ld [wSpriteSetID], a
-	dec a
-	ld c, a
-	ld b, 0
-	ld a, wSpriteSetID - wSpriteSet
-	ld hl, SpriteSets
-	call AddNTimes ; get sprite set offset
-	ld de, wSpriteSet
-	ld bc, wSpriteSetID - wSpriteSet
-	call CopyData ; copy it to wSpriteSet
-	call LoadMapSpriteTilePatterns
-.skipLoadingSpriteSet
-	call Func_14150
-	scf
 	ret
 
 LoadSpriteSetFromMapHeader:
@@ -295,77 +259,5 @@ Func_14179:
 	pop bc
 	pop de
 	ret
-
-GetSplitMapSpriteSetID:
-	ld e, a
-	ld d, 0
-	ld hl, MapSpriteSets
-	add hl, de
-	ld a, [hl] ; a = spriteSetID
-	cp FIRST_SPLIT_SET - 1 ; does the map have 2 sprite sets?
-	ret c
-; Chooses the correct sprite set ID depending on the player's position within
-; the map for maps with two sprite sets.
-	cp SPLITSET_ROUTE_20
-	jr z, .route20
-	ld hl, SplitMapSpriteSets
-	and $0f
-	dec a
-	add a
-	add a
-	add l
-	ld l, a
-	jr nc, .noCarry
-	inc h
-.noCarry
-	ld a, [hli] ; whether the map is split EAST_WEST or NORTH_SOUTH
-	cp EAST_WEST
-	ld a, [hli] ; position of dividing line
-	ld b, a
-	jr z, .eastWestDivide
-.northSouthDivide
-	ld a, [wYCoord]
-	jr .compareCoord
-.eastWestDivide
-	ld a, [wXCoord]
-.compareCoord
-	cp b
-	jr c, .loadSpriteSetID
-; if in the east side or south side
-	inc hl
-.loadSpriteSetID
-	ld a, [hl]
-	ret
-; Uses sprite set SPRITESET_PALLET_VIRIDIAN for west side and SPRITESET_FUCHSIA for east side.
-; Route 20 is a special case because the two map sections have a more complex
-; shape instead of the map simply being split horizontally or vertically.
-.route20
-	ld hl, wXCoord
-	; Use SPRITESET_PALLET_VIRIDIAN if X < 43
-	ld a, [hl]
-	cp 43
-	ld a, SPRITESET_PALLET_VIRIDIAN
-	ret c
-	; Use SPRITESET_FUCHSIA if X >= 62.
-	ld a, [hl]
-	cp 62
-	ld a, SPRITESET_FUCHSIA
-	ret nc
-	; If 55 <= X < 62, split Y at 8; else 43 <= X < 55, so split Y at 13
-	ld a, [hl]
-	cp 55
-	ld b, 8
-	jr nc, .next
-	ld b, 13
-.next
-	; Use SPRITESET_FUCHSIA if Y < split; else use SPRITESET_PALLET_VIRIDIAN
-	ld a, [wYCoord]
-	cp b
-	ld a, SPRITESET_FUCHSIA
-	ret c
-	ld a, SPRITESET_PALLET_VIRIDIAN
-	ret
-
-INCLUDE "data/maps/sprite_sets.asm"
 
 INCLUDE "data/sprites/sprites.asm"

@@ -25,7 +25,6 @@ ItemUsePtrTable:
 	dw ItemUseBicycle    ; BICYCLE
 	dw ItemUseSurfboard  ; out-of-battle Surf effect
 	dw ItemUseBall       ; SAFARI_BALL
-	dw ItemUsePokedex    ; POKEDEX
 	dw ItemUseEvoStone   ; MOON_STONE
 	dw ItemUseMedicine   ; ANTIDOTE
 	dw ItemUseMedicine   ; BURN_HEAL
@@ -64,7 +63,6 @@ ItemUsePtrTable:
 	dw UnusableItem      ; BIKE_VOUCHER
 	dw ItemUseXAccuracy  ; X_ACCURACY
 	dw ItemUseEvoStone   ; LEAF_STONE
-	dw ItemUseCardKey    ; CARD_KEY
 	dw UnusableItem      ; NUGGET
 	dw UnusableItem      ; ??? PP_UP
 	dw ItemUsePokedoll   ; POKE_DOLL
@@ -176,15 +174,6 @@ ItemUseBall:
 	jp nz, .setAnimData
 	jp .captured
 .notOldManBattle
-; If the player is fighting the ghost Marowak, set the value that indicates the
-; Pokémon can't be caught and skip the capture calculations.
-	ld a, [wCurMap]
-	cp POKEMON_TOWER_6F
-	jr nz, .loop
-	ld a, [wEnemyMonSpecies2]
-	cp RESTLESS_SOUL
-	ld b, $10 ; can't be caught value
-	jp z, .setAnimData
 
 ; Get the first random number. Let it be called Rand1.
 ; Rand1 must be within a certain range according the kind of ball being thrown.
@@ -550,17 +539,6 @@ ItemUseBall:
 	predef FlagActionPredef
 	pop af
 
-	and a ; was the Pokémon already in the Pokédex?
-	jr nz, .skipShowingPokedexData ; if so, don't show the Pokédex data
-
-	ld hl, ItemUseBallText06
-	call PrintText
-	call ClearSprites
-	ld a, [wEnemyMonSpecies]
-	ld [wd11e], a
-	predef ShowPokedexData
-
-.skipShowingPokedexData
 	ld a, $1
 	ld [wd49c], a
 	ld a, $85
@@ -654,126 +632,13 @@ ItemUseBallText06:
 	text_end
 
 ItemUseTownMap:
-	ld a, [wIsInBattle]
-	and a
-	jp nz, ItemUseNotTime
-	farjp DisplayTownMap
+	ret
 
 ItemUseBicycle:
-	ld a, [wIsInBattle]
-	and a
-	jp nz, ItemUseNotTime
-	ld a, [wWalkBikeSurfState]
-	ld [wWalkBikeSurfStateCopy], a
-	cp 2 ; is the player surfing?
-	jp z, ItemUseNotTime
-	dec a ; is player already bicycling?
-	jr nz, .tryToGetOnBike
-.getOffBike
-	call ItemUseReloadOverworldData
-	xor a
-	ld [wWalkBikeSurfState], a ; change player state to walking
-	ld a, $00
-	ld [wPikachuSpawnState], a
-	call PlayDefaultMusic ; play walking music
-	ld hl, GotOffBicycleText
-	jp PrintText
-
-.tryToGetOnBike
-	call IsBikeRidingAllowed
-	jp nc, NoCyclingAllowedHere
-	call ItemUseReloadOverworldData
-	xor a ; no keys pressed
-	ldh [hJoyHeld], a ; current joypad state
-	ld a, $1
-	ld [wWalkBikeSurfState], a ; change player state to bicycling
-	call PlayDefaultMusic ; play bike riding music
-	xor a
-	ld [wWalkBikeSurfState], a
-	ld hl, GotOnBicycleText
-	call PrintText
-	ld a, $1
-	ld [wWalkBikeSurfState], a
 	ret
 
 ; used for Surf out-of-battle effect
 ItemUseSurfboard:
-	ld a, [wWalkBikeSurfState]
-	ld [wWalkBikeSurfStateCopy], a
-	cp 2 ; is the player already surfing?
-	jr z, .tryToStopSurfing
-.tryToSurf
-	call IsNextTileShoreOrWater
-	jp nc, SurfingAttemptFailed
-	ld hl, TilePairCollisionsWater
-	call CheckForTilePairCollisions
-	jp c, SurfingAttemptFailed
-.surf
-	call .makePlayerMoveForward
-	ld hl, wd730
-	set 7, [hl]
-	ld a, 2
-	ld [wWalkBikeSurfState], a ; change player state to surfing
-	call PlayDefaultMusic ; play surfing music
-	ld hl, SurfingGotOnText
-	jp PrintText
-
-.tryToStopSurfing
-	xor a
-	ldh [hSpriteIndexOrTextID], a
-	ld d, 16 ; talking range in pixels (normal range)
-	call IsSpriteInFrontOfPlayer2
-	res 7, [hl]
-	ldh a, [hSpriteIndexOrTextID]
-	and a ; is there a sprite in the way?
-	jr nz, .cannotStopSurfing
-	ld hl, TilePairCollisionsWater
-	call CheckForTilePairCollisions
-	jr c, .cannotStopSurfing
-	ld a, [wTileInFrontOfPlayer]
-	ld c, a
-	call IsTilePassable
-	jr nc, .stopSurfing
-.cannotStopSurfing
-	ld hl, SurfingNoPlaceToGetOffText
-	jp PrintText
-
-.stopSurfing
-	call .makePlayerMoveForward
-	ld a, $3
-	ld [wPikachuSpawnState], a
-	ld hl, wPikachuOverworldStateFlags
-	set 5, [hl]
-	ld hl, wd730
-	set 7, [hl]
-	xor a
-	ld [wWalkBikeSurfState], a ; change player state to walking
-	dec a
-	ld [wJoyIgnore], a
-	call PlayDefaultMusic ; play walking music
-	call GBPalWhiteOutWithDelay3
-	jp LoadWalkingPlayerSpriteGraphics
-
-; uses a simulated button press to make the player move forward
-.makePlayerMoveForward
-	ld a, [wPlayerDirection] ; direction the player is going
-	bit PLAYER_DIR_BIT_UP, a
-	ld b, D_UP
-	jr nz, .storeSimulatedButtonPress
-	bit PLAYER_DIR_BIT_DOWN, a
-	ld b, D_DOWN
-	jr nz, .storeSimulatedButtonPress
-	bit PLAYER_DIR_BIT_LEFT, a
-	ld b, D_LEFT
-	jr nz, .storeSimulatedButtonPress
-	ld b, D_RIGHT
-.storeSimulatedButtonPress
-	ld a, b
-	ld [wSimulatedJoypadStatesEnd], a
-	xor a
-	ld [wWastedByteCD39], a
-	inc a
-	ld [wSimulatedJoypadStatesIndex], a
 	ret
 
 SurfingGotOnText:
@@ -783,9 +648,6 @@ SurfingGotOnText:
 SurfingNoPlaceToGetOffText:
 	text_far _SurfingNoPlaceToGetOffText
 	text_end
-
-ItemUsePokedex:
-	predef_jump ShowPokedexMenu
 
 ItemUseEvoStone:
 	ld a, [wIsInBattle]
@@ -811,8 +673,6 @@ ItemUseEvoStone:
 	jr nc, .noEffect
 	callfar IsThisPartymonStarterPikachu_Party
 	jr nc, .notPlayerPikachu
-	ld e, $1b
-	callfar PlayPikachuSoundClip
 	ld a, [wWhichPokemon]
 	ld hl, wPartyMonNicks
 	call GetPartyMonName
@@ -1034,13 +894,6 @@ ItemUseMedicine:
 	push af
 	ld a, [wUsedItemOnWhichPokemon]
 	ld [wWhichPokemon], a
-	push hl
-	push de
-	push bc
-	callfar RespawnOverworldPikachu
-	pop bc
-	pop de
-	pop hl
 	pop af
 	ld [wWhichPokemon], a
 
@@ -1542,7 +1395,6 @@ ItemUseMedicine:
 	push af
 	ld a, [wUsedItemOnWhichPokemon]
 	ld [wWhichPokemon], a
-	callfar RespawnOverworldPikachu ; evolve pokemon, if appropriate
 	pop af
 	ld [wWhichPokemon], a
 
@@ -1622,50 +1474,7 @@ ThrewRockText:
 
 ; also used for Dig out-of-battle effect
 ItemUseEscapeRope:
-	ld a, [wIsInBattle]
-	and a
-	jr nz, .notUsable
-	ld a, [wCurMap]
-	cp AGATHAS_ROOM
-	jr z, .notUsable
-	cp BILLS_HOUSE
-	jr z, .notUsable
-	cp POKEMON_FAN_CLUB
-	jr z, .notUsable
-	ld a, [wCurMapTileset]
-	ld b, a
-	ld hl, EscapeRopeTilesets
-.loop
-	ld a, [hli]
-	cp $ff
-	jr z, .notUsable
-	cp b
-	jr nz, .loop
-	ld hl, wd732
-	set 3, [hl]
-	set 6, [hl]
-	call Func_1510
-	ld hl, wd72e
-	res 4, [hl]
-	ResetEvent EVENT_IN_SAFARI_ZONE
-	xor a
-	ld [wNumSafariBalls], a
-	ld [wSafariZoneGateCurScript], a
-	inc a
-	ld [wEscapedFromBattle], a
-	ld [wActionResultOrTookBattleTurn], a ; item used
-	ld a, [wPseudoItemID]
-	and a ; using Dig?
-	ret nz ; if so, return
-	call ItemUseReloadOverworldData
-	ld c, 30
-	call DelayFrames
-	jp RemoveUsedItem
-
-.notUsable
 	jp ItemUseNotTime
-
-INCLUDE "data/tilesets/escape_rope_tilesets.asm"
 
 ItemUseRepel:
 	ld b, 100
@@ -1687,64 +1496,6 @@ ItemUseXAccuracy:
 	set USING_X_ACCURACY, [hl] ; X Accuracy bit
 	callabd_ModifyPikachuHappiness PIKAHAPPY_USEDXITEM
 	jp PrintItemUseTextAndRemoveItem
-
-; This function is bugged and never works. It always jumps to ItemUseNotTime.
-; The Card Key is handled in a different way.
-ItemUseCardKey:
-	xor a
-	ld [wUnusedD71F], a
-	call GetTileAndCoordsInFrontOfPlayer
-	ld a, [GetTileAndCoordsInFrontOfPlayer]
-	cp $18
-	jr nz, .next0
-	ld hl, CardKeyTable1
-	jr .next1
-
-.next0
-	cp $24
-	jr nz, .next2
-	ld hl, CardKeyTable2
-	jr .next1
-
-.next2
-	cp $5e
-	jp nz, ItemUseNotTime
-	ld hl, CardKeyTable3
-.next1
-	ld a, [wCurMap]
-	ld b, a
-.loop
-	ld a, [hli]
-	cp -1
-	jp z, ItemUseNotTime
-	cp b
-	jr nz, .nextEntry1
-	ld a, [hli]
-	cp d
-	jr nz, .nextEntry2
-	ld a, [hli]
-	cp e
-	jr nz, .nextEntry3
-	ld a, [hl]
-	ld [wUnusedD71F], a
-	jr .done
-
-.nextEntry1
-	inc hl
-.nextEntry2
-	inc hl
-.nextEntry3
-	inc hl
-	jr .loop
-
-.done
-	ld hl, ItemUseText00
-	call PrintText
-	ld hl, wd728
-	set 7, [hl]
-	ret
-
-INCLUDE "data/events/card_key_coords.asm"
 
 ItemUsePokedoll:
 	ld a, [wIsInBattle]
@@ -1840,57 +1591,6 @@ ItemUseXStat:
 	ret
 
 ItemUsePokeflute:
-	ld a, [wIsInBattle]
-	and a
-	jr nz, .inBattle
-; if not in battle
-	call ItemUseReloadOverworldData
-	ld a, [wCurMap]
-	cp ROUTE_12
-	jr nz, .notRoute12
-	CheckEvent EVENT_BEAT_ROUTE12_SNORLAX
-	jr nz, .noSnorlaxOrPikachuToWakeUp
-; if the player hasn't beaten Route 12 Snorlax
-	ld hl, Route12SnorlaxFluteCoords
-	call ArePlayerCoordsInArray
-	jr nc, .noSnorlaxOrPikachuToWakeUp
-	ld hl, PlayedFluteHadEffectText
-	call PrintText
-	SetEvent EVENT_FIGHT_ROUTE12_SNORLAX
-	ret
-
-.notRoute12
-	cp ROUTE_16
-	jr nz, .notRoute16
-	CheckEvent EVENT_BEAT_ROUTE16_SNORLAX
-	jr nz, .noSnorlaxOrPikachuToWakeUp
-; if the player hasn't beaten Route 16 Snorlax
-	ld hl, Route16SnorlaxFluteCoords
-	call ArePlayerCoordsInArray
-	jr nc, .noSnorlaxOrPikachuToWakeUp
-	ld hl, PlayedFluteHadEffectText
-	call PrintText
-	SetEvent EVENT_FIGHT_ROUTE16_SNORLAX
-	ret
-
-.notRoute16
-	cp PEWTER_POKECENTER
-	jr nz, .noSnorlaxOrPikachuToWakeUp
-	call CheckPikachuFollowingPlayer
-	jr z, .noSnorlaxOrPikachuToWakeUp
-	callfar IsPikachuRightNextToPlayer
-	jr nc, .noSnorlaxOrPikachuToWakeUp
-	ld hl, PlayedFluteHadEffectText
-	call PrintText
-	call ItemUseReloadOverworldData
-	ldpikaemotion e, PikachuEmotion26
-	callfar PlaySpecificPikachuEmotion
-	ret
-
-.noSnorlaxOrPikachuToWakeUp
-	ld hl, PlayedFluteNoEffectText
-	jp PrintText
-
 .inBattle
 	xor a
 	ld [wWereAnyMonsAsleep], a
@@ -2053,48 +1753,10 @@ ItemUseGoodRod:
 INCLUDE "data/wild/good_rod.asm"
 
 ItemUseSuperRod:
-	call FishingInit
-	jp c, ItemUseNotTime
-	callfar ReadSuperRodData
-	ld c, e
-	ld b, d
-	ld a, $2
-	ld [wRodResponse], a
-	ld a, c
-	and a ; are there fish in the map?
-	jr z, DoNotGenerateFishingEncounter ; if not, do not generate an encounter
-	ld a, $1
-	ld [wRodResponse], a
-	call Random
-	and $1
-	jr nz, RodResponse
-	xor a
-	ld [wRodResponse], a
-	jr DoNotGenerateFishingEncounter
 
 RodResponse:
-	ld [wRodResponse], a
-
-	dec a ; is there a bite?
-	jr nz, DoNotGenerateFishingEncounter
-	; if yes, store level and species data
-	ld a, 1
-	ld [wMoveMissed], a
-	ld a, b ; level
-	ld [wCurEnemyLVL], a
-	ld a, c ; species
-	ld [wCurOpponent], a
 
 DoNotGenerateFishingEncounter:
-	ld hl, wWalkBikeSurfState
-	ld a, [hl] ; store the value in a
-	push af
-	push hl
-	ld [hl], 0
-	farcall FishingAnim
-	pop hl
-	pop af
-	ld [hl], a
 	ret
 
 ; checks if fishing is possible and if so, runs initialization code common to all rods
@@ -2134,24 +1796,7 @@ ItemUseOaksParcel:
 	jp ItemUseNotYoursToUse
 
 ItemUseItemfinder:
-	ld a, [wIsInBattle]
-	and a
-	jp nz, ItemUseNotTime
-	call ItemUseReloadOverworldData
-	farcall HiddenItemNear ; check for hidden items
-	ld hl, ItemfinderFoundNothingText
-	jr nc, .printText ; if no hidden items
-	ld c, 4
-.loop
-	ld a, SFX_HEALING_MACHINE
-	call PlaySoundWaitForCurrent
-	ld a, SFX_PURCHASE
-	call PlaySoundWaitForCurrent
-	dec c
-	jr nz, .loop
-	ld hl, ItemfinderFoundItemText
-.printText
-	jp PrintText
+	ret
 
 ItemfinderFoundItemText:
 	text_far _ItemfinderFoundItemText

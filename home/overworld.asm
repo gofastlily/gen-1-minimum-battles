@@ -19,7 +19,6 @@ EnterMap::
 	ld a, [hl]
 	and 1 << 4 | 1 << 3 ; fly warp or dungeon warp
 	jr z, .didNotEnterUsingFlyWarpOrDungeonWarp
-	farcall EnterMapAnim
 	call UpdateSprites
 	ld hl, wd732
 	res 3, [hl]
@@ -44,256 +43,7 @@ OverworldLoop::
 	call DelayFrame
 OverworldLoopLessDelay::
 	call DelayFrame
-	call IsSurfingPikachuInParty
-	call LoadGBPal
-	call HandleMidJump
-	ld a, [wWalkCounter]
-	and a
-	jp nz, .moveAhead ; if the player sprite has not yet completed the walking animation
-	call JoypadOverworld ; get joypad state (which is possibly simulated)
-	farcall SafariZoneCheck
-	ld a, [wSafariZoneGameOver]
-	and a
-	jp nz, WarpFound2
-	ld hl, wd72d
-	bit 3, [hl]
-	res 3, [hl]
-	jp nz, WarpFound2
-	ld a, [wd732]
-	and 1 << 4 | 1 << 3 ; fly warp or dungeon warp
-	jp nz, HandleFlyWarpOrDungeonWarp
-	ld a, [wCurOpponent]
-	and a
-	jp nz, .newBattle
-	ld a, [wd730]
-	bit 7, a ; are we simulating button presses?
-	jr z, .notSimulating
-	ldh a, [hJoyHeld]
-	jr .checkIfStartIsPressed
-.notSimulating
-	ldh a, [hJoyPressed]
-.checkIfStartIsPressed
-	bit BIT_START, a
-	jr z, .startButtonNotPressed
-; if START is pressed
-	xor a ; TEXT_START_MENU
-	ldh [hSpriteIndexOrTextID], a
-	jp .displayDialogue
-.startButtonNotPressed
-	bit BIT_A_BUTTON, a
-	jp z, .checkIfDownButtonIsPressed
-; if A is pressed
-	ld a, [wd730]
-	bit 2, a
-	jp nz, .noDirectionButtonsPressed
-	call IsPlayerCharacterBeingControlledByGame
-	jr nz, .checkForOpponent
-	call CheckForHiddenObjectOrBookshelfOrCardKeyDoor
-	ldh a, [hItemAlreadyFound]
-	and a
-	jp z, OverworldLoop ; jump if a hidden object or bookshelf was found, but not if a card key door was found
-	xor a
-	ld [wd436], a ; new yellow address
-	call IsSpriteOrSignInFrontOfPlayer
-	call Func_0ffe
-	ldh a, [hSpriteIndexOrTextID]
-	and a
-	jp z, OverworldLoop
-.displayDialogue
-	predef GetTileAndCoordsInFrontOfPlayer
-	call UpdateSprites
-	ld a, [wFlags_0xcd60]
-	bit 2, a
-	jr nz, .checkForOpponent
-	bit 0, a
-	jr nz, .checkForOpponent
-	lda_coord 8, 9
-	ld [wTilePlayerStandingOn], a ; unused?
-	call DisplayTextID ; display either the start menu or the NPC/sign text
-	ld a, [wEnteringCableClub]
-	and a
-	jr z, .checkForOpponent
-	xor a
-	ld [wLinkTimeoutCounter], a
-	jp EnterMap
-.checkForOpponent
-	ld a, [wCurOpponent]
-	and a
-	jp nz, .newBattle
-	jp OverworldLoop
-
-.noDirectionButtonsPressed
-	call UpdateSprites
-	ld hl, wFlags_0xcd60
-	res 2, [hl]
-	xor a
-	ld [wd435], a
-	ld a, 1
-	ld [wCheckFor180DegreeTurn], a
-	ld a, [wPlayerMovingDirection] ; the direction that was pressed last time
-	and a
-	jr z, .overworldloop
-; if a direction was pressed last time
-	ld [wPlayerLastStopDirection], a ; save the last direction
-	xor a
-	ld [wPlayerMovingDirection], a ; zero the direction
-.overworldloop
-	jp OverworldLoop
-
-.checkIfDownButtonIsPressed
-	ldh a, [hJoyHeld] ; current joypad state
-	bit BIT_D_DOWN, a
-	jr z, .checkIfUpButtonIsPressed
-	ld a, 1
-	ld [wSpritePlayerStateData1YStepVector], a
-	ld a, PLAYER_DIR_DOWN
-	jr .handleDirectionButtonPress
-
-.checkIfUpButtonIsPressed
-	bit BIT_D_UP, a
-	jr z, .checkIfLeftButtonIsPressed
-	ld a, -1
-	ld [wSpritePlayerStateData1YStepVector], a
-	ld a, PLAYER_DIR_UP
-	jr .handleDirectionButtonPress
-
-.checkIfLeftButtonIsPressed
-	bit BIT_D_LEFT, a
-	jr z, .checkIfRightButtonIsPressed
-	ld a, -1
-	ld [wSpritePlayerStateData1XStepVector], a
-	ld a, PLAYER_DIR_LEFT
-	jr .handleDirectionButtonPress
-
-.checkIfRightButtonIsPressed
-	bit BIT_D_RIGHT, a
-	jr z, .noDirectionButtonsPressed
-	ld a, 1
-	ld [wSpritePlayerStateData1XStepVector], a
-	ld a, 1
-
-.handleDirectionButtonPress
-	ld [wPlayerDirection], a ; new direction
-	ld a, [wd730]
-	bit 7, a ; are we simulating button presses?
-	jr nz, .noDirectionChange ; ignore direction changes if we are
-	ld a, [wCheckFor180DegreeTurn]
-	and a
-	jr z, .noDirectionChange
-	ld a, [wPlayerDirection] ; new direction
-	ld b, a
-	ld a, [wPlayerLastStopDirection] ; old direction
-	cp b
-	jr z, .noDirectionChange
-	ld a, $8
-	ld [wd435], a
-; unlike in red/blue, yellow does not have the 180 degrees odd code
-	ld hl, wFlags_0xcd60
-	set 2, [hl]
-	xor a
-	ld [wCheckFor180DegreeTurn], a
-	ld a, [wPlayerDirection]
-	ld [wPlayerMovingDirection], a
-	call NewBattle
-	jp c, .battleOccurred
-	jp OverworldLoop
-
-.noDirectionChange
-	ld a, [wPlayerDirection] ; current direction
-	ld [wPlayerMovingDirection], a ; save direction
-	call UpdateSprites
-	ld a, [wWalkBikeSurfState]
-	cp $02 ; surfing
-	jr z, .surfing
-; not surfing
-	call CollisionCheckOnLand
-	jr nc, .noCollision
-; collision occurred
-	push hl
-	ld hl, wd736
-	bit 2, [hl] ; standing on warp flag
-	pop hl
-	jp z, OverworldLoop
-; collision occurred while standing on a warp
-	push hl
-	call ExtraWarpCheck ; sets carry if there is a potential to warp
-	pop hl
-	jp c, CheckWarpsCollision
-	jp OverworldLoop
-
-.surfing
-	call CollisionCheckOnWater
-	jp c, OverworldLoop
-
-.noCollision
-	ld a, $08
-	ld [wWalkCounter], a
-	callfar Func_fcc08
-	jr .moveAhead2
-
-.moveAhead
-	call IsSpinning
-	call UpdateSprites
-
-.moveAhead2
-	ld hl, wFlags_0xcd60
-	res 2, [hl]
-	xor a
-	ld [wd435], a
-	call DoBikeSpeedup
-	call AdvancePlayerSprite
-	ld a, [wWalkCounter]
-	and a
-	jp nz, CheckMapConnections ; it seems like this check will never succeed (the other place where CheckMapConnections is run works)
-; walking animation finished
-	call StepCountCheck
-	CheckEvent EVENT_IN_SAFARI_ZONE ; in the safari zone?
-	jr z, .notSafariZone
-	farcall SafariZoneCheckSteps
-	ld a, [wSafariZoneGameOver]
-	and a
-	jp nz, WarpFound2
-.notSafariZone
-	ld a, [wIsInBattle]
-	and a
-	jp nz, CheckWarpsNoCollision
-	predef ApplyOutOfBattlePoisonDamage ; also increment daycare mon exp
-	ld a, [wOutOfBattleBlackout]
-	and a
-	jp nz, HandleBlackOut ; if all pokemon fainted
-.newBattle
-	call NewBattle
-	ld hl, wd736
-	res 2, [hl] ; standing on warp flag
-	jp nc, CheckWarpsNoCollision ; check for warps if there was no battle
-.battleOccurred
-	ld hl, wd72d
-	res 6, [hl]
-	ld hl, wFlags_D733
-	res 3, [hl]
-	ld hl, wCurrentMapScriptFlags
-	set 5, [hl]
-	set 6, [hl]
-	xor a
-	ldh [hJoyHeld], a
-	ld a, [wCurMap]
-	cp CINNABAR_GYM
-	jr nz, .notCinnabarGym
-	SetEvent EVENT_2A7
-.notCinnabarGym
-	ld hl, wd72e
-	set 5, [hl]
-	ld a, [wCurMap]
-	cp OAKS_LAB
-	jp z, .noFaintCheck ; no blacking out if the player lost to the rival in Oak's lab
-	callfar AnyPartyAlive
-	ld a, d
-	and a
-	jr z, AllPokemonFainted
-.noFaintCheck
-	ld c, 10
-	call DelayFrames
-	jp EnterMap
+	ret
 
 StepCountCheck::
 	ld a, [wd730]
@@ -337,23 +87,6 @@ NewBattle::
 
 ; function to make bikes twice as fast as walking
 DoBikeSpeedup::
-	ld a, [wWalkBikeSurfState]
-	dec a ; riding a bike?
-	ret nz
-	ld a, [wd736]
-	bit 6, a
-	ret nz
-	ld a, [wNPCMovementScriptPointerTableNum]
-	and a
-	ret nz
-	ld a, [wCurMap]
-	cp ROUTE_17 ; Cycling Road
-	jr nz, .goFaster
-	ldh a, [hJoyHeld]
-	and D_UP | D_LEFT | D_RIGHT
-	ret nz
-.goFaster
-	call AdvancePlayerSprite
 	ret
 
 ; check if the player has stepped onto a warp after having not collided
@@ -453,213 +186,10 @@ WarpFound1::
 	ldh [hWarpDestinationMap], a
 
 WarpFound2::
-	ld a, [wNumberOfWarps]
-	sub c
-	ld [wWarpedFromWhichWarp], a ; save ID of used warp
-	ld a, [wCurMap]
-	ld [wWarpedFromWhichMap], a
-	call CheckIfInOutsideMap
-	jr nz, .indoorMaps
-; this is for handling "outside" maps that can't have the 0xFF destination map
-	ld a, [wCurMap]
-	ld [wLastMap], a
-	ld a, [wCurMapWidth]
-	ld [wUnusedD366], a ; not read
-	ldh a, [hWarpDestinationMap]
-	ld [wCurMap], a
-	cp ROCK_TUNNEL_1F
-	jr nz, .notRockTunnel
-	ld a, $06
-	ld [wMapPalOffset], a
-	call GBFadeOutToBlack
-.notRockTunnel
-	callfar SetPikachuSpawnOutside
-	call PlayMapChangeSound
-	jr .done
-
-; for maps that can have the 0xFF destination map, which means to return to the outside map
-; not all these maps are necessarily indoors, though
-.indoorMaps
-	ldh a, [hWarpDestinationMap] ; destination map
-	cp LAST_MAP
-	jr z, .goBackOutside
-; if not going back to the previous map
-	ld [wCurMap], a
-	farcall IsPlayerStandingOnWarpPadOrHole
-	ld a, [wStandingOnWarpPadOrHole]
-	dec a ; is the player on a warp pad?
-	jr nz, .notWarpPad
-; if the player is on a warp pad
-	call LeaveMapAnim
-	ld hl, wd732
-	set 3, [hl]
-	jr .skipMapChangeSound
-.notWarpPad
-	call PlayMapChangeSound
-.skipMapChangeSound
-	ld hl, wd736
-	res 0, [hl]
-	res 1, [hl]
-	callfar SetPikachuSpawnWarpPad
-	jr .done
-
-.goBackOutside
-	callfar SetPikachuSpawnBackOutside
-	ld a, [wLastMap]
-	ld [wCurMap], a
-	call PlayMapChangeSound
-	xor a
-	ld [wMapPalOffset], a
-.done
-	ld hl, wd736
-	set 0, [hl] ; have the player's sprite step out from the door (if there is one)
-	call IgnoreInputForHalfSecond
-	jp EnterMap
+	ret
 
 ; if no matching warp was found
 CheckMapConnections::
-.checkWestMap
-	ld a, [wXCoord]
-	cp $ff
-	jr nz, .checkEastMap
-	ld a, [wWestConnectedMap]
-	ld [wCurMap], a
-	ld a, [wWestConnectedMapXAlignment] ; new X coordinate upon entering west map
-	ld [wXCoord], a
-	ld a, [wYCoord]
-	ld c, a
-	ld a, [wWestConnectedMapYAlignment] ; Y adjustment upon entering west map
-	add c
-	ld c, a
-	ld [wYCoord], a
-	ld a, [wWestConnectedMapViewPointer] ; pointer to upper left corner of map without adjustment for Y position
-	ld l, a
-	ld a, [wWestConnectedMapViewPointer + 1]
-	ld h, a
-	srl c
-	jr z, .savePointer1
-.pointerAdjustmentLoop1
-	ld a, [wWestConnectedMapWidth] ; width of connected map
-	add MAP_BORDER * 2
-	ld e, a
-	ld d, 0
-	ld b, 0
-	add hl, de
-	dec c
-	jr nz, .pointerAdjustmentLoop1
-.savePointer1
-	ld a, l
-	ld [wCurrentTileBlockMapViewPointer], a ; pointer to upper left corner of current tile block map section
-	ld a, h
-	ld [wCurrentTileBlockMapViewPointer + 1], a
-	jp .loadNewMap
-
-.checkEastMap
-	ld b, a
-	ld a, [wCurrentMapWidth2] ; map width
-	cp b
-	jr nz, .checkNorthMap
-	ld a, [wEastConnectedMap]
-	ld [wCurMap], a
-	ld a, [wEastConnectedMapXAlignment] ; new X coordinate upon entering east map
-	ld [wXCoord], a
-	ld a, [wYCoord]
-	ld c, a
-	ld a, [wEastConnectedMapYAlignment] ; Y adjustment upon entering east map
-	add c
-	ld c, a
-	ld [wYCoord], a
-	ld a, [wEastConnectedMapViewPointer] ; pointer to upper left corner of map without adjustment for Y position
-	ld l, a
-	ld a, [wEastConnectedMapViewPointer + 1]
-	ld h, a
-	srl c
-	jr z, .savePointer2
-.pointerAdjustmentLoop2
-	ld a, [wEastConnectedMapWidth]
-	add MAP_BORDER * 2
-	ld e, a
-	ld d, 0
-	ld b, 0
-	add hl, de
-	dec c
-	jr nz, .pointerAdjustmentLoop2
-.savePointer2
-	ld a, l
-	ld [wCurrentTileBlockMapViewPointer], a ; pointer to upper left corner of current tile block map section
-	ld a, h
-	ld [wCurrentTileBlockMapViewPointer + 1], a
-	jp .loadNewMap
-
-.checkNorthMap
-	ld a, [wYCoord]
-	cp $ff
-	jr nz, .checkSouthMap
-	ld a, [wNorthConnectedMap]
-	ld [wCurMap], a
-	ld a, [wNorthConnectedMapYAlignment] ; new Y coordinate upon entering north map
-	ld [wYCoord], a
-	ld a, [wXCoord]
-	ld c, a
-	ld a, [wNorthConnectedMapXAlignment] ; X adjustment upon entering north map
-	add c
-	ld c, a
-	ld [wXCoord], a
-	ld a, [wNorthConnectedMapViewPointer] ; pointer to upper left corner of map without adjustment for X position
-	ld l, a
-	ld a, [wNorthConnectedMapViewPointer + 1]
-	ld h, a
-	ld b, 0
-	srl c
-	add hl, bc
-	ld a, l
-	ld [wCurrentTileBlockMapViewPointer], a ; pointer to upper left corner of current tile block map section
-	ld a, h
-	ld [wCurrentTileBlockMapViewPointer + 1], a
-	jp .loadNewMap
-
-.checkSouthMap
-	ld b, a
-	ld a, [wCurrentMapHeight2]
-	cp b
-	jr nz, .didNotEnterConnectedMap
-	ld a, [wSouthConnectedMap]
-	ld [wCurMap], a
-	ld a, [wSouthConnectedMapYAlignment] ; new Y coordinate upon entering south map
-	ld [wYCoord], a
-	ld a, [wXCoord]
-	ld c, a
-	ld a, [wSouthConnectedMapXAlignment] ; X adjustment upon entering south map
-	add c
-	ld c, a
-	ld [wXCoord], a
-	ld a, [wSouthConnectedMapViewPointer] ; pointer to upper left corner of map without adjustment for X position
-	ld l, a
-	ld a, [wSouthConnectedMapViewPointer + 1]
-	ld h, a
-	ld b, 0
-	srl c
-	add hl, bc
-	ld a, l
-	ld [wCurrentTileBlockMapViewPointer], a ; pointer to upper left corner of current tile block map section
-	ld a, h
-	ld [wCurrentTileBlockMapViewPointer + 1], a
-.loadNewMap ; load the connected map that was entered
-	ld hl, wPikachuOverworldStateFlags
-	set 4, [hl]
-	ld a, $2
-	ld [wPikachuSpawnState], a
-	call LoadMapHeader
-	call PlayDefaultMusicFadeOutCurrent
-	ld b, SET_PAL_OVERWORLD
-	call RunPaletteCommand
-; Since the sprite set shouldn't change, this will just update VRAM slots at
-; x#SPRITESTATEDATA2_IMAGEBASEOFFSET without loading any tile patterns.
-	call InitMapSprites
-	call LoadTileBlockMap
-	jp OverworldLoopLessDelay
-
-.didNotEnterConnectedMap
 	jp OverworldLoop
 
 ; function to play a sound when changing maps
@@ -698,34 +228,7 @@ CheckIfInOutsideMap::
 ; "function 2" passes when the the tile in front of the player is among a certain set
 ; sets carry if the check passes, otherwise clears carry
 ExtraWarpCheck::
-	ld a, [wCurMap]
-	cp SS_ANNE_3F
-	jr z, .useFunction1
-	cp ROCKET_HIDEOUT_B1F
-	jr z, .useFunction2
-	cp ROCKET_HIDEOUT_B2F
-	jr z, .useFunction2
-	cp ROCKET_HIDEOUT_B4F
-	jr z, .useFunction2
-	cp ROCK_TUNNEL_1F
-	jr z, .useFunction2
-	ld a, [wCurMapTileset]
-	and a ; outside tileset (OVERWORLD)
-	jr z, .useFunction2
-	cp SHIP ; S.S. Anne tileset
-	jr z, .useFunction2
-	cp SHIP_PORT ; Vermilion Port tileset
-	jr z, .useFunction2
-	cp PLATEAU ; Indigo Plateau tileset
-	jr z, .useFunction2
-.useFunction1
-	ld hl, IsPlayerFacingEdgeOfMap
-	jr .doBankswitch
-.useFunction2
-	ld hl, IsWarpTileInFrontOfPlayer
-.doBankswitch
-	ld b, BANK(IsWarpTileInFrontOfPlayer)
-	jp Bankswitch
+	ret
 
 MapEntryAfterBattle::
 	farcall IsPlayerStandingOnWarp ; for enabling warp testing after collisions
@@ -777,7 +280,7 @@ HandleFlyWarpOrDungeonWarp::
 	jp SpecialEnterMap
 
 LeaveMapAnim::
-	farjp _LeaveMapAnim
+	ret
 
 Func_07c4::
 	ld a, [wWalkBikeSurfState]
@@ -830,29 +333,7 @@ LoadPlayerSpriteGraphics::
 	jp LoadWalkingPlayerSpriteGraphics
 
 IsBikeRidingAllowed::
-; The bike can be used on Route 23 and Indigo Plateau,
-; or maps with tilesets in BikeRidingTilesets.
 ; Return carry if biking is allowed.
-
-	ld a, [wCurMap]
-	cp ROUTE_23
-	jr z, .allowed
-	cp INDIGO_PLATEAU
-	jr z, .allowed
-
-	ld a, [wCurMapTileset]
-	ld b, a
-	ld hl, BikeRidingTilesets
-.loop
-	ld a, [hli]
-	cp b
-	jr z, .allowed
-	inc a
-	jr nz, .loop
-	and a
-	ret
-
-.allowed
 	scf
 	ret
 
@@ -1594,17 +1075,6 @@ JoypadOverworld::
 	ret
 
 ForceBikeDown::
-	ld a, [wFlags_D733]
-	bit 3, a ; check if a trainer wants a challenge
-	ret nz
-	ld a, [wCurMap]
-	cp ROUTE_17 ; Cycling Road
-	ret nz
-	ldh a, [hJoyHeld]
-	and D_DOWN | D_UP | D_LEFT | D_RIGHT | B_BUTTON | A_BUTTON
-	ret nz
-	ld a, D_DOWN
-	ldh [hJoyHeld], a ; on the cycling road, if there isn't a trainer and the player isn't pressing buttons, simulate a down press
 	ret
 
 AreInputsSimulated::
@@ -1720,16 +1190,9 @@ RunMapScript::
 	push hl
 	push de
 	push bc
-	farcall TryPushingBoulder
-	ld a, [wFlags_0xcd60]
-	bit 1, a ; play boulder dust animation
-	jr z, .afterBoulderEffect
-	farcall DoBoulderDustAnimation
-.afterBoulderEffect
 	pop bc
 	pop de
 	pop hl
-	call RunNPCMovementScript
 	ld a, [wCurMap] ; current map number
 	call SwitchToMapRomBank ; change to the ROM bank the map's data is in
 	ld hl, wMapScriptPtr
@@ -1798,134 +1261,10 @@ LoadPlayerSpriteGraphicsCommon::
 
 ; function to load data from the map header
 LoadMapHeader::
-	farcall MarkTownVisitedAndLoadMissableObjects
 	jr asm_0dbd
 
 Func_0db5:: ; XXX
-	farcall LoadMissableObjectData
 asm_0dbd:
-	ld a, [wCurMapTileset]
-	ld [wUnusedD119], a
-	ld a, [wCurMap]
-	call SwitchToMapRomBank
-	ld a, [wCurMapTileset]
-	ld b, a
-	res 7, a
-	ld [wCurMapTileset], a
-	ldh [hPreviousTileset], a
-	bit 7, b
-	ret nz
-	call GetMapHeaderPointer
-; copy the first 10 bytes (the fixed area) of the map data to D367-D370
-	ld de, wCurMapTileset
-	ld c, $0a
-.copyFixedHeaderLoop
-	ld a, [hli]
-	ld [de], a
-	inc de
-	dec c
-	jr nz, .copyFixedHeaderLoop
-; initialize all the connected maps to disabled at first, before loading the actual values
-	ld a, $ff
-	ld [wNorthConnectedMap], a
-	ld [wSouthConnectedMap], a
-	ld [wWestConnectedMap], a
-	ld [wEastConnectedMap], a
-; copy connection data (if any) to WRAM
-	ld a, [wMapConnections]
-	ld b, a
-.checkNorth
-	bit 3, b
-	jr z, .checkSouth
-	ld de, wNorthConnectionHeader
-	call CopyMapConnectionHeader
-.checkSouth
-	bit 2, b
-	jr z, .checkWest
-	ld de, wSouthConnectionHeader
-	call CopyMapConnectionHeader
-.checkWest
-	bit 1, b
-	jr z, .checkEast
-	ld de, wWestConnectionHeader
-	call CopyMapConnectionHeader
-.checkEast
-	bit 0, b
-	jr z, .getObjectDataPointer
-	ld de, wEastConnectionHeader
-	call CopyMapConnectionHeader
-.getObjectDataPointer
-	ld a, [hli]
-	ld [wObjectDataPointerTemp], a
-	ld a, [hli]
-	ld [wObjectDataPointerTemp + 1], a
-	push hl
-	ld a, [wObjectDataPointerTemp]
-	ld l, a
-	ld a, [wObjectDataPointerTemp + 1]
-	ld h, a ; hl = base of object data
-	ld de, wMapBackgroundTile
-	ld a, [hli]
-	ld [de], a
-.loadWarpData
-	ld a, [hli]
-	ld [wNumberOfWarps], a
-	and a
-	jr z, .loadSignData
-	ld c, a
-	ld de, wWarpEntries
-.warpLoop ; one warp per loop iteration
-	ld b, 4
-.warpInnerLoop
-	ld a, [hli]
-	ld [de], a
-	inc de
-	dec b
-	jr nz, .warpInnerLoop
-	dec c
-	jr nz, .warpLoop
-.loadSignData
-	ld a, [hli] ; number of signs
-	ld [wNumSigns], a
-	and a ; are there any signs?
-	jr z, .loadSpriteData ; if not, skip this
-	call CopySignData
-.loadSpriteData
-	ld a, [wd72e]
-	bit 5, a ; did a battle happen immediately before this?
-	jr nz, .finishUp ; if so, skip this because battles don't destroy this data
-	call InitSprites
-.finishUp
-	predef LoadTilesetHeader
-	ld a, [wd72e]
-	bit 5, a ; did a battle happen immediately before this?
-	jr nz, .skip_pika_spawn
-	callfar SchedulePikachuSpawnForAfterText
-.skip_pika_spawn
-	callfar LoadWildData
-	pop hl ; restore hl from before going to the warp/sign/sprite data (this value was saved for seemingly no purpose)
-	ld a, [wCurMapHeight] ; map height in 4x4 tile blocks
-	add a ; double it
-	ld [wCurrentMapHeight2], a ; store map height in 2x2 tile blocks
-	ld a, [wCurMapWidth] ; map width in 4x4 tile blocks
-	add a ; double it
-	ld [wCurrentMapWidth2], a ; map width in 2x2 tile blocks
-	ld a, [wCurMap]
-	ld c, a
-	ld b, $00
-	ldh a, [hLoadedROMBank]
-	push af
-	ld a, BANK(MapSongBanks)
-	call BankswitchCommon
-	ld hl, MapSongBanks
-	add hl, bc
-	add hl, bc
-	ld a, [hli]
-	ld [wMapMusicSoundID], a ; music 1
-	ld a, [hl]
-	ld [wMapMusicROMBank], a ; music 2
-	pop af
-	call BankswitchCommon
 	ret
 
 ; function to copy map connection data from ROM to WRAM
@@ -2022,7 +1361,6 @@ ReloadMapAfterPrinter::
 	pop af
 	call BankswitchCommon
 FinishReloadingMap:
-	jpfar SetMapSpecificScriptFlagsOnMapReload
 	ret ; useless
 
 ResetMapVariables::
@@ -2065,41 +1403,7 @@ CopyMapViewToVRAM2:
 ; function to switch to the ROM bank that a map is stored in
 ; Input: a = map number
 SwitchToMapRomBank::
-	push hl
-	push bc
-	ld c, a
-	ld b, $00
-	ld a, BANK(MapHeaderBanks)
-	call BankswitchHome
-	ld hl, MapHeaderBanks
-	add hl, bc
-	ld a, [hl]
-	ldh [hMapROMBank], a
-	call BankswitchBack
-	ldh a, [hMapROMBank]
-	call BankswitchCommon
-	pop bc
-	pop hl
 	ret
-
-GetMapHeaderPointer::
-	ldh a, [hLoadedROMBank]
-	push af
-	ld a, BANK(MapHeaderPointers)
-	call BankswitchCommon
-	push de
-	ld a, [wCurMap]
-	ld e, a
-	ld d, $0
-	ld hl, MapHeaderPointers
-	add hl, de
-	add hl, de
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-	pop de
-	pop af
-	jp BankswitchCommon
 
 IgnoreInputForHalfSecond:
 	ld a, 30
@@ -2124,20 +1428,10 @@ ForceBikeOrSurf::
 ; Handle the player jumping down
 ; a ledge in the overworld.
 HandleMidJump::
-	ld a, [wd736]
-	bit 6, a ; jumping down a ledge?
-	ret z
-	farcall _HandleMidJump
 	ret
 
 IsSpinning::
-	ld a, [wd736]
-	bit 7, a
-	ret z ; no spinning
-	farjp LoadSpinnerArrowTiles ; spin while moving
-
-Func_0ffe::
-	jpfar IsPlayerTalkingToPikachu
+	ret  ; no spinning
 
 InitSprites::
 	ld a, [hli]

@@ -205,8 +205,3 @@ ENDM
 MACRO script_cable_club_receptionist
 	db TX_SCRIPT_CABLE_CLUB_RECEPTIONIST
 ENDM
-
-	const TX_SCRIPT_VENDING_MACHINE ; $f5
-MACRO script_vending_machine
-	db TX_SCRIPT_VENDING_MACHINE
-ENDM

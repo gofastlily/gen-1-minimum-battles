@@ -151,16 +151,6 @@ SetPal_Overworld:
 	cp CAVERN
 	jr z, .caveOrBruno
 	ld a, [wCurMap]
-	cp FIRST_INDOOR_MAP
-	jr c, .townOrRoute
-	cp CERULEAN_CAVE_2F
-	jr c, .normalDungeonOrBuilding
-	cp CERULEAN_CAVE_1F + 1
-	jr c, .caveOrBruno
-	cp LORELEIS_ROOM
-	jr z, .Lorelei
-	cp BRUNOS_ROOM
-	jr z, .caveOrBruno
 	cp TRADE_CENTER
 	jr z, .trade_center_colosseum
 	cp COLOSSEUM
@@ -391,52 +381,10 @@ LoadOverworldPikachuFrontpicPalettes::
 	ret
 
 GetPal_Pikachu::
-; similar to SetPal_Overworld
-	ld a, [wCurMapTileset]
-	cp CEMETERY
-	jr z, .PokemonTowerOrAgatha
-	cp CAVERN
-	jr z, .caveOrBruno
-	ld a, [wCurMap]
-	cp REDS_HOUSE_1F
-	jr c, .townOrRoute
-	cp CERULEAN_CAVE_2F
-	jr c, .normalDungeonOrBuilding
-	cp NAME_RATERS_HOUSE
-	jr c, .caveOrBruno
-	cp LORELEIS_ROOM
-	jr z, .Lorelei
-	cp BRUNOS_ROOM
-	jr z, .caveOrBruno
-	cp TRADE_CENTER
-	jr z, .battleOrTradeCenter
-	cp COLOSSEUM
-	jr z, .battleOrTradeCenter
-.normalDungeonOrBuilding
-	ld a, [wLastMap] ; town or route that current dungeon or building is located
-.townOrRoute
-	cp SAFFRON_CITY + 1
-	jr c, .town
-	ld a, PAL_ROUTE - 1
-.town
+	ld a, PAL_GREYMON - 1
 	inc a ; a town's pallete ID is its map ID + 1
 	ret
 
-.PokemonTowerOrAgatha
-	ld a, PAL_GREYMON - 1
-	jr .town
-
-.caveOrBruno
-	ld a, PAL_CAVE - 1
-	jr .town
-
-.Lorelei
-	xor a ; PAL_PALLET - 1
-	jr .town
-
-.battleOrTradeCenter
-	ld a, PAL_GREYMON - 1
-	jr .town
 
 InitPartyMenuBlkPacket:
 	ld hl, BlkPacket_PartyMenu

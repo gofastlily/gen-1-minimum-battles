@@ -1,5 +1,4 @@
 StartMenu_Pokedex::
-	predef ShowPokedexMenu
 	call LoadScreenTilesFromBuffer2 ; restore saved screen
 	call Delay3
 	call LoadGBPal
@@ -121,7 +120,7 @@ StartMenu_Pokemon::
 	jp hl
 .outOfBattleMovePointers
 	dw .cut
-	dw .fly
+	dw .surf
 	dw .surf
 	dw .surf
 	dw .strength
@@ -129,33 +128,12 @@ StartMenu_Pokemon::
 	dw .dig
 	dw .teleport
 	dw .softboiled
-.fly
-	bit BIT_THUNDERBADGE, a
-	jp z, .newBadgeRequired
-	call CheckIfInOutsideMap
-	jr z, .canFly
-	ld a, [wWhichPokemon]
-	ld hl, wPartyMonNicks
-	call GetPartyMonName
-	ld hl, .cannotFlyHereText
-	call PrintText
-	jp .loop
-.canFly
-	call ChooseFlyDestination
-	ld a, [wd732]
-	bit 3, a ; did the player decide to fly?
-	jr nz, .asm_5d4c
-	call LoadFontTilePatterns
-	ld hl, wd72e
-	set 1, [hl]
-	jp StartMenu_Pokemon
 .asm_5d4c
 	call Func_1510
 	jp .goBackToMap
 .cut
 	bit BIT_CASCADEBADGE, a
 	jp z, .newBadgeRequired
-	predef UsedCut
 	ld a, [wActionResultOrTookBattleTurn]
 	and a
 	jp z, .loop
