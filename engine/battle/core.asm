@@ -1799,6 +1799,7 @@ SendOutMon:
 	ldh [hWhoseTurn], a
 	ld a, $1
 	ldh [hAutoBGTransferEnabled], a
+	callfar StarterPikachuBattleEntranceAnimation
 .playRegularCry
 	ld a, [wcf91]
 	call PlayCry

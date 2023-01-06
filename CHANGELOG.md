@@ -7,10 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Added
-- Immediately battle Rival 1
-- Go to Hall of Fame on a win
-- Re-battle Rival 1 on a loss
+- Minimum Battles Mode
 - Options menu item to enable or disable nicknaming on capture
+- Counter for use of Rare Candies
+- 95 Rare Candies to the player's bag
 
 ### Changed
 - Refactored the main menu to leverage the new `MenuCore`
@@ -20,14 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Battle Style: Set
     - Nickname: Off
 - Select default player names by default
+- Replaced the Pokédex in the start menu with Continue
+- Replaced Exit in the start menu with Quit
 
 ### Removed
 - Oak's intro dialogue
 - A lot of unused data
-
-### Known issues
-- Re-battle intro animation is broken
-- Player Pokémon sprite is missing in battle
-- Visual glitches at end of Hall of Fame
-- Audio glitches at end of Hall of Fame
-- Going into the options menu forces nicknaming on

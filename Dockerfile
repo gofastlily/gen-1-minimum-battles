@@ -28,14 +28,14 @@ RUN make install
 WORKDIR /
 
 # Build PokeArena
-COPY ./ /pkmn-arena
-WORKDIR /pkmn-arena
+COPY ./ /min-battles
+WORKDIR /min-battles
 RUN make clean
 RUN make
 
 # Grab build artifacts
 WORKDIR /
 RUN mkdir /output
-RUN cp /pkmn-arena/*.gbc /output
-RUN cp /pkmn-arena/*.map /output
-RUN cp /pkmn-arena/*.sym /output
+RUN cp /min-battles/*.gbc /output
+RUN cp /min-battles/*.map /output
+RUN cp /min-battles/*.sym /output

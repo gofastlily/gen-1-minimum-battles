@@ -132,8 +132,94 @@ IsPlayerStandingOnDoorTileOrWarpTile::
 
 INCLUDE "data/tilesets/warp_tile_ids.asm"
 
-PrintSafariZoneSteps::
-	ret
+
+PrintMinBattlesStatus::
+	hlcoord 0, 0
+	lb bc, 10, 7
+	call TextBoxBorder
+
+	; Print the battle counter
+	call PlaceString
+	hlcoord 1, 1
+	ld de, MinBattlesMenuTextNext
+	call PlaceString
+	hlcoord 1, 2
+	ld de, MinBattlesMenuTextBattle
+	call PlaceString
+	hlcoord 2, 3
+	; There's no way this dance is necessary
+	; increment min battles progress to get the number of the next battle
+	ld a, [wPlayerMinBattlesProgress]
+	inc a
+	ld [wPlayerMinBattlesProgress], a
+	ld de, wPlayerMinBattlesProgress
+	lb bc, 1, 2  ; 1 byte, 3 digit number
+	call PrintNumber
+	; decrement min battles progress again because it's zero-indexed
+	ld a, [wPlayerMinBattlesProgress]
+	dec a
+	ld [wPlayerMinBattlesProgress], a
+	hlcoord 4, 3
+	ld de, MinBattlesCountText
+	call PlaceString
+
+	hlcoord 5, 3
+	ld de, wPlayerMinBattlesProgressTotal
+	lb bc, 1, 2  ; 1 byte, 2 digit number
+	call PrintNumber
+
+	; Print the number of losses
+	hlcoord 1, 5
+	ld de, MinBattlesMenuTextLosses
+	call PlaceString
+	hlcoord 4, 6
+	ld de, wPlayerMinBattlesLosses
+	lb bc, 1, 3  ; 1 byte, 2 digit number
+	call PrintNumber
+
+	; Print the number of Rare Candies used
+	hlcoord 1, 8
+	ld de, MinBattlesMenuTextCandies
+	call PlaceString
+	hlcoord 1, 9
+	ld de, MinBattlesMenuTextUsed
+	call PlaceString
+	hlcoord 2, 10
+	ld de, wMinBattlesRareCandyUseCount
+	lb bc, 1, 2  ; 1 byte, 2 digit number
+	call PrintNumber
+	hlcoord 4, 10
+	ld de, MinBattlesRareCandiesCountText
+	jp PlaceString
+
+
+MinBattlesMenuTextNext:
+	db "NEXT@"
+
+
+MinBattlesMenuTextBattle:
+	db "BATTLE:@"
+
+
+MinBattlesCountText:
+	db "/@"
+
+
+MinBattlesMenuTextLosses:
+	db "LOSSES:@"
+
+
+MinBattlesMenuTextCandies:
+	db "CANDIES@"
+
+
+MinBattlesMenuTextUsed:
+	db "USED:@"
+
+
+MinBattlesRareCandiesCountText:
+	db "/95@"
+
 
 GetTileAndCoordsInFrontOfPlayer:
 	call GetPredefRegisters

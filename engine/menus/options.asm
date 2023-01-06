@@ -68,7 +68,7 @@ OptionsMenu_TextSpeed:
 .save
 	ld b, a
 	ld a, [wOptions]
-	and $f0
+	and $f8
 	or b
 	ld [wOptions], a
 .nonePressed
@@ -98,7 +98,7 @@ SlowText:
 
 GetTextSpeed:
 	ld a, [wOptions]
-	and $f
+	and $7
 	cp $5
 	jr z, .slowTextOption
 	cp $1
@@ -339,15 +339,16 @@ OptionsMenu_DoNickname:
 	ldh a, [hJoy5]
 	and D_RIGHT | D_LEFT
 	jr nz, .asm_41d33a
-	ld a, [wExtraOptions]
-	and $80 ; mask other bits
+	ld a, [wOptions]
+	and $8  ; mask other bits
 	jr .asm_41d3ba
 .asm_41d33a
-	ld a, [wExtraOptions]
-	xor $80 ; mask other bits
-	ld [wExtraOptions], a
+	ld a, [wOptions]
+	xor $8  ; mask other bits
+	ld [wOptions], a
 .asm_41d3ba
 	ld bc, $0
+	swap a
 	sla a
 	rl c
 	ld hl, NicknameOptionStringsPointerTable

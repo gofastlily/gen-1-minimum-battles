@@ -25,6 +25,7 @@ ItemUsePtrTable:
 	dw ItemUseBicycle    ; BICYCLE
 	dw ItemUseSurfboard  ; out-of-battle Surf effect
 	dw ItemUseBall       ; SAFARI_BALL
+	dw UnusableItem      ; POKÉDEX
 	dw ItemUseEvoStone   ; MOON_STONE
 	dw ItemUseMedicine   ; ANTIDOTE
 	dw ItemUseMedicine   ; BURN_HEAL
@@ -1312,6 +1313,12 @@ ItemUseMedicine:
 	jp CalcStats ; recalculate stats
 .useRareCandy
 	push hl
+
+	; Increment Rare Candy counter
+	ld a, [wMinBattlesRareCandyUseCount]
+	inc a
+	ld [wMinBattlesRareCandyUseCount], a
+
 	ld bc, wPartyMon1Level - wPartyMon1
 	add hl, bc ; hl now points to level
 	ld a, [hl] ; a = level

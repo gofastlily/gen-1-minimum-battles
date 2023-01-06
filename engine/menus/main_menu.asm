@@ -13,7 +13,7 @@ MainMenu:
 .loadSkip
 	ld c, 1
 	call DelayFrames
-	xor a ; LINK_STATE_NONE
+	xor a  ; LINK_STATE_NONE
 	ld [wLinkState], a
 	ld hl, wPartyAndBillsPCSavedMenuItem
 	ld [hli], a
@@ -29,23 +29,33 @@ MainMenu:
 
 
 MainMenuChoicesList:
-	menu_choice Determine_MainMenuChoice_Continue, Action_MainMenuChoices_Continue, Text_MainMenuChoices_Continue
-	menu_choice Determine_MainMenuChoice_NewGame,  Action_MainMenuChoices_NewGame,  Text_MainMenuChoices_NewGame
-	menu_choice Determine_MainMenuChoice_Options,  Action_MainMenuChoices_Options,  Text_MainMenuChoices_Options
+	menu_choice Determine_MainMenuChoice_Continue,   Action_MainMenuChoices_Continue,   Text_MainMenuChoices_Continue
+	menu_choice Determine_MainMenuChoice_NewGame,    Action_MainMenuChoices_NewGame,    Text_MainMenuChoices_NewGame
+	menu_choice Determine_MainMenuChoice_MinBattles, Action_MainMenuChoices_MinBattles, Text_MainMenuChoices_MinBattles
+	menu_choice Determine_MainMenuChoice_Options,    Action_MainMenuChoices_Options,    Text_MainMenuChoices_Options
 	dw MENU_CHOICES_LIST_END
 
 
-	nop
 Determine_MainMenuChoice_Continue:
 	; Change to displaying Continue only when the player is mid-run
 	ld a, [wSaveFileStatus]
 	cp 1
+	ret z
+	ld a, [wMinBattlesTemp]
+	bit 7, a
 	ret
 
 
 Determine_MainMenuChoice_NewGame:
-	xor a
-	cp 1
+	ld a, [wNumHoFTeams]
+	sub 1
+	sbc a  ; set a to zero if no carry, or -1 if carry
+	ret
+
+
+Determine_MainMenuChoice_MinBattles:
+	ld a, [wNumHoFTeams]
+	and a
 	ret
 
 
@@ -62,16 +72,19 @@ Action_MainMenuChoices_Continue:
 	cp CANCELLED_MENU
 	ret z
 
-	ld hl, wCurrentMapScriptFlags
-	set 5, [hl]
-	ld c, 10
-	call DelayFrames
-
-	jp SpecialEnterMap
+	call ContinueMinimumBattles
 
 
 Action_MainMenuChoices_NewGame:
-	callfar StartNewGame
+	ld a, MIN_BATTLES_YELLOW
+	ld [wMinBattlesGameType], a
+	call StartNewGame
+	ret
+
+
+Action_MainMenuChoices_MinBattles:
+	callfar MinBattlesMenu
+	call StartNewGame
 	ret
 
 
@@ -90,19 +103,21 @@ Text_MainMenuChoices_NewGame:
 	db "NEW GAME@"
 
 
+Text_MainMenuChoices_MinBattles:
+	db "MIN BATTLES@"
+
+
 Text_MainMenuChoices_Options:
 	db "OPTIONS@"
 
 
 InitOptions:
-	ld a, 1 ; no delay
+	ld a, 1  ; no delay
 	ld [wLetterPrintingDelayFlags], a
-	ld a, %11000001  ; animations off, set battle style, fast speed
+	ld a, %11001001   ; animations off, set battle style, mono audio, nicknaming off, fast speed
 	ld [wOptions], a
 	ld a, 64
 	ld [wPrinterSettings], a
-	ld a, %10000000  ; nicknaming off
-	ld [wExtraOptions], a
 	ret
 
 Func_5cc1:
@@ -119,57 +134,23 @@ NotEnoughMemoryText:
 	text_end
 
 StartNewGame:
-	ld hl, wd732
-	res 1, [hl]
-StartNewGameDebug:
 	call OakSpeech
-	ld a, $8
-	ld [wPlayerMovingDirection], a
-	ld c, 20
-	call DelayFrames
-
-	; Add Starter Pikachu to the player's team
-	xor a
-	ld [wMonDataLocation], a
-	ld a, 5
-	ld [wCurEnemyLVL], a
-	ld a, STARTER_PIKACHU
-	ld [wd11e], a
-	ld [wcf91], a
-	call AddPartyMon
-	ld a, LIGHT_BALL_GSC
-	ld [wPartyMon1CatchRate], a
-
 	call ClearScreen
-	ld hl, wd732
-	set 0, [hl]  ; Start the game clock
 
-	; Face Rival 1
-.faceOpponent
-	predef HealParty
-	ld a, OPP_RIVAL1
-	ld [wCurOpponent], a
-	ld a, $1
-	ld [wTrainerNo], a
-	call NewBattle
+	ld a, 62
+	ld b, a
 
-	; if the battle was a loss, try again
-	ld a, [wBattleResult]
-	cp a, $00
-	jr nz, .faceOpponent
+	ld a, [wMinBattlesGameType]
+	cp MIN_BATTLES_YELLOW
+	jp z, .loadMinBattlesGameTypeListTotal
+	inc b
+	inc b
+.loadMinBattlesGameTypeListTotal
+	ld a, b
+	ld [wPlayerMinBattlesProgressTotal], a
 
-	; Load into the Hall of Fame
-	predef HallOfFamePC
-	ld b, 5
-.delayLoop
-	ld c, 600 / 5
-	call DelayFrames
-	dec b
-	jr nz, .delayLoop
-	call WaitForTextScrollButtonPress
+	call StartMinimumBattles
 
-	; Reset
-	jp SoftReset
 
 ; enter map after using a special warp or loading the game from the main menu
 SpecialEnterMap::

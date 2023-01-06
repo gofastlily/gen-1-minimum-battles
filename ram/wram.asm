@@ -828,7 +828,6 @@ wHoFTeamIndex2:: db
 wHoFTeamNo:: db
 
 NEXTU
-wRivalStarterTemp:: db
 wRivalStarterBallSpriteIndex:: db
 
 NEXTU
@@ -1929,7 +1928,12 @@ wRivalName:: ds NAME_LENGTH
 ; bit 6 = battle style
 ; 0: Shift
 ; 1: Set
-; bits 0-3 = text speed (number of frames to delay after printing a letter)
+; bits 4-5 = sound settings
+; mono and three different headphone settings
+; bit 3 = Nickname on acquisition
+; 0: Yes
+; 1: No
+; bits 0-2 = text speed (number of frames to delay after printing a letter)
 ; 1: Fast
 ; 3: Medium
 ; 5: Slow
@@ -2299,15 +2303,21 @@ wMenuChoicesCount:: db
 wMenuActionsItems:: ds MENU_CAPACITY * 2 + 1
 wMenuTextItems:: ds MENU_CAPACITY * 2 + 1
 
-; Extra options
-; bit 7 = Nickname on acquisition
-; 0: Yes
-; 1: No
-wExtraOptions:: db
-
+; Minimum Battles values
+; bit 7 = is the player mid-run?
+wMinBattlesTemp:: db
+wMinBattlesGameType:: db
+wMinBattlesTrainerList:: dw
+wMinBattlesGymLeaderList:: dw
+wMinBattlesGymBadgeAndTMList:: dw
+wMinBattlesRivalList:: dw
+wPlayerMinBattlesProgressTotal:: db
+wPlayerMinBattlesProgress:: db
+wPlayerMinBattlesLosses:: db
+wMinBattlesRareCandyUseCount:: db
 
 ; unused
-	ds 29
+	ds 17
 
 wObtainedHiddenItemsFlags:: flag_array 112
 

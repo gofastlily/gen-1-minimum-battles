@@ -1,20 +1,13 @@
 ; function that displays the start menu
 DrawStartMenu::
-	CheckEvent EVENT_GOT_POKEDEX
-; menu with pokedex
-	hlcoord 10, 0
-	lb bc, 14, 8
-	jr nz, .drawTextBoxBorder
-; shorter menu if the player doesn't have the pokedex
-	hlcoord 10, 0
-	lb bc, 12, 8
-.drawTextBoxBorder
+	hlcoord 9, 0
+	lb bc, 15, 9
 	call TextBoxBorder
 	ld a, D_DOWN | D_UP | START | B_BUTTON | A_BUTTON
 	ld [wMenuWatchedKeys], a
 	ld a, $02
 	ld [wTopMenuItemY], a ; Y position of first menu choice
-	ld a, $0b
+	ld a, $0a
 	ld [wTopMenuItemX], a ; X position of first menu choice
 	ld a, [wBattleAndStartSavedMenuItem] ; remembered menu selection from last time
 	ld [wCurrentMenuItem], a
@@ -23,16 +16,10 @@ DrawStartMenu::
 	ld [wMenuWatchMovingOutOfBounds], a
 	ld hl, wd730
 	set 6, [hl] ; no pauses between printing each letter
-	hlcoord 12, 2
-	CheckEvent EVENT_GOT_POKEDEX
-; case for not having pokedex
-	ld a, $06
-	jr z, .storeMenuItemCount
-; case for having pokedex
-	ld de, StartMenuPokedexText
+	hlcoord 11, 2
+	ld de, StartMenuContinueText
 	call PrintStartMenuItem
 	ld a, $07
-.storeMenuItemCount
 	ld [wMaxMenuItem], a ; number of menu items
 	ld de, StartMenuPokemonText
 	call PrintStartMenuItem
@@ -51,14 +38,14 @@ DrawStartMenu::
 	call PrintStartMenuItem
 	ld de, StartMenuOptionText
 	call PrintStartMenuItem
-	ld de, StartMenuExitText
+	ld de, StartMenuQuitText
 	call PlaceString
 	ld hl, wd730
 	res 6, [hl] ; turn pauses between printing letters back on
 	ret
 
-StartMenuPokedexText:
-	db "POKéDEX@"
+StartMenuContinueText:
+	db "CONTINUE@"
 
 StartMenuPokemonText:
 	db "#MON@"
@@ -72,11 +59,11 @@ StartMenuSaveText:
 StartMenuResetText:
 	db "RESET@"
 
-StartMenuExitText:
-	db "EXIT@"
-
 StartMenuOptionText:
 	db "OPTION@"
+
+StartMenuQuitText:
+	db "QUIT@"
 
 PrintStartMenuItem:
 	push hl

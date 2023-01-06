@@ -2,8 +2,8 @@ AskName:
 	call SaveScreenTilesToBuffer1
 	call GetPredefRegisters
 	push hl
-	ld a, [wExtraOptions]
-	bit 7, a
+	ld a, [wOptions]
+	bit 3, a
 	jp z, .doNaming
 	ld a, [wcf91]
 	ld [wd11e], a

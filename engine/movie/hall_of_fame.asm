@@ -85,6 +85,9 @@ AnimateHallOfFame:
 	call HoFDisplayPlayerStats
 	call HoFFadeOutScreenAndMusic
 	xor a
+	ld [wMinBattlesTemp], a
+	call LoadGBPal
+	predef SaveSAV  ; save the game
 	ldh [hWY], a
 	ld hl, rLCDC
 	res 3, [hl]
@@ -228,10 +231,12 @@ HoFDisplayPlayerStats:
 	hlcoord 7, 2
 	ld de, wPlayerName
 	call PlaceString
+
+	; Print time
 	hlcoord 1, 6
 	ld de, HoFPlayTimeText
 	call PlaceString
-	hlcoord 5, 7
+	hlcoord 5, 6
 	ld de, wPlayTimeHours
 	lb bc, 1, 3
 	call PrintNumber
@@ -240,29 +245,60 @@ HoFDisplayPlayerStats:
 	ld de, wPlayTimeMinutes
 	lb bc, LEADING_ZEROES | 1, 2
 	call PrintNumber
-	hlcoord 1, 9
-	ld de, HoFMoneyText
-	call PlaceString
-	hlcoord 4, 10
-	ld de, wPlayerMoney
-	ld c, $a3
-	call PrintBCDNumber
-	ld hl, DexSeenOwnedText
-	call HoFPrintTextAndDelay
-	ld hl, DexRatingText
-	call HoFPrintTextAndDelay
-	ld hl, wDexRatingText
 
-HoFPrintTextAndDelay:
+	; Print losses
+	hlcoord 1, 8
+	ld de, HoFLossesText
+	call PlaceString
+	hlcoord 8, 8
+	ld de, wPlayerMinBattlesLosses
+	lb bc, 1, 3
+	call PrintNumber
+
+	; Print candies
+	hlcoord 1, 10
+	ld de, HoFCandiesText
+	call PlaceString
+	hlcoord 9, 10
+	ld de, wMinBattlesRareCandyUseCount
+	lb bc, 1, 2
+	call PrintNumber
+
+	ld hl, HoFCongratulationsText
 	call PrintText
-	ld c, 120
-	jp DelayFrames
+	call WaitForButtonPressAB
+
+
+WaitForButtonPressAB:
+.waitForButtonPress
+	call JoypadLowSensitivity
+	ldh a, [hJoy5]
+	and A_BUTTON | B_BUTTON
+	jr z, .waitForButtonPress
+	ret
+
 
 HoFPlayTimeText:
-	db "PLAY TIME@"
+	db "TIME:@"
 
-HoFMoneyText:
-	db "MONEY@"
+
+HoFLossesText:
+	db "LOSSES:@"
+
+
+HoFCandiesText:
+	db "CANDIES:@"
+
+
+HoFCongratulationsText:
+	text_far _HoFCongratulationsText
+	text_end
+
+
+_HoFCongratulationsText:
+	text "Congratulations!"
+	done
+
 
 DexSeenOwnedText:
 	text_far _DexSeenOwnedText
