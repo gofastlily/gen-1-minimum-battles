@@ -87,6 +87,29 @@ CreditsTextPointers:
 	dw CreditsText_Nakamichi
 	dw CreditsText_Yoshimura
 	dw CreditsText_Yamazaki
+	; Minimum Battles Credits
+	dw CreditsText_MinBattlesVersion
+	dw CreditsText_Lily
+	dw CreditsText_Rangi
+	dw CreditsText_33dannye
+	dw CreditsText_Chatot4444
+	dw CreditsText_Jojobear13
+	dw CreditsText_Vortiene
+	dw CreditsText_Ax6
+	dw CreditsText_Vulcandth
+	dw CreditsText_Chloerawr
+	dw CreditsText_CelestialAmber
+	dw CreditsText_Vimescarrot
+	dw CreditsText_IIMarckus
+	dw CreditsText_Snarflaxus
+	dw CreditsText_SatoMew
+	dw CreditsText_Mord
+	dw CreditsText_Sea
+	dw CreditsText_Eeveetastic0
+	dw CreditsText_LJSTAR
+	dw CreditsText_RainbowMetalPigeon
+	dw CreditsText_Pret
+	dw CreditsText_GameFreak
 	assert_table_length NUM_CRED_STRINGS
 
 CreditsText_Version:
@@ -155,7 +178,7 @@ CreditsText_Programmers:
 CreditsText_CharacterDesign:
 	db -7, "CHARACTER DESIGN@"
 CreditsText_Music:
-	db -2, "MUSIC@"
+	db -3, "MUSIC@"
 CreditsText_SoundEffects:
 	db -6, "SOUND EFFECTS@"
 CreditsText_GameDesign:
@@ -265,3 +288,53 @@ CreditsText_Yoshimura:
 	db -6, "KAMON YOSHIMURA@"
 CreditsText_Yamazaki:
 	db -6, "SAKAE YAMAZAKI@"
+
+
+; Minimum Battles Credits
+CreditsText_MinBattlesVersion:
+	db -7, "MINIMUM BATTLES"
+	next  "    VERSION"
+	next  "     STAFF@"
+CreditsText_Lily:
+	db -1, "LILY@"
+CreditsText_Rangi:
+	db -2, "RANGI@"
+CreditsText_33dannye:
+	db -3, "33DANNYE@"
+CreditsText_Chatot4444:
+	db -4, "CHATOT4444@"
+CreditsText_Jojobear13:
+	db -4, "JOJOBEAR13@"
+CreditsText_Vortiene:
+	db -3, "VORTIENE@"
+CreditsText_Ax6:
+	db -1, "AX6@"
+CreditsText_Vulcandth:
+	db -3, "VULCANDTH@"
+CreditsText_Chloerawr:
+	db -4, "CHLOERAWR@"
+CreditsText_CelestialAmber:
+	db -6, "CELESTIALAMBER@"
+CreditsText_Vimescarrot:
+	db -5, "VIMESCARROT@"
+CreditsText_IIMarckus:
+	db -3, "IIMARCKUS@"
+CreditsText_Snarflaxus:
+	db -4, "SNARFLAXUS@"
+CreditsText_SatoMew:
+	db -3, "SATOMEW@"
+CreditsText_Mord:
+	db -1, "MORD@"
+CreditsText_Sea:
+	db -1, "SEA@"
+CreditsText_Eeveetastic0:
+	db -5, "EEVEETASTIC0@"
+CreditsText_LJSTAR:
+	db -2, "LJSTAR@"
+CreditsText_RainbowMetalPigeon:
+	db -6, "RAINBOW METAL"
+	next  "    PIGEON@"
+CreditsText_Pret:
+	db -2, "PRET@"
+CreditsText_GameFreak:
+	db -3, "GAMEFREAK@"
