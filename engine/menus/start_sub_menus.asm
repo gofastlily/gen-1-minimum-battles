@@ -467,6 +467,7 @@ StartMenu_TrainerInfo::
 	call LoadScreenTilesFromBuffer2 ; restore saved screen
 	call RunDefaultPaletteCommand
 	call ReloadMapData
+	call ClearScreen
 	farcall DrawStartMenu ; XXX what difference does this make?
 	call LoadGBPal
 	pop af
