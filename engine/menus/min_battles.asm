@@ -1,4 +1,5 @@
 MinBattlesMenu:
+	call ClearMenuExtra
 	ld hl, MinBattlesChoicesList
 	call MenuCore
 	ret

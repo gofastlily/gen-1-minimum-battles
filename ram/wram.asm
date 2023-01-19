@@ -2302,6 +2302,8 @@ wGameProgressFlagsEnd::
 wMenuChoicesCount:: db
 wMenuActionsItems:: ds MENU_CAPACITY * 2 + 1
 wMenuTextItems:: ds MENU_CAPACITY * 2 + 1
+wMenuExtraText:: dw
+wMenuExtraCoords:: dw
 
 ; Minimum Battles values
 ; bit 7 = is the player mid-run?
@@ -2317,7 +2319,7 @@ wPlayerMinBattlesLosses:: db
 wMinBattlesRareCandyUseCount:: db
 
 ; unused
-	ds 17
+	ds 13
 
 wObtainedHiddenItemsFlags:: flag_array 112
 

@@ -32,6 +32,7 @@ MenuCore:
 
 	call DetermineMenuOptions
 	call DrawMenu
+	call DrawMenuExtra
 
 .mainMenuLoop
 	call JoypadLowSensitivity
@@ -51,10 +52,12 @@ MenuCore:
 	call CallMenuAction
 	ld a, CHOSE_MENU_ITEM
 	ld [wMenuExitMethod], a
+	call ClearMenuExtra
 	ret
 .bPressed
 	ld a, CANCELLED_MENU
 	ld [wMenuExitMethod], a
+	call ClearMenuExtra
 	ret
 
 
@@ -187,7 +190,6 @@ UpdateMenuCursorPosition:
 	ret
 
 
-
 DrawMenu:
 	call DrawMenuBorder
 	call DrawMenuItems
@@ -298,3 +300,57 @@ CallMenuAction:
 
 _hl_::
 	jp hl
+
+
+DrawMenuExtra:
+	; check for $FF in wMenuExtraText + 1
+	ld a, [wMenuExtraText + 1]
+	cp $FF
+	ret z
+
+	; Load wMenuExtraCoords into HL
+	; hlcoord [wMenuExtraCoords], [wMenuExtraCoords + 1]
+	; start with the y coordinate
+	ld a, [wMenuExtraCoords + 1]
+	ld b, a
+rept (SCREEN_WIDTH / 4) - 1
+	add a, b
+endr
+	sla a
+	sla a
+	ld b, a
+	ld a, 0
+	adc a
+	ld c, a
+	; add the x coordinate
+	ld a, [wMenuExtraCoords]
+	add b
+	jr nc, .next
+	inc c
+.next
+	; add to wTileMap and load into hl
+	ld hl, wTileMap
+	ld e, a
+	ld d, c
+	add hl, de
+
+	; Load wMenuExtraText into DE
+	ld a, [wMenuExtraText]
+	ld d, a
+	ld a, [wMenuExtraText + 1]
+	ld e, a
+	call PlaceString
+	ret
+
+
+ClearMenuExtra:
+	ld a, $FF
+	ld [wMenuExtraText], a
+	ld a, $FF
+	ld [wMenuExtraText + 1], a
+
+	ld a, 0
+	ld [wMenuExtraCoords], a
+	ld a, 0
+	ld [wMenuExtraCoords + 1], a
+	ret

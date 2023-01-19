@@ -23,9 +23,25 @@ MainMenu:
 	ld [wDefaultMap], a
 
 .menuLoop
+	call ClearScreen
+
+	ld hl, VersionText
+	ld a, h
+	ld [wMenuExtraText], a
+	ld a, l
+	ld [wMenuExtraText + 1], a
+
+	ld a, 14
+	ld [wMenuExtraCoords], a
+	ld a, 17
+	ld [wMenuExtraCoords + 1], a
+
 	ld hl, MainMenuChoicesList
 	call MenuCore
 	jp .menuLoop
+
+
+INCLUDE "version.asm"
 
 
 MainMenuChoicesList:
@@ -84,7 +100,11 @@ Action_MainMenuChoices_NewGame:
 
 Action_MainMenuChoices_MinBattles:
 	callfar MinBattlesMenu
+	ld a, [wMenuExitMethod]
+	cp CANCELLED_MENU
+	jp z, .exitMenu
 	call StartNewGame
+.exitMenu
 	ret
 
 
