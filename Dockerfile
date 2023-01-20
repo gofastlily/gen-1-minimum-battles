@@ -23,7 +23,7 @@ RUN apt-get install -y \
 # Install RGBDS
 RUN git clone https://github.com/gbdev/rgbds
 WORKDIR /rgbds
-RUN git checkout tags/v0.6.0
+RUN git checkout tags/v0.6.1
 RUN make install
 WORKDIR /
 
