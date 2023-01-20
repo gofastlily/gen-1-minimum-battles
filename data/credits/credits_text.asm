@@ -178,7 +178,7 @@ CreditsText_Programmers:
 CreditsText_CharacterDesign:
 	db -7, "CHARACTER DESIGN@"
 CreditsText_Music:
-	db -3, "MUSIC@"
+	db -2, "MUSIC@"
 CreditsText_SoundEffects:
 	db -6, "SOUND EFFECTS@"
 CreditsText_GameDesign:

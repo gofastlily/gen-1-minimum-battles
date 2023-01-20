@@ -4,7 +4,6 @@ StartMenu_Continue::
 	bit BIT_A_BUTTON, a
 	jp nz, StartMenu_Continue
 	call LoadTextBoxTilePatterns
-	; jp CloseTextDisplay
 	jpfar MinimumBattlesLoop
 
 

@@ -42,12 +42,12 @@ RGBLINK ?= $(RGBDS)rgblink
 .SECONDEXPANSION:
 .PRECIOUS:
 .SECONDARY:
-.PHONY: all yellow yellow_debug clean tidy compare tools
+.PHONY: all minbattles minbattles_debug clean tidy compare tools
 
 all: $(roms)
-yellow:       minbattles.gbc
-yellow_debug: minbattles_debug.gbc
-yellow_vc:    minbattles.patch
+minbattles:       minbattles.gbc
+minbattles_debug: minbattles_debug.gbc
+minbattles_vc:    minbattles.patch
 
 clean: tidy
 	find gfx \
@@ -88,7 +88,7 @@ RGBASMFLAGS += -E
 endif
 
 $(minbattles_debug_obj): RGBASMFLAGS += -D _DEBUG
-$(minbattles_vc_obj):    RGBASMFLAGS += -D _YELLOW_VC
+$(minbattles_vc_obj):    RGBASMFLAGS += -D _minbattles_VC
 
 %.patch: vc/%.constants.sym %_vc.gbc %.gbc vc/%.patch.template
 	tools/make_patch $*_vc.sym $^ $@
