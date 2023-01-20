@@ -15,7 +15,7 @@ Follow [**INSTALL.md**][install]
 
 ### Docker Installation
 
-Run `./build.sh` to have [Docker][docker] do the heavy lifting and requirements management for you.
+Run `./build.sh` to have [Docker][docker] do the heavy lifting and requirements management for you.  `./build.sh` puts the `.gbc` file in the `output` folder.
 
 
 ## Frequently Asked Questions

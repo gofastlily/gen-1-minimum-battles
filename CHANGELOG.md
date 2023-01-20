@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Options menu item to enable or disable nicknaming on capture
 - Counter for use of Rare Candies
 - 95 Rare Candies to the player's bag
+- Counter for player losses
 
 ### Changed
 - Refactored the main menu to leverage the new `MenuCore`
