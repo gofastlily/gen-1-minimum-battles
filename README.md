@@ -9,7 +9,7 @@ Your losses will be tracked, as well as the number of Rare Candies you use.  If 
 
 ## Installation
 
-Installation will generate a romfile called `minbattles.gbc` with `sha1` hash of `d409a84cf0ff55e252c5481a28a156e4b6589dd1`.
+Installation will generate a romfile called `minbattles.gbc` with `sha1` hash of `68d8224a72739c11f4b3c7a6df58b47236a31822`.
 
 ### Classic Installation
 

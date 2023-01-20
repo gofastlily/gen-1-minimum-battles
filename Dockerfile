@@ -27,7 +27,7 @@ RUN git checkout tags/v0.6.1
 RUN make install
 WORKDIR /
 
-# Build PokeArena
+# Build Min Battles
 COPY ./ /min-battles
 WORKDIR /min-battles
 RUN make clean
