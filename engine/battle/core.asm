@@ -1107,7 +1107,7 @@ DoUseNextMonDialogue:
 	jr z, .displayYesNoBox ; xxx when does this happen?
 	ld hl, wPartyMon1Speed
 	ld de, wEnemyMonSpeed
-	jp TryRunningFromBattle
+	jp TryForfeitingFromBattle
 
 UseNextMonText:
 	text_far _UseNextMonText
@@ -1520,9 +1520,9 @@ NoWillText:
 	text_far _NoWillText
 	text_end
 
-; try to run from battle (hl = player speed, de = enemy speed)
+; try to forfeit from battle (hl = player speed, de = enemy speed)
 ; stores whether the attempt was successful in carry flag
-TryRunningFromBattle:
+TryForfeitingFromBattle:
 	call IsGhostBattle
 	jp z, .canEscape ; jump if it's a ghost battle
 	ld a, [wBattleType]
@@ -1535,7 +1535,7 @@ TryRunningFromBattle:
 	jp z, .canEscape
 	ld a, [wIsInBattle]
 	dec a
-	jr nz, .trainerBattle ; jump if it's a trainer battle
+	jp nz, .promptEscape  ; Prompt to escape if it's a trainer battle
 	ld a, [wNumRunAttempts]
 	inc a
 	ld [wNumRunAttempts], a
@@ -1612,6 +1612,14 @@ TryRunningFromBattle:
 	call SaveScreenTilesToBuffer1
 	and a ; reset carry
 	ret
+.promptEscape
+	; Open a yes/no menu to confirm that the player wans to escape
+	ld hl, ForfeitBattlePromptText
+	call PrintText
+	call YesNoChoice
+	ld a, [wCurrentMenuItem]
+	and a
+	ret nz  ; forfeit battle if Yes was chosen
 .canEscape
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
@@ -1640,6 +1648,10 @@ TryRunningFromBattle:
 	call SaveScreenTilesToBuffer1
 	scf ; set carry
 	ret
+
+ForfeitBattlePromptText:
+	text_far _ForfeitBattlePromptText
+	text_end
 
 CantEscapeText:
 	text_far _CantEscapeText
@@ -2101,12 +2113,12 @@ DisplayBattleMenu::
 	ld bc, NAME_LENGTH
 	call CopyData
 ; the following simulates the keystrokes by drawing menus on screen
-	hlcoord 9, 14
+	hlcoord 5, 14
 	ld [hl], "▶"
 	ld c, 20
 	call DelayFrames
 	ld [hl], " "
-	hlcoord 9, 16
+	hlcoord 5, 16
 	ld [hl], "▶"
 	ld c, 20
 	call DelayFrames
@@ -2133,9 +2145,9 @@ DisplayBattleMenu::
 	ld a, " "
 	jr z, .safariLeftColumn
 ; put cursor in left column for normal battle menu (i.e. when it's not a Safari battle)
-	ldcoord_a 15, 14 ; clear upper cursor position in right column
-	ldcoord_a 15, 16 ; clear lower cursor position in right column
-	ld b, $9 ; top menu item X
+	ldcoord_a 11, 14 ; clear upper cursor position in right column
+	ldcoord_a 11, 16 ; clear lower cursor position in right column
+	ld b, $5 ; top menu item X
 	jr .leftColumn_WaitForInput
 .safariLeftColumn
 	ldcoord_a 13, 14
@@ -2166,9 +2178,9 @@ DisplayBattleMenu::
 	ld a, " "
 	jr z, .safariRightColumn
 ; put cursor in right column for normal battle menu (i.e. when it's not a Safari battle)
-	ldcoord_a 9, 14 ; clear upper cursor position in left column
-	ldcoord_a 9, 16 ; clear lower cursor position in left column
-	ld b, $f ; top menu item X
+	ldcoord_a 5, 14 ; clear upper cursor position in left column
+	ldcoord_a 5, 16 ; clear lower cursor position in left column
+	ld b, $b ; top menu item X
 	jr .rightColumn_WaitForInput
 .safariRightColumn
 	ldcoord_a 1, 14 ; clear upper cursor position in left column
@@ -2237,7 +2249,7 @@ DisplayBattleMenu::
 .handleUnusedBattle
 	ld a, [wCurrentMenuItem]
 	cp $3
-	jp z, BattleMenu_RunWasSelected
+	jp z, BattleMenu_ForfeitWasSelected
 	ld hl, .RunAwayText
 	call PrintText
 	jp DisplayBattleMenu
@@ -2384,8 +2396,8 @@ ItemsCantBeUsedHereText:
 	text_end
 
 PartyMenuOrRockOrRun:
-	dec a ; was Run selected?
-	jp nz, BattleMenu_RunWasSelected
+	dec a ; was Forfeit selected?
+	jp nz, BattleMenu_ForfeitWasSelected
 ; party menu or rock was selected
 	call SaveScreenTilesToBuffer2
 	ld a, [wBattleType]
@@ -2530,13 +2542,13 @@ AlreadyOutText:
 	text_far _AlreadyOutText
 	text_end
 
-BattleMenu_RunWasSelected:
+BattleMenu_ForfeitWasSelected:
 	call LoadScreenTilesFromBuffer1
 	ld a, $3
 	ld [wCurrentMenuItem], a
 	ld hl, wBattleMonSpeed
 	ld de, wEnemyMonSpeed
-	call TryRunningFromBattle
+	call TryForfeitingFromBattle
 	ld a, 0
 	ld [wForcePlayerToChooseMon], a
 	ret c

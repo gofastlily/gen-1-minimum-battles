@@ -6,8 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## Unreleased
+### Added
+- Player can now run from battles (this counts as a loss)
+
 ### Changed
-- Added 1/4 second pause when calling `DisplayStartMenu` to help prevent accidentally starting the next fight
+- Quarter second pause when calling `DisplayStartMenu` to help prevent accidentally starting the next fight
 
 
 ## v0.1.0

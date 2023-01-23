@@ -978,6 +978,13 @@ _NoWillText::
 	line "to fight!"
 	prompt
 
+_ForfeitBattlePromptText::
+	text "Forfeit the battle"
+	line "against @"
+	text_ram wTrainerName
+	text "?"
+	prompt
+
 _CantEscapeText::
 	text "Can't escape!"
 	prompt
