@@ -5,6 +5,9 @@ DisplayStartMenu::
 	ld [wWalkBikeSurfStateCopy], a
 	ld a, SFX_START_MENU
 	call PlaySound
+	; Minor pause before opening the menu
+	ld c, 15
+	call DelayFrames
 
 RedisplayStartMenu::
 	farcall DrawStartMenu
