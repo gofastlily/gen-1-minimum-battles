@@ -1,2 +1,2 @@
 VersionText:
-	db "v0.1.0@"
+	db "v0.1.1@"
