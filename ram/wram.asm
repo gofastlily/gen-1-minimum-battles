@@ -2318,8 +2318,18 @@ wPlayerMinBattlesProgress:: db
 wPlayerMinBattlesLosses:: db
 wMinBattlesRareCandyUseCount:: db
 
+; Player Records
+; bit 7 = Beat Yellow at least once
+; bit 6 = Beat Red/Blue at least once
+; Bit 5 = Beat Yellow with Eevee at least once
+; Bit 4 = Beat Red/Blue with Charmander
+; Bit 3 = Beat Red/Blue with Bulbasaur
+; Bit 2 = Beat Red/Blue with Squirtle
+wBeatMinBattles:: db
+
+
 ; unused
-	ds 13
+	ds 12
 
 wObtainedHiddenItemsFlags:: flag_array 112
 

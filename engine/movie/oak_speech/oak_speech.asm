@@ -117,11 +117,10 @@ ChooseStarter:
 	ld a, [wCurrentMenuItem]
 
 	; Give the player their starter
-IF !DEF(_DEBUG)
 	call GetStarter
 	ld [wPlayerStarter], a
 	ld b, a
-ENDC
+
 .givePlayerStarter
 	ld c, 5
 IF DEF(_DEBUG)

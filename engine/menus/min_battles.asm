@@ -12,8 +12,8 @@ MinBattlesChoicesList:
 
 
 Determine_MinBattlesChoice_RedBlue:
-	xor a
-	cp 1
+	ld a, [wBeatMinBattles]
+	bit 7, a
 	ret
 
 
