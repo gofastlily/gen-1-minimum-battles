@@ -7,9 +7,16 @@ This romhack is a "minimum battles" simulator for Pokémon's first generation.  
 Your losses will be tracked, as well as the number of Rare Candies you use.  If you can beat Yellow Version, you'll unlock Red Version!
 
 
+## What People are Saying
+
+> Feels more like an arcade mode than a "hack"
+>
+> \- Axeljk
+
+
 ## Installation
 
-Installation will generate a romfile called `minbattles.gbc` with `sha1` hash of `14f11fd5adaaea2cc2f2f75e15708f47372777fe`.
+Installation will generate a romfile called `minbattles.gbc` with `sha1` hash of `168578901a646b51459a7952c36266e628d78068`.
 
 ### Classic Installation
 
