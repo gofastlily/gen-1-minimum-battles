@@ -21,16 +21,7 @@ Determine_UnlocksChoice_RedBlue:
 Determine_UnlocksChoice_EeveeLocked:
 	ld a, [wBeatMinBattles]
 	bit 6, a
-	; Invert the check
-	jr z, .zero
-.notZero
-    ld a, 0
-    jr .done
-.zero
-    ld a, 1
-.done
-	and a
-	; end invert check
+	call InvertZeroFlag
 	ret
 
 

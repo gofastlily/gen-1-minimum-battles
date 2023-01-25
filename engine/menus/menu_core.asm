@@ -354,3 +354,15 @@ ClearMenuExtra:
 	ld a, 0
 	ld [wMenuExtraCoords + 1], a
 	ret
+
+
+InvertZeroFlag:
+	jr z, .zero
+.notZero
+	ld a, 0
+	jr .done
+.zero
+	ld a, 1
+.done
+	and a
+	ret

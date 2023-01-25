@@ -341,6 +341,7 @@ SECTION "Minimum Battles", romx
 INCLUDE "engine/menus/menu_core.asm"
 INCLUDE "engine/menus/min_battles.asm"
 INCLUDE "engine/menus/unlocks.asm"
+INCLUDE "engine/menus/starters.asm"
 INCLUDE "engine/min_battles.asm"
 INCLUDE "data/min_battles/game_types.asm"
 INCLUDE "data/min_battles/red.asm"

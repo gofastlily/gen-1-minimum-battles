@@ -95,8 +95,10 @@ ChooseStarter:
 	ld a, STARTER4
 	ld [wPlayerStarter], a
 	ld b, a
-	ld a, [wMinBattlesGameType]
-	cp MIN_BATTLES_YELLOW
+
+	; If the player has not beaten Yellow Version yet, skip starter selection
+	ld a, [wBeatMinBattles]
+	bit 7, a
 	jp z, .givePlayerStarter
 
 	ld de, RedPicFront
@@ -105,29 +107,18 @@ ChooseStarter:
 	ld hl, ChooseStarterText
 	call PrintText
 	call OakSpeechSlidePicRight
-	ld de, MinBattlesStartersComplete
 
-	; Set cursor to top of box
-	xor a
-	ld [wCurrentMenuItem], a
-
-	; Load the starter text box
-	call DisplayIntroStartersTextBox
-	ld hl, MinBattlesStartersCompleteList
-	ld a, [wCurrentMenuItem]
-
-	; Give the player their starter
-	call GetStarter
-	ld [wPlayerStarter], a
-	ld b, a
+	call StarterMenu
 
 .givePlayerStarter
 	ld c, 5
+
 IF DEF(_DEBUG)
 	ld a, MEWTWO
 	ld b, a
 	ld c, 100
 ENDC
+
 	call GivePokemon
 
 IF DEF(_DEBUG)
@@ -142,75 +133,8 @@ IF DEF(_DEBUG)
 	ld [hl], a
 ENDC
 
-	; Give the rival their starter
-	; Default to Eevee
-	ld a, STARTER5
-	ld [wRivalStarter], a
-	ld a, [wMinBattlesGameType]
-	cp MIN_BATTLES_YELLOW
-	jp z, .bypassRivalStarterSelection
-	ld hl, RivalStartersListComplete
-	ld a, [wCurrentMenuItem]
-	call GetStarter
-	ld [wRivalStarter], a
-.bypassRivalStarterSelection
-
 	call ClearScreen
 	ret
-
-
-GetStarter:
-	; Load the array index into the bc register
-	ld c, a
-	ld b, 0
-	; index into MinBattlesStartersCompleteList with wCurrentMenuItem
-	add hl, bc
-	; Load the starter
-	ld a, [hl]
-	ret
-
-
-MinBattlesStartersComplete:
-	next "CHARMANDER"
-	next "SQUIRTLE"
-	next "BULBASAUR"
-	db   "@"
-
-
-MinBattlesStartersCompleteList:
-	db STARTER1
-	db STARTER2
-	db STARTER3
-
-
-RivalStartersListComplete:
-	db STARTER2
-	db STARTER3
-	db STARTER1
-
-
-DisplayIntroStartersTextBox:
-	push de
-	hlcoord 0, 0
-	lb bc, $7, $c
-	call TextBoxBorder
-	hlcoord 3, 0
-	pop de
-	hlcoord 2, 0
-	call PlaceString
-	call UpdateSprites
-	xor a
-	ld [wCurrentMenuItem], a
-	ld [wLastMenuItem], a
-	inc a
-	ld [wTopMenuItemX], a
-	ld [wMenuWatchedKeys], a ; A_BUTTON
-	inc a
-	ld [wTopMenuItemY], a
-	inc a
-	inc a
-	ld [wMaxMenuItem], a
-	jp HandleMenuInput
 
 
 ChooseStarterText:
