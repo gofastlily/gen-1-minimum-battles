@@ -84,6 +84,7 @@ AnimateHallOfFame:
 	call HoFShowMonOrPlayer
 	call HoFDisplayPlayerStats
 	call HoFFadeOutScreenAndMusic
+	call HoFUnlocks
 	xor a
 	ld [wMinBattlesTemp], a
 	call LoadGBPal
@@ -330,3 +331,59 @@ HoFFadeOutScreenAndMusic:
 	ld a, $ff
 	ld [wAudioFadeOutControl], a
 	jp GBFadeOutToWhite
+
+
+HoFUnlocks:
+	; Check game types here
+	ld a, [wMinBattlesGameType]
+	cp MIN_BATTLES_YELLOW
+	jp z, .minBattlesYellow
+	cp MIN_BATTLES_RED
+	jp z, .minBattlesRed
+	; Did you beat Yellow Version
+.minBattlesYellow
+	ld a, [wBeatMinBattles]
+	set 7, a
+	ld [wBeatMinBattles], a
+	; Check player starter
+	ld a, [wPlayerStarter]
+	; Yellow w/ Eevee
+	cp EEVEE
+	jp nz, .endUnlocks
+	ld a, [wBeatMinBattles]
+	set 5, a
+	ld [wBeatMinBattles], a
+	jp .endUnlocks
+	; Did you beat Red Version
+.minBattlesRed
+	ld a, [wBeatMinBattles]
+	set 6, a
+	ld [wBeatMinBattles], a
+	; Check player starter
+	ld a, [wPlayerStarter]
+	; Red w/ Charmander
+	cp CHARMANDER
+	jp nz, .checkBulbasaur
+	ld a, [wBeatMinBattles]
+	set 4, a
+	ld [wBeatMinBattles], a
+	jp .endUnlocks
+	; Red w/ Bulbasaur
+.checkBulbasaur
+	cp BULBASAUR
+	jp nz, .checkSquirtle
+	ld a, [wBeatMinBattles]
+	set 3, a
+	ld [wBeatMinBattles], a
+	jp .endUnlocks
+	; Red w/ Squirtle
+.checkSquirtle
+	cp SQUIRTLE
+	jp nz, .endUnlocks
+	ld a, [wBeatMinBattles]
+	set 2, a
+	ld [wBeatMinBattles], a
+	jp .endUnlocks
+
+.endUnlocks
+	ret

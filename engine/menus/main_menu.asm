@@ -49,6 +49,7 @@ MainMenuChoicesList:
 	menu_choice Determine_MainMenuChoice_NewGame,    Action_MainMenuChoices_NewGame,    Text_MainMenuChoices_NewGame
 	menu_choice Determine_MainMenuChoice_MinBattles, Action_MainMenuChoices_MinBattles, Text_MainMenuChoices_MinBattles
 	menu_choice Determine_MainMenuChoice_Options,    Action_MainMenuChoices_Options,    Text_MainMenuChoices_Options
+	menu_choice Determine_MainMenuChoice_Unlocks,    Action_MainMenuChoices_Unlocks,    Text_MainMenuChoices_Unlocks
 	dw MENU_CHOICES_LIST_END
 
 
@@ -63,21 +64,27 @@ Determine_MainMenuChoice_Continue:
 
 
 Determine_MainMenuChoice_NewGame:
-	ld a, [wNumHoFTeams]
-	sub 1
-	sbc a  ; set a to zero if no carry, or -1 if carry
+	ld a, [wBeatMinBattles]
+	bit 7, a
+	call InvertZeroFlag
 	ret
 
 
 Determine_MainMenuChoice_MinBattles:
-	ld a, [wNumHoFTeams]
-	and a
+	ld a, [wBeatMinBattles]
+	bit 7, a
 	ret
 
 
 Determine_MainMenuChoice_Options:
 	xor a
 	cp 1
+	ret
+
+
+Determine_MainMenuChoice_Unlocks:
+	ld a, [wBeatMinBattles]
+	bit 7, a
 	ret
 
 
@@ -115,6 +122,11 @@ Action_MainMenuChoices_Options:
 	ret
 
 
+Action_MainMenuChoices_Unlocks:
+	callfar UnlocksMenu
+	ret
+
+
 Text_MainMenuChoices_Continue:
 	db "CONTINUE@"
 
@@ -129,6 +141,10 @@ Text_MainMenuChoices_MinBattles:
 
 Text_MainMenuChoices_Options:
 	db "OPTIONS@"
+
+
+Text_MainMenuChoices_Unlocks:
+	db "UNLOCKS@"
 
 
 InitOptions:
