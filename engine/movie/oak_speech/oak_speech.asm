@@ -91,10 +91,12 @@ OakSpeech:
 
 
 ChooseStarter:
-	; Default to the starter Pikachu
+	; Default to the Starter Pikachu and Rival's Eevee
 	ld a, STARTER4
 	ld [wPlayerStarter], a
 	ld b, a
+	ld a, STARTER5
+	ld [wRivalStarter], a
 
 	; If the player has not beaten Yellow Version yet, skip starter selection
 	ld a, [wBeatMinBattles]

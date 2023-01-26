@@ -2,6 +2,9 @@ StarterMenu:
 	call ClearMenuExtra
 	ld hl, StarterChoicesList
 	call MenuCore
+	ld a, [wMenuExitMethod]
+	cp CANCELLED_MENU
+	jp z, StarterMenu
 	ret
 
 
@@ -15,8 +18,13 @@ StarterChoicesList:
 
 
 Determine_StarterChoice_Charmander:
+	ld a, [wBeatMinBattles]
+	xor %11111100
+	and %11111100
+	jp z, .invert
 	ld a, [wMinBattlesGameType]
 	cp MIN_BATTLES_RED
+.invert
 	call InvertZeroFlag
 	ret
 
@@ -34,18 +42,24 @@ Text_StarterChoice_Charmander:
 	db "CHARMANDER@"
 
 
+	nop
 Determine_StarterChoice_Bulbasaur:
+	ld a, [wBeatMinBattles]
+	xor %11111100
+	and %11111100
+	jp z, .invert
 	ld a, [wMinBattlesGameType]
 	cp MIN_BATTLES_RED
+.invert
 	call InvertZeroFlag
 	ret
 
 
 Action_StarterChoice_Bulbasaur:
-	ld a, STARTER2
+	ld a, STARTER3
 	ld [wPlayerStarter], a
 	ld b, a
-	ld a, STARTER3
+	ld a, STARTER1
 	ld [wRivalStarter], a
 	ret
 
@@ -55,17 +69,22 @@ Text_StarterChoice_Bulbasaur:
 
 
 Determine_StarterChoice_Squirtle:
+	ld a, [wBeatMinBattles]
+	xor %11111100
+	and %11111100
+	jp z, .invert
 	ld a, [wMinBattlesGameType]
 	cp MIN_BATTLES_RED
+.invert
 	call InvertZeroFlag
 	ret
 
 
 Action_StarterChoice_Squirtle:
-	ld a, STARTER3
+	ld a, STARTER2
 	ld [wPlayerStarter], a
 	ld b, a
-	ld a, STARTER1
+	ld a, STARTER3
 	ld [wRivalStarter], a
 	ret
 
@@ -75,8 +94,13 @@ Text_StarterChoice_Squirtle:
 
 
 Determine_StarterChoice_Pikachu:
+	ld a, [wBeatMinBattles]
+	xor %11111100
+	and %11111100
+	jp z, .invert
 	ld a, [wMinBattlesGameType]
 	cp MIN_BATTLES_YELLOW
+.invert
 	call InvertZeroFlag
 	ret
 
@@ -95,8 +119,13 @@ Text_StarterChoice_Pikachu:
 
 
 Determine_StarterChoice_Eevee:
+	ld a, [wBeatMinBattles]
+	xor %11111100
+	and %11111100
+	jp z, .invert
 	ld a, [wMinBattlesGameType]
 	cp MIN_BATTLES_YELLOW
+.invert
 	call InvertZeroFlag
 	ret
 
@@ -107,6 +136,14 @@ Action_StarterChoice_Eevee:
 	ld b, a
 	ld a, STARTER4
 	ld [wRivalStarter], a
+
+	; Give player one of each stone
+	lb bc, FIRE_STONE, 1
+	call GiveItemSilent
+	lb bc, THUNDER_STONE, 1
+	call GiveItemSilent
+	lb bc, WATER_STONE, 1
+	call GiveItemSilent
 	ret
 
 
