@@ -5,9 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## Unreleased
+## v0.3.0
 ### Added
 - Use Red starters in Yellow and Yellow Starters in Red (beat Red and Yellow with all their respective starters)
+
+### Fixed
+- Pressing `B` no longer gives the player Kangaskhan as a starter
+- Picking Squirtle and Bulbasaur as starters have been fixed
 
 
 ## v0.2.0
