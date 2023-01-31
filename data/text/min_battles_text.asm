@@ -18,3 +18,19 @@ _UnlocksTextEevee::
 	line "#MON Yellow"
 	cont "with EEVEE."
 	prompt
+
+
+_UnlocksTextMixStartersLocked::
+	text "Win using all the"
+	line "different starter"
+	cont "#MON at least"
+	cont "once."
+	prompt
+
+
+_UnlocksTextMixStarters::
+	text "Use #MON Red"
+	line "starters in"
+	cont "#MON Yellow"
+	cont "and vice versa."
+	prompt
