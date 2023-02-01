@@ -2319,9 +2319,9 @@ wPlayerMinBattlesLosses:: db
 wMinBattlesRareCandyUseCount:: db
 
 ; Player Records
-; bit 7 = Beat Yellow at least once
-; bit 6 = Beat Red/Blue at least once
-; Bit 5 = Beat Yellow with Eevee at least once
+; bit 7 = Beat Yellow at least once, unlock Red/Blue
+; bit 6 = Beat Red/Blue at least once, Unlock Eevee
+; Bit 5 = Beat Yellow with Eevee at least once, Unlock Thunderstone
 ; Bit 4 = Beat Red/Blue with Charmander
 ; Bit 3 = Beat Red/Blue with Bulbasaur
 ; Bit 2 = Beat Red/Blue with Squirtle

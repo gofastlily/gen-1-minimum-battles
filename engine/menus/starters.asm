@@ -106,6 +106,15 @@ Determine_StarterChoice_Pikachu:
 
 
 Action_StarterChoice_Pikachu:
+	; Check if the game has been beaten with Eevee, if so, award a Thunderstone
+	ld a, [wBeatMinBattles]
+	xor %00100000
+	and %00100000
+	jp nz, .noStone
+	lb bc, THUNDER_STONE, 1
+	call GiveItemSilent
+.noStone
+	; Give Pikachu
 	ld a, STARTER4
 	ld [wPlayerStarter], a
 	ld b, a
@@ -131,12 +140,6 @@ Determine_StarterChoice_Eevee:
 
 
 Action_StarterChoice_Eevee:
-	ld a, STARTER5
-	ld [wPlayerStarter], a
-	ld b, a
-	ld a, STARTER4
-	ld [wRivalStarter], a
-
 	; Give player one of each stone
 	lb bc, FIRE_STONE, 1
 	call GiveItemSilent
@@ -144,6 +147,12 @@ Action_StarterChoice_Eevee:
 	call GiveItemSilent
 	lb bc, WATER_STONE, 1
 	call GiveItemSilent
+	; Give Eevee
+	ld a, STARTER5
+	ld [wPlayerStarter], a
+	ld b, a
+	ld a, STARTER4
+	ld [wRivalStarter], a
 	ret
 
 

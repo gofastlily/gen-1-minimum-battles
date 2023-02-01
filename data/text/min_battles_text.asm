@@ -14,9 +14,8 @@ _UnlocksTextEeveeLocked::
 
 
 _UnlocksTextEevee::
-	text "Play through"
-	line "#MON Yellow"
-	cont "with EEVEE."
+	text "Choose EEVEE in"
+	line "#MON Yellow."
 	prompt
 
 
@@ -33,4 +32,25 @@ _UnlocksTextMixStarters::
 	line "starters in"
 	cont "#MON Yellow"
 	cont "and vice versa."
+	prompt
+
+
+_UnlocksTextThunderstoneLocked::
+	text "Beat #MON"
+	line "Yellow with"
+	cont "?????"
+	prompt
+
+
+_UnlocksTextThunderstoneLockedSpoiled::
+	text "Beat #MON"
+	line "Yellow with"
+	cont "EEVEE"
+	prompt
+
+
+_UnlocksTextThunderstone::
+	text "When picking"
+	line "Pikachu you have"
+	cont "a THUNDERSTONE."
 	prompt

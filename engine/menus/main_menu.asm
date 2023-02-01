@@ -22,6 +22,11 @@ MainMenu:
 	ld [hl], a
 	ld [wDefaultMap], a
 
+if DEF(_DEBUG)
+	ld a, %11111111
+	ld [wBeatMinBattles], a
+ENDC
+
 .menuLoop
 	call ClearScreen
 

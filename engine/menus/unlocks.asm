@@ -6,11 +6,13 @@ UnlocksMenu:
 
 
 UnlocksChoicesList:
-	menu_choice Determine_UnlocksChoice_RedBlue,           Action_UnlocksChoice_RedBlue,           Text_UnlocksChoice_RedBlue
-	menu_choice Determine_UnlocksChoice_EeveeLocked,       Action_UnlocksChoice_EeveeLocked,       Text_UnlocksChoice_EeveeLocked
-	menu_choice Determine_UnlocksChoice_Eevee,             Action_UnlocksChoice_Eevee,             Text_UnlocksChoice_Eevee
-	menu_choice Determine_UnlocksChoice_MixStartersLocked, Action_UnlocksChoice_MixStartersLocked, Text_UnlocksChoice_MixStartersLocked
-	menu_choice Determine_UnlocksChoice_MixStarters,       Action_UnlocksChoice_MixStarters,       Text_UnlocksChoice_MixStarters
+	menu_choice Determine_UnlocksChoice_RedBlue,            Action_UnlocksChoice_RedBlue,            Text_UnlocksChoice_RedBlue
+	menu_choice Determine_UnlocksChoice_EeveeLocked,        Action_UnlocksChoice_EeveeLocked,        Text_UnlocksChoice_EeveeLocked
+	menu_choice Determine_UnlocksChoice_Eevee,              Action_UnlocksChoice_Eevee,              Text_UnlocksChoice_Eevee
+	menu_choice Determine_UnlocksChoice_MixStartersLocked,  Action_UnlocksChoice_MixStartersLocked,  Text_UnlocksChoice_MixStartersLocked
+	menu_choice Determine_UnlocksChoice_MixStarters,        Action_UnlocksChoice_MixStarters,        Text_UnlocksChoice_MixStarters
+	menu_choice Determine_UnlocksChoice_ThunderstoneLocked, Action_UnlocksChoice_ThunderstoneLocked, Text_UnlocksChoice_ThunderstoneLocked
+	menu_choice Determine_UnlocksChoice_Thunderstone,       Action_UnlocksChoice_Thunderstone,       Text_UnlocksChoice_Thunderstone
 	dw MENU_CHOICES_LIST_END
 
 
@@ -125,4 +127,59 @@ Text_UnlocksChoice_MixStarters:
 
 UnlocksTextMixStarters:
 	text_far _UnlocksTextMixStarters
+	text_end
+
+
+Determine_UnlocksChoice_ThunderstoneLocked:
+	ld a, [wBeatMinBattles]
+	bit 5, a
+	call InvertZeroFlag
+	ret
+
+
+Action_UnlocksChoice_ThunderstoneLocked:
+	ld hl, UnlocksTextThunderstoneLocked
+	ld a, [wBeatMinBattles]
+	bit 6, a
+	jp z, .printThunderstoneLockedText
+	ld hl, UnlocksTextThunderstoneLockedSpoiled
+.printThunderstoneLockedText
+	call PrintText
+	jp UnlocksMenu
+	ret
+
+
+Text_UnlocksChoice_ThunderstoneLocked:
+	db "????????????@"
+
+
+UnlocksTextThunderstoneLocked:
+	text_far _UnlocksTextThunderstoneLocked
+	text_end
+
+
+UnlocksTextThunderstoneLockedSpoiled:
+	text_far _UnlocksTextThunderstoneLockedSpoiled
+	text_end
+
+
+Determine_UnlocksChoice_Thunderstone:
+	ld a, [wBeatMinBattles]
+	bit 5, a
+	ret
+
+
+Action_UnlocksChoice_Thunderstone:
+	ld hl, UnlocksTextThunderstone
+	call PrintText
+	jp UnlocksMenu
+	ret
+
+
+Text_UnlocksChoice_Thunderstone:
+	db "THUNDERSTONE@"
+
+
+UnlocksTextThunderstone:
+	text_far _UnlocksTextThunderstone
 	text_end
