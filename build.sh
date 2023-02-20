@@ -1,7 +1,6 @@
-# Remove possible existing container
-docker rm min-battles
+#!/usr/bin/env nix-shell 
+#! nix-shell -i bash --pure
+#! nix-shell -p bash cacert cmake clang git rgbds
 
-# Build all as one set of chained commands
-docker build -t min-battles . && \
-docker run --name min-battles min-battles && \
-docker cp min-battles:/output/. ./output
+make clean
+make
