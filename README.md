@@ -22,9 +22,9 @@ Installation will generate a romfile called `minbattles.gbc` with `sha1` hash of
 
 Follow [**INSTALL.md**][install]
 
-### Docker Installation
+### Nix Installation
 
-Run `./build.sh` to have [Docker][docker] do the heavy lifting and requirements management for you.  `./build.sh` puts the `.gbc` file in the `output` folder.
+Run `./build.sh` to have [Nix][nix] do the heavy lifting and requirements management for you.
 
 
 ## Frequently Asked Questions
@@ -68,7 +68,7 @@ Run `./build.sh` to have [Docker][docker] do the heavy lifting and requirements 
 [pokeyellow]: https://github.com/pret/pokeyellow
 [min-battles-data]: main/data/min_battles
 [install]: INSTALL.md
-[docker]: https://www.docker.com/products/docker-desktop/
+[nix]: https://nixos.org/
 [issues]: https://github.com/gofastlily/gen-1-minimum-battles/issues
 [new-issue]: https://github.com/gofastlily/gen-1-minimum-battles/issues/new
 [pret]: https://github.com/pret

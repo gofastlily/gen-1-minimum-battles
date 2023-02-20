@@ -1,7 +1,10 @@
-# Remove possible existing container
-docker rm min-battles
+#!/usr/bin/env nix-shell 
+#! nix-shell -i bash --pure
+#! nix-shell -p bash cacert gnumake gcc git rgbds 
 
-# Build all as one set of chained commands
-docker build -t min-battles . && \
-docker run --name min-battles min-battles && \
-docker cp min-battles:/output/. ./output
+# The -c flag runs make clean
+if [ "$1" == "-c" ]; then
+  make clean
+fi
+
+make
