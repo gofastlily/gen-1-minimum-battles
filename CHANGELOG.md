@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## v0.3.1
+### Added
+- Generate patches and hashes in `./build.sh` for convenience
+- Include `HASHES.md` with hashes for roms, patches, and the `.map` and `.sym` files
+
+### Fixed
+- Mystery compile-time issue and left a comment in `engine/menus/menu_core.asm`.
+
+
 ## v0.3.0
 ### Added
 - Use Red starters in Yellow and Yellow Starters in Red (beat Red and Yellow with all their respective starters)

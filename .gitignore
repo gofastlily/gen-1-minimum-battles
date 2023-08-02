@@ -13,6 +13,8 @@
 *.gbc
 *.gb
 *.patch
+*.bps
+*.sav
 
 # rgbds extras
 *.map

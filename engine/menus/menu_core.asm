@@ -66,7 +66,7 @@ DetermineMenuOptions:
 
 .determineMenuItemsLoop
 	ld a, [hl]
-	cp MENU_CHOICES_LIST_END
+	cp $ff ; Why doesn't this work with MENU_CHOICES_LIST_END?
 	jp z, .breakDetermineMenuItemsLoop
 	; Determine if the menu item should be displayed
 	push hl

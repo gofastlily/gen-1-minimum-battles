@@ -16,11 +16,16 @@ Your losses will be tracked, as well as the number of Rare Candies you use.  If 
 
 ## Installation
 
-Installation will generate a romfile called `minbattles.gbc` with `sha1` hash of `3c580f1958155ec7bed23da2bcb202e0bf938f61`.
+### Easy Installation
+
+Download `minbattles.bps` and patch `pokeyellow.gbc` to generate `minbattles.gbc`.
+
+Hashes can be found in [`HASHES.md`][hashes]
+
 
 ### Classic Installation
 
-Follow [**INSTALL.md**][install]
+Follow [**`INSTALL.md`**][install]
 
 ### Nix Installation
 
@@ -37,6 +42,11 @@ Run `./build.sh` to have [Nix][nix] do the heavy lifting and requirements manage
 **Q:** Have you thought about addding \[feature\]?
 
 **A:** Have you checked the [issues page][issues]?  You can even [create a new issue][new-issue] if your idea isn't yet documented!
+
+
+**Q:** Do you provide a `.sym` or `.map` file for this romhack?
+
+**A:** As of release [`v0.3.1`][v0.3.1] we provide both the `.sym` and `.map` files, along with their hashes in [`HASHES.md`][hashes].
 
 
 ## Special Thanks
@@ -67,8 +77,10 @@ Run `./build.sh` to have [Nix][nix] do the heavy lifting and requirements manage
 [jrose11-min-battles-yellow]: https://www.youtube.com/watch?v=MYsuGVH6C8c
 [pokeyellow]: https://github.com/pret/pokeyellow
 [min-battles-data]: main/data/min_battles
+[hashes]: HASHES.md
 [install]: INSTALL.md
 [nix]: https://nixos.org/
 [issues]: https://github.com/gofastlily/gen-1-minimum-battles/issues
 [new-issue]: https://github.com/gofastlily/gen-1-minimum-battles/issues/new
 [pret]: https://github.com/pret
+[v0.3.1]: https://github.com/gofastlily/gen-1-minimum-battles/releases/tag/v0.3.1
