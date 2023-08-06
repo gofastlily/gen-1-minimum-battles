@@ -1939,6 +1939,14 @@ wRivalName:: ds NAME_LENGTH
 ; 5: Slow
 wOptions:: db
 
+; bit 7 = Giovanni/Earth Badge
+; bit 6 = Blaine/Volcano Badge
+; bit 5 = Sabrina/Marsh Badge
+; bit 4 = Koga/Soul Badge
+; bit 3 = Erika/Rainbow Badge
+; bit 2 = Lt. Surge/Thunder Badge
+; bit 1 = Misty/Cascade Badge
+; bit 0 = Brock/Boulder Badge
 wObtainedBadges:: flag_array NUM_BADGES
 
 	ds 1
@@ -2307,6 +2315,7 @@ wMenuExtraCoords:: dw
 
 ; Minimum Battles values
 ; bit 7 = is the player mid-run?
+; bit 6 = did the player lose to a gym leader?
 wMinBattlesTemp:: db
 wMinBattlesGameType:: db
 wMinBattlesTrainerList:: dw
@@ -2326,10 +2335,14 @@ wMinBattlesRareCandyUseCount:: db
 ; Bit 3 = Beat Red/Blue with Bulbasaur
 ; Bit 2 = Beat Red/Blue with Squirtle
 wBeatMinBattles:: db
+; Player Records Two
+; bit 7 = Beat Yellow while not losing to the gym leaders
+; bit 6 = Beat Red/Blue while not losing to the gym leaders
+wBeatMinBattlesTwo:: db
 
 
 ; unused
-	ds 12
+	ds 11
 
 wObtainedHiddenItemsFlags:: flag_array 112
 

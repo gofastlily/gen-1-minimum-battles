@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 ### Added
 - Beating the game with Eevee unlocks a Thunder Stone for use with Pikachu
+- Gym Rush mode after beating both Red/Blue and Yellow without losing to the Gym Leaders
 
 ### Fixed
 - Selecting Eevee no longer gives Onix to the player

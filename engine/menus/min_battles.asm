@@ -6,8 +6,10 @@ MinBattlesMenu:
 
 
 MinBattlesChoicesList:
-	menu_choice Determine_MinBattlesChoice_RedBlue, Action_MinBattlesChoice_RedBlue, Text_MinBattlesChoice_RedBlue
-	menu_choice Determine_MinBattlesChoice_Yellow,  Action_MinBattlesChoice_Yellow,  Text_MinBattlesChoice_Yellow
+	menu_choice Determine_MinBattlesChoice_RedBlue,        Action_MinBattlesChoice_RedBlue,        Text_MinBattlesChoice_RedBlue
+	menu_choice Determine_MinBattlesChoice_Yellow,         Action_MinBattlesChoice_Yellow,         Text_MinBattlesChoice_Yellow
+	menu_choice Determine_MinBattlesChoice_GymRushRedBlue, Action_MinBattlesChoice_GymRushRedBlue, Text_MinBattlesChoice_GymRushRedBlue
+	menu_choice Determine_MinBattlesChoice_GymRushYellow,  Action_MinBattlesChoice_GymRushYellow,  Text_MinBattlesChoice_GymRushYellow
 	dw MENU_CHOICES_LIST_END
 
 
@@ -17,15 +19,19 @@ Determine_MinBattlesChoice_RedBlue:
 	ret
 
 
-Determine_MinBattlesChoice_Yellow:
-	xor a
-	cp 1
-	ret
-
-
 Action_MinBattlesChoice_RedBlue:
 	ld a, MIN_BATTLES_RED
 	ld [wMinBattlesGameType], a
+	ret
+
+
+Text_MinBattlesChoice_RedBlue:
+	db "RED/BLUE@"
+
+
+Determine_MinBattlesChoice_Yellow:
+	xor a
+	cp 1
 	ret
 
 
@@ -35,9 +41,41 @@ Action_MinBattlesChoice_Yellow:
 	ret
 
 
-Text_MinBattlesChoice_RedBlue:
-	db "RED/BLUE@"
-
-
 Text_MinBattlesChoice_Yellow:
 	db "YELLOW@"
+
+
+Determine_MinBattlesChoice_GymRushRedBlue:
+	ld a, [wBeatMinBattlesTwo]
+	and %11000000
+	cp %11000000
+	call InvertZeroFlag
+	ret
+
+
+Action_MinBattlesChoice_GymRushRedBlue:
+	ld a, MIN_BATTLES_GYM_RUSH_RED
+	ld [wMinBattlesGameType], a
+	ret
+
+
+Text_MinBattlesChoice_GymRushRedBlue:
+	db "GYM RUSH RB@"
+
+
+Determine_MinBattlesChoice_GymRushYellow:
+	ld a, [wBeatMinBattlesTwo]
+	and %11000000
+	cp %11000000
+	call InvertZeroFlag
+	ret
+
+
+Action_MinBattlesChoice_GymRushYellow:
+	ld a, MIN_BATTLES_GYM_RUSH_YELLOW
+	ld [wMinBattlesGameType], a
+	ret
+
+
+Text_MinBattlesChoice_GymRushYellow:
+	db "GYM RUSH Y@"

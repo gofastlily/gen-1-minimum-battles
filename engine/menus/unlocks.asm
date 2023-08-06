@@ -13,6 +13,8 @@ UnlocksChoicesList:
 	menu_choice Determine_UnlocksChoice_MixStarters,        Action_UnlocksChoice_MixStarters,        Text_UnlocksChoice_MixStarters
 	menu_choice Determine_UnlocksChoice_ThunderstoneLocked, Action_UnlocksChoice_ThunderstoneLocked, Text_UnlocksChoice_ThunderstoneLocked
 	menu_choice Determine_UnlocksChoice_Thunderstone,       Action_UnlocksChoice_Thunderstone,       Text_UnlocksChoice_Thunderstone
+	menu_choice Determine_UnlocksChoice_GymRushLocked,      Action_UnlocksChoice_GymRushLocked,      Text_UnlocksChoice_GymRushLocked
+	menu_choice Determine_UnlocksChoice_GymRush,            Action_UnlocksChoice_GymRush,            Text_UnlocksChoice_GymRush
 	dw MENU_CHOICES_LIST_END
 
 
@@ -85,8 +87,8 @@ UnlocksTextEevee:
 
 Determine_UnlocksChoice_MixStartersLocked:
 	ld a, [wBeatMinBattles]
-	xor %11111100
 	and %11111100
+	cp %11111100
 	ret
 
 
@@ -108,8 +110,8 @@ UnlocksTextMixStartersLocked:
 
 Determine_UnlocksChoice_MixStarters:
 	ld a, [wBeatMinBattles]
-	xor %11111100
 	and %11111100
+	cp %11111100
 	call InvertZeroFlag
 	ret
 
@@ -182,4 +184,51 @@ Text_UnlocksChoice_Thunderstone:
 
 UnlocksTextThunderstone:
 	text_far _UnlocksTextThunderstone
+	text_end
+
+
+Determine_UnlocksChoice_GymRushLocked:
+	ld a, [wBeatMinBattlesTwo]
+	and %11000000
+	cp %11000000
+	ret
+
+
+Action_UnlocksChoice_GymRushLocked:
+	ld hl, UnlocksTextGymRushLocked
+	call PrintText
+	jp UnlocksMenu
+	ret
+
+
+Text_UnlocksChoice_GymRushLocked:
+	db "??? ????@"
+
+
+UnlocksTextGymRushLocked:
+	text_far _UnlocksTextGymRushLocked
+	text_end
+
+
+Determine_UnlocksChoice_GymRush:
+	ld a, [wBeatMinBattlesTwo]
+	and %11000000
+	cp %11000000
+	call InvertZeroFlag
+	ret
+
+
+Action_UnlocksChoice_GymRush:
+	ld hl, UnlocksTextGymRush
+	call PrintText
+	jp UnlocksMenu
+	ret
+
+
+Text_UnlocksChoice_GymRush:
+	db "GYM RUSH@"
+
+
+UnlocksTextGymRush:
+	text_far _UnlocksTextGymRush
 	text_end

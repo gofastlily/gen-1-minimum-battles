@@ -7,6 +7,7 @@ MACRO min_battles_game_types
 	dw \2
 	dw \3
 	dw \4
+	db \5
 ENDM
 
 
@@ -15,6 +16,7 @@ ENDM
 MACRO trainer_info
 	db \1
 	db \2
+	DEF _trainers += 1
 ENDM
 
 
@@ -57,5 +59,7 @@ OPP_LIST_END                 EQU $ff
 
 MIN_BATTLES_RED              EQU 1
 MIN_BATTLES_YELLOW           EQU 2
-MIN_BATTLES_BOSS_RUSH_RED    EQU 3
-MIN_BATTLES_BOSS_RUSH_YELLOW EQU 4
+MIN_BATTLES_GYM_RUSH_RED     EQU 3
+MIN_BATTLES_GYM_RUSH_YELLOW  EQU 4
+MIN_BATTLES_BOSS_RUSH_RED    EQU 5
+MIN_BATTLES_BOSS_RUSH_YELLOW EQU 6

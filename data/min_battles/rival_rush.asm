@@ -1,4 +1,5 @@
 RivalRushRedTrainerData:
+DEF _trainers = 0
 	trainer_info OPP_RIVAL,    $00  ; Rival 1
 	trainer_info OPP_RIVAL,    $01  ; Rival 2
 	trainer_info OPP_RIVAL,    $02  ; Rival 3
@@ -8,3 +9,4 @@ RivalRushRedTrainerData:
 	trainer_info OPP_RIVAL,    $06  ; Rival 7
 	; End of the loop
 	trainer_info OPP_LIST_END, OPP_LIST_END
+DEF MIN_BATTLES_TRAINERS_RIVAL_RUSH EQU _trainers

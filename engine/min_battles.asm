@@ -1,6 +1,8 @@
 StartMinimumBattles:
 	xor a
 	ld [wPlayerMinBattlesProgress], a
+	ld [wPlayerMinBattlesLosses], a
+	ld [wMinBattlesRareCandyUseCount], a
 	set 7, a
 	ld [wMinBattlesTemp], a
 
@@ -67,6 +69,15 @@ MinimumBattlesLoop::
 	inc a
 	ld [wPlayerMinBattlesLosses], a
 
+	; Set a flag if the player lost to a gym leader
+	ld a, [wCurOpponent]
+	cp OPP_GYM_LEAD
+	jp nz, .notGymLoss
+	ld a, [wMinBattlesTemp]
+	set 6, a
+	ld [wMinBattlesTemp], a
+.notGymLoss
+
 	ld c, BANK(Music_Pokecenter)
 	ld a, MUSIC_POKECENTER
 	ld [wNewSoundID], a
@@ -104,9 +115,9 @@ GetMinBattlesGameBlueprintFromGameType:
 	; to index into an array properly
 	dec a
 
-	; 8x the game type to serve as an array index
+	; 9x the game type to serve as an array index
 	ld b, a
-rept 7
+rept 8
 	add a, b
 endr
 
@@ -137,6 +148,10 @@ endr
 	ld [wMinBattlesRivalList], a
 	ld a, [hli]
 	ld [wMinBattlesRivalList + 1], a
+	; Load the total count of trainers
+	ld a, [hli]
+	dec a
+	ld [wPlayerMinBattlesProgressTotal], a
 	ret
 
 

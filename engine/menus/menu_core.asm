@@ -357,12 +357,9 @@ ClearMenuExtra:
 
 
 InvertZeroFlag:
-	jr z, .zero
-.notZero
-	ld a, 0
-	jr .done
-.zero
-	ld a, 1
+    ld a, 0
+    jr nz, .done
+    inc a
 .done
-	and a
-	ret
+    and a
+    ret

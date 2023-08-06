@@ -54,3 +54,17 @@ _UnlocksTextThunderstone::
 	line "Pikachu you have"
 	cont "a THUNDERSTONE."
 	prompt
+
+
+_UnlocksTextGymRushLocked::
+	text "Beat both Red/Blue"
+	line "and Yellow once"
+	cont "without losing to"
+	cont "any gym leaders."
+	prompt
+
+
+_UnlocksTextGymRush::
+	text "Face the GYM RUSH"
+	line "challenge!"
+	prompt

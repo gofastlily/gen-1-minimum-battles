@@ -25,6 +25,7 @@ MainMenu:
 if DEF(_DEBUG)
 	ld a, %11111111
 	ld [wBeatMinBattles], a
+	ld [wBeatMinBattlesTwo], a
 ENDC
 
 .menuLoop
@@ -177,19 +178,6 @@ NotEnoughMemoryText:
 StartNewGame:
 	call OakSpeech
 	call ClearScreen
-
-	ld a, 62
-	ld b, a
-
-	ld a, [wMinBattlesGameType]
-	cp MIN_BATTLES_YELLOW
-	jp z, .loadMinBattlesGameTypeListTotal
-	inc b
-	inc b
-.loadMinBattlesGameTypeListTotal
-	ld a, b
-	ld [wPlayerMinBattlesProgressTotal], a
-
 	call StartMinimumBattles
 
 

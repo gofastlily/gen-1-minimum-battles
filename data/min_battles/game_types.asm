@@ -1,5 +1,7 @@
 MinBattlesGameTypes:
-	min_battles_game_types MinBattlesRedTrainerData,      MinBattlesRedGymLeaderData,    LookupBadgeAndTM, RivalTeamData
-	min_battles_game_types MinBattlesYellowTrainerData,   MinBattlesYellowGymLeaderData, LookupBadgeAndTM, RivalTeamData
-	min_battles_game_types MinBattlesBossRushTrainerData, MinBattlesRedGymLeaderData,    LookupBadgeAndTM, RivalTeamData
-	min_battles_game_types MinBattlesBossRushTrainerData, MinBattlesYellowGymLeaderData, LookupBadgeAndTM, RivalTeamData
+	min_battles_game_types MinBattlesRedTrainerData,      MinBattlesRedGymLeaderData,    LookupBadgeAndTM, RivalTeamData, MIN_BATTLES_TRAINERS_RED
+	min_battles_game_types MinBattlesYellowTrainerData,   MinBattlesYellowGymLeaderData, LookupBadgeAndTM, RivalTeamData, MIN_BATTLES_TRAINERS_YELLOW
+	min_battles_game_types MinBattlesGymRushTrainerData,  MinBattlesRedGymLeaderData,    LookupBadgeAndTM, RivalTeamData, MIN_BATTLES_TRAINERS_GYM_RUSH
+	min_battles_game_types MinBattlesGymRushTrainerData,  MinBattlesYellowGymLeaderData, LookupBadgeAndTM, RivalTeamData, MIN_BATTLES_TRAINERS_GYM_RUSH
+	min_battles_game_types MinBattlesBossRushTrainerData, MinBattlesRedGymLeaderData,    LookupBadgeAndTM, RivalTeamData, MIN_BATTLES_TRAINERS_BOSS_RUSH
+	min_battles_game_types MinBattlesBossRushTrainerData, MinBattlesYellowGymLeaderData, LookupBadgeAndTM, RivalTeamData, MIN_BATTLES_TRAINERS_BOSS_RUSH

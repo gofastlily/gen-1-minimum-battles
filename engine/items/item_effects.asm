@@ -678,8 +678,7 @@ ItemUseEvoStone:
 	; Check if player has beaten Yellow with Eevee
 	; If so, allow Pikachu to evolve
 	ld a, [wBeatMinBattles]
-	xor %00100000
-	and %00100000
+	bit 5, a
 	jp z, .notPlayerPikachu
 
 	ld a, [wWhichPokemon]
