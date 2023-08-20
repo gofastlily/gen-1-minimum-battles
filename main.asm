@@ -289,7 +289,6 @@ SECTION "Battle Engine 8", ROMX
 
 INCLUDE "engine/battle/common_text.asm"
 INCLUDE "engine/battle/link_battle_versus_text.asm"
-INCLUDE "engine/battle/unused_stats_functions.asm"
 INCLUDE "engine/battle/scroll_draw_trainer_pic.asm"
 INCLUDE "engine/battle/pikachu_entrance_anim.asm"
 INCLUDE "engine/battle/decrement_pp.asm"
