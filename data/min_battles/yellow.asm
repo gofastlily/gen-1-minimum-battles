@@ -1,6 +1,7 @@
 ; Trainer class: OPP_BUG_CATCHER
 ; Trainer number: $03
 MinBattlesYellowTrainerData:
+DEF _trainers = 0
 	; Oak's Lab, 0
 	trainer_info OPP_RIVAL,    $00  ; Rival 1
 	; Viridian Forest, 1
@@ -89,3 +90,4 @@ MinBattlesYellowTrainerData:
 	trainer_info OPP_RIVAL,    $06  ; Rival 7
 	; End of the loop
 	trainer_info OPP_LIST_END, OPP_LIST_END
+DEF MIN_BATTLES_TRAINERS_YELLOW EQU _trainers

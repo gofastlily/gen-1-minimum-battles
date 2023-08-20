@@ -1,4 +1,5 @@
-GymRushYellowTrainerData:
+MinBattlesGymRushTrainerData:
+DEF _trainers = 0
 	trainer_info OPP_GYM_LEAD, $00  ; Brock
 	trainer_info OPP_GYM_LEAD, $01  ; Misty
 	trainer_info OPP_GYM_LEAD, $02  ; Lt. Surge
@@ -9,3 +10,4 @@ GymRushYellowTrainerData:
 	trainer_info OPP_GYM_LEAD, $07  ; Giovanni (Gym)
 	; End of the loop
 	trainer_info OPP_LIST_END, OPP_LIST_END
+DEF MIN_BATTLES_TRAINERS_GYM_RUSH EQU _trainers

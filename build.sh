@@ -1,6 +1,6 @@
 #!/usr/bin/env nix-shell 
 #! nix-shell -i bash --impure
-#! nix-shell -p bash cacert gnumake gcc git rgbds which haskellPackages.cryptohash-sha1
+#! nix-shell -p bash cacert gnumake gcc git rgbds gawk which haskellPackages.cryptohash-sha1
 
 # The -c flag runs make clean
 if [ "$1" == "-c" ]; then
@@ -8,12 +8,17 @@ if [ "$1" == "-c" ]; then
 fi
 make
 
+# Document the free space
+echo "\`\`\`" > FREE_SPACE.md
+tools/free_space.awk BANK=all minbattles.map >> FREE_SPACE.md
+echo "\`\`\`" >> FREE_SPACE.md
+
 # Generate a BPS file
 # Currently relies on the --impure flag because there isn't a nixpkgs BPS generator for aarch64-darwin
 command -v multipatch 1> /dev/null 
 if [ $? -eq 0  ] && [ -d "../pokeyellow" ]; then
   multipatch --create ../pokeyellow/pokeyellow.gbc minbattles.gbc minbattles.bps
-  multipatch --create ../pokeyellow/pokeyellow_debug.gbc minbattles_debug.gbc minbattles_debug.bps
+  multipatch --create ../pokeyellow/pokeyellow.gbc minbattles_debug.gbc minbattles_debug.bps
 else
   echo "unable to generate a patch file"
 fi

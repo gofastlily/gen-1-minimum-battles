@@ -345,6 +345,14 @@ HoFUnlocks:
 	ld a, [wBeatMinBattles]
 	set 7, a
 	ld [wBeatMinBattles], a
+	; Did the player never lose to a gym leader?
+	ld a, [wMinBattlesTemp]
+	bit 6, a
+	jp nz, .didLoseToYellowLeader
+	ld a, [wBeatMinBattlesTwo]
+	set 7, a
+	ld [wBeatMinBattlesTwo], a
+.didLoseToYellowLeader
 	; Check player starter
 	ld a, [wPlayerStarter]
 	; Yellow w/ Eevee
@@ -359,6 +367,14 @@ HoFUnlocks:
 	ld a, [wBeatMinBattles]
 	set 6, a
 	ld [wBeatMinBattles], a
+	; Did the player never lose to a gym leader?
+	ld a, [wMinBattlesTemp]
+	bit 6, a
+	jp nz, .didLoseToRedLeader
+	ld a, [wBeatMinBattlesTwo]
+	set 6, a
+	ld [wBeatMinBattlesTwo], a
+.didLoseToRedLeader
 	; Check player starter
 	ld a, [wPlayerStarter]
 	; Red w/ Charmander

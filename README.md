@@ -20,6 +20,8 @@ Your losses will be tracked, as well as the number of Rare Candies you use.  If 
 
 Download `minbattles.bps` and patch `pokeyellow.gbc` to generate `minbattles.gbc`.
 
+The `minbattles_debug.bps` file patches `pokeyellow.gbc` to generate `minbattles_debug.gbc`, however for `v0.3.1` only the `minbattles_debug.bps` file patches `pokeyellow_debug.gbc`.
+
 Hashes can be found in [`HASHES.md`][hashes]
 
 

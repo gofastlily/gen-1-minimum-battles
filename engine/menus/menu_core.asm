@@ -66,7 +66,7 @@ DetermineMenuOptions:
 
 .determineMenuItemsLoop
 	ld a, [hl]
-	cp $ff ; Why doesn't this work with MENU_CHOICES_LIST_END?
+	cp $ff  ; Why doesn't this work with MENU_CHOICES_LIST_END?
 	jp z, .breakDetermineMenuItemsLoop
 	; Determine if the menu item should be displayed
 	push hl
@@ -357,12 +357,9 @@ ClearMenuExtra:
 
 
 InvertZeroFlag:
-	jr z, .zero
-.notZero
-	ld a, 0
-	jr .done
-.zero
-	ld a, 1
+    ld a, 0
+    jr nz, .done
+    inc a
 .done
-	and a
-	ret
+    and a
+    ret

@@ -19,8 +19,8 @@ StarterChoicesList:
 
 Determine_StarterChoice_Charmander:
 	ld a, [wBeatMinBattles]
-	xor %11111100
 	and %11111100
+	cp %11111100
 	jp z, .invert
 	ld a, [wMinBattlesGameType]
 	cp MIN_BATTLES_RED
@@ -45,8 +45,8 @@ Text_StarterChoice_Charmander:
 	nop
 Determine_StarterChoice_Bulbasaur:
 	ld a, [wBeatMinBattles]
-	xor %11111100
 	and %11111100
+	cp %11111100
 	jp z, .invert
 	ld a, [wMinBattlesGameType]
 	cp MIN_BATTLES_RED
@@ -70,8 +70,8 @@ Text_StarterChoice_Bulbasaur:
 
 Determine_StarterChoice_Squirtle:
 	ld a, [wBeatMinBattles]
-	xor %11111100
 	and %11111100
+	cp %11111100
 	jp z, .invert
 	ld a, [wMinBattlesGameType]
 	cp MIN_BATTLES_RED
@@ -95,8 +95,8 @@ Text_StarterChoice_Squirtle:
 
 Determine_StarterChoice_Pikachu:
 	ld a, [wBeatMinBattles]
-	xor %11111100
 	and %11111100
+	cp %11111100
 	jp z, .invert
 	ld a, [wMinBattlesGameType]
 	cp MIN_BATTLES_YELLOW
@@ -106,6 +106,15 @@ Determine_StarterChoice_Pikachu:
 
 
 Action_StarterChoice_Pikachu:
+	; Check if the game has been beaten with Eevee, if so, award a Thunderstone
+	ld a, [wBeatMinBattles]
+	and %00100000
+	cp %00100000
+	jp nz, .noStone
+	lb bc, THUNDER_STONE, 1
+	call GiveItemSilent
+.noStone
+	; Give Pikachu
 	ld a, STARTER4
 	ld [wPlayerStarter], a
 	ld b, a
@@ -120,8 +129,8 @@ Text_StarterChoice_Pikachu:
 
 Determine_StarterChoice_Eevee:
 	ld a, [wBeatMinBattles]
-	xor %11111100
 	and %11111100
+	cp %11111100
 	jp z, .invert
 	ld a, [wMinBattlesGameType]
 	cp MIN_BATTLES_YELLOW
@@ -131,12 +140,6 @@ Determine_StarterChoice_Eevee:
 
 
 Action_StarterChoice_Eevee:
-	ld a, STARTER5
-	ld [wPlayerStarter], a
-	ld b, a
-	ld a, STARTER4
-	ld [wRivalStarter], a
-
 	; Give player one of each stone
 	lb bc, FIRE_STONE, 1
 	call GiveItemSilent
@@ -144,6 +147,12 @@ Action_StarterChoice_Eevee:
 	call GiveItemSilent
 	lb bc, WATER_STONE, 1
 	call GiveItemSilent
+	; Give Eevee
+	ld a, STARTER5
+	ld [wPlayerStarter], a
+	ld b, a
+	ld a, STARTER4
+	ld [wRivalStarter], a
 	ret
 
 

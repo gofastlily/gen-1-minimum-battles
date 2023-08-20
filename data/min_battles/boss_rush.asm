@@ -1,4 +1,5 @@
 MinBattlesBossRushTrainerData:
+DEF _trainers = 0
 	trainer_info OPP_RIVAL,    $00  ; Rival 1
 	trainer_info OPP_GYM_LEAD, $00  ; Brock
 	trainer_info OPP_RIVAL,    $01  ; Rival 2
@@ -21,3 +22,4 @@ MinBattlesBossRushTrainerData:
 	trainer_info OPP_RIVAL,    $07  ; Professor Oak
 	; End of the loop
 	trainer_info OPP_LIST_END, OPP_LIST_END
+DEF MIN_BATTLES_TRAINERS_BOSS_RUSH EQU _trainers
