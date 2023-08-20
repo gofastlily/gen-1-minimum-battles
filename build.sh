@@ -18,7 +18,7 @@ echo "\`\`\`" >> FREE_SPACE.md
 command -v multipatch 1> /dev/null 
 if [ $? -eq 0  ] && [ -d "../pokeyellow" ]; then
   multipatch --create ../pokeyellow/pokeyellow.gbc minbattles.gbc minbattles.bps
-  multipatch --create ../pokeyellow/pokeyellow_debug.gbc minbattles_debug.gbc minbattles_debug.bps
+  multipatch --create ../pokeyellow/pokeyellow.gbc minbattles_debug.gbc minbattles_debug.bps
 else
   echo "unable to generate a patch file"
 fi

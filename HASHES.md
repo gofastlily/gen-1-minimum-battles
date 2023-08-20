@@ -4,7 +4,7 @@ ed693a2351147bf4a9cd39e597bfd96b1cb01806  minbattles.gbc
 1e0a171439c408441e5064fe78d9829a7a087a83  minbattles.sym
 7640b401cfbb48371af3f6cc45e2b8ab801969b5  minbattles.map
 25dceb977b1646607a30810786e38ab5ea4483af  minbattles_debug.gbc
-7ca40d3363447683a0fdb4c10e0fe4969cb99537  minbattles_debug.bps
+1dd3d80d0083e5b333db001c0da0787e7fdd5345  minbattles_debug.bps
 39f2ae2c2e6c61786d7a2270114bafee1b8c8746  minbattles_debug.sym
 459ed6755f1f71d4685e19f6ccf6690be60aab54  minbattles_debug.map
 ```
