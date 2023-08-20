@@ -1,10 +1,10 @@
 ```
-7cdb0b832cb3f1eefd8fdea5a4ad0ee1a1be47f6  minbattles.gbc
-dcbf3eb54eccf0d829349cbc3ae0510c11a76b90  minbattles.bps
-b973204f553e030870ae571dc6cc9b0c409b4ff1  minbattles.sym
-f099f7d1df9e116762426c7cf1ce8320288c48ba  minbattles.map
-11661df5a3870a49b2c1ee91c72dc36ca4ca4bd3  minbattles_debug.gbc
-6ecfe9e2eec70ed5ccc3c0026589772b028ba282  minbattles_debug.bps
-a67ae4564a01a724d02aa3338f13c6d465fb74ec  minbattles_debug.sym
-6803899ce557c58fe6667fcaaae6fa4622fac0cd  minbattles_debug.map
+8b17473db6e3e4582206bf5260995174a10a387f  minbattles.gbc
+1ddc20f9dcfb9ad6efb6348441314db45bd8a5c4  minbattles.bps
+de53675da4d0df37883cf7a650d0ac0be8e5bd88  minbattles.sym
+d79c86615329dd475b92378bd1a4af14de71676a  minbattles.map
+e9959c19a95e8f247512c66ad199981cd8402ec5  minbattles_debug.gbc
+7e600c60c791e8b4283e24939c6ea418ee1ee985  minbattles_debug.bps
+ead1db04410449cb0986978fe027203bf2f607fc  minbattles_debug.sym
+6744008a2cd0746ecd10d71e3946c56130e6be2a  minbattles_debug.map
 ```
