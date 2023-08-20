@@ -1,7 +1,9 @@
 ; rst vectors (unused)
 
 SECTION "rst0", ROM0[$0000]
-	rst $38
+; https://github.com/pret/pokeyellow/wiki/Free-some-space-in-the-Home-BANK
+_Bankswitch::
+	jp Bankswitch
 
 	ds $08 - @, 0 ; unused
 
