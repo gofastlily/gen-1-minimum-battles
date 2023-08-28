@@ -2298,7 +2298,17 @@ wRoute18Gate1FCurScript:: db
 	ds 78
 wGameProgressFlagsEnd::
 
-	ds 56
+
+; Menu values, 33 bytes
+wMenuHeight:: db  ; Max: 16
+wMenuWidth:: db  ; Max: 18
+wMenuChoicesCount:: db
+wMenuActionsItems:: ds MENU_CAPACITY * 2 + 1
+wMenuTextItems:: ds MENU_CAPACITY * 2 + 1
+wMenuExtraText:: dw
+wMenuExtraCoords:: dw
+
+	ds 23
 
 wObtainedHiddenItemsFlags:: flag_array 112
 
