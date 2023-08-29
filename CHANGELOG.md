@@ -26,6 +26,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed unused Oak's Aide data
 - Removed unused in-game trade data
 - Removed unused text
+- Removed unused hidden object data
+- Removed unused characters
 
 
 ## v0.4.0
