@@ -12,7 +12,6 @@ INCLUDE "engine/link/print_waiting_text.asm"
 INCLUDE "engine/overworld/sprite_collisions.asm"
 INCLUDE "engine/overworld/movement.asm"
 INCLUDE "engine/link/cable_club.asm"
-INCLUDE "engine/menus/main_menu.asm"
 INCLUDE "engine/movie/oak_speech/oak_speech.asm"
 INCLUDE "engine/overworld/special_warps.asm"
 INCLUDE "engine/menus/naming_screen.asm"
@@ -336,13 +335,18 @@ SECTION "Overworld Pikachu", ROMX
 INCLUDE "engine/pikachu/pikachu_status.asm"
 
 
-SECTION "Minimum Battles", romx
+SECTION "Minimum Battles Engine", romx
 
+INCLUDE "engine/min_battles.asm"
 INCLUDE "engine/menus/menu_core.asm"
+INCLUDE "engine/menus/main_menu.asm"
 INCLUDE "engine/menus/min_battles.asm"
 INCLUDE "engine/menus/unlocks.asm"
 INCLUDE "engine/menus/starters.asm"
-INCLUDE "engine/min_battles.asm"
+
+
+SECTION "Minimum Battles Data", romx
+
 INCLUDE "data/min_battles/game_types.asm"
 INCLUDE "data/min_battles/red.asm"
 INCLUDE "data/min_battles/yellow.asm"

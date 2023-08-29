@@ -187,6 +187,7 @@ UnlocksTextThunderstone:
 	text_end
 
 
+	nop
 Determine_UnlocksChoice_GymRushLocked:
 	ld a, [wBeatMinBattlesTwo]
 	and %11000000

@@ -30,9 +30,7 @@ Text_MinBattlesChoice_RedBlue:
 
 
 Determine_MinBattlesChoice_Yellow:
-	xor a
-	cp 1
-	ret
+	jp AlwaysShowMenuItem
 
 
 Action_MinBattlesChoice_Yellow:

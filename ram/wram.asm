@@ -2307,6 +2307,8 @@ wGameProgressFlagsEnd::
 
 
 ; Menu values
+wMenuHeight:: db  ; Max: 16
+wMenuWidth:: db  ; Max: 18
 wMenuChoicesCount:: db
 wMenuActionsItems:: ds MENU_CAPACITY * 2 + 1
 wMenuTextItems:: ds MENU_CAPACITY * 2 + 1
@@ -2342,7 +2344,7 @@ wBeatMinBattlesTwo:: db
 
 
 ; unused
-	ds 11
+	ds 9
 
 wObtainedHiddenItemsFlags:: flag_array 112
 

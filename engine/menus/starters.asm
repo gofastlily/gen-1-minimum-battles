@@ -1,6 +1,12 @@
 StarterMenu:
 	call ClearMenuExtra
 	ld hl, StarterChoicesList
+
+	ld a, 0
+	ld [wMenuHeight], a
+	ld a, 13
+	ld [wMenuWidth], a
+
 	call MenuCore
 	ld a, [wMenuExitMethod]
 	cp CANCELLED_MENU

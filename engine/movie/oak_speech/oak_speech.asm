@@ -110,7 +110,7 @@ ChooseStarter:
 	call PrintText
 	call OakSpeechSlidePicRight
 
-	call StarterMenu
+	callfar StarterMenu
 
 .givePlayerStarter
 	ld c, 5

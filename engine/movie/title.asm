@@ -194,7 +194,7 @@ ENDC
 	and D_UP | SELECT | B_BUTTON
 	cp D_UP | SELECT | B_BUTTON
 	jp z, .doClearSaveDialogue
-	jp MainMenu
+	farjp MainMenu
 
 .asm_42f0
 ; unreferenced
