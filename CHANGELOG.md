@@ -28,6 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed unused text
 - Removed unused hidden object data
 - Removed unused characters
+- Removed unused cries and songs
+- Removed unused critical hit moves
 
 
 ## v0.4.0
