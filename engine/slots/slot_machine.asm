@@ -890,3 +890,7 @@ INCLUDE "data/events/slot_machine_wheels.asm"
 SlotMachineTiles1:
 	INCBIN "gfx/slots/slots_1.2bpp"
 SlotMachineTiles1End:
+
+SlotMachineTiles2:
+	INCBIN "gfx/slots/slots_2.2bpp"
+SlotMachineTiles2End:

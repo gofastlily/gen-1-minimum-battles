@@ -411,10 +411,6 @@ MoveAnimationTiles2:
 MoveAnimationTiles1:
 	INCBIN "gfx/battle/move_anim_1.2bpp"
 
-SlotMachineTiles2:
-	INCBIN "gfx/slots/slots_2.2bpp"
-SlotMachineTiles2End:
-
 MoveAnimation:
 	push hl
 	push de

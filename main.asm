@@ -116,9 +116,13 @@ INCLUDE "engine/items/tmhm.asm"
 INCLUDE "engine/battle/scale_sprites.asm"
 
 
-SECTION "Slot Machines", ROMX
+SECTION "Title RB", romx
 
 INCLUDE "engine/movie/title_rb.asm"
+
+
+SECTION "Slot Machines", ROMX
+
 INCLUDE "engine/slots/slot_machine.asm"
 INCLUDE "engine/slots/game_corner_slots.asm"
 

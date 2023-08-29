@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Speed up save](https://github.com/pret/pokered/wiki/Remove-Artificial-Save-Delay)
 - [Freed up space in HOME bank](https://github.com/pret/pokeyellow/wiki/Free-some-space-in-the-Home-BANK)
 - Remove unused map sections from `layout.link`
+- [Freed up space in BANK `$1E`](https://github.com/pret/pokeyellow/wiki/Free-some-space-in-BANK-1E)
 
 
 ## v0.4.0
