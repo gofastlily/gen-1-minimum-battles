@@ -13,7 +13,6 @@ INCLUDE "home/copy.asm"
 
 SECTION "Home", ROM0
 
-INCLUDE "home/pikachu_cries.asm"
 INCLUDE "home/start.asm"
 INCLUDE "home/joypad.asm"
 INCLUDE "home/overworld.asm"

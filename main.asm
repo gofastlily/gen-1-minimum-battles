@@ -343,7 +343,7 @@ INCLUDE "engine/overworld/npc_movement_2.asm"
 
 SECTION "Pikachu PCM", ROMX
 
-INCLUDE "engine/pikachu/pikachu_pcm.asm"
+INCLUDE "engine/pikachu/pikachu_sound_clip.asm"
 INCLUDE "engine/overworld/advance_player_sprite.asm"
 INCLUDE "engine/events/black_out.asm"
 INCLUDE "engine/overworld/specific_script_flags.asm"

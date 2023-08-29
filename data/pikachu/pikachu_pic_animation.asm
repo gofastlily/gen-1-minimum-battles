@@ -41,7 +41,6 @@ PikaPicAnimScript29:
 	pikapic_animation PikaPicAnimBGFrames_4, $80, $0, $0
 	pikapic_animation PikaPicAnimBGFrames_6, $99, $0, $0
 	pikapic_waitbgmap
-	pikapic_cry PikachuCry3
 	pikapic_looptofinish
 
 PikaPicAnimScript2:
@@ -91,7 +90,6 @@ PikaPicAnimScript6:
 	pikapic_animation PikaPicAnimBGFrames_4, $80, $0, $0
 	pikapic_animation PikaPicAnimBGFrames_11, $99, $0, $0
 	pikapic_waitbgmap
-	pikapic_cry PikachuCry38
 	pikapic_looptofinish
 
 PikaPicAnimScript7:
@@ -152,7 +150,6 @@ PikaPicAnimScript12:
 	pikapic_animation PikaPicAnimBGFrames_4, $80, $0, $0
 	pikapic_animation PikaPicAnimBGFrames_18, $99, $0, $0
 	pikapic_waitbgmap
-	pikapic_cry PikachuCry25
 	pikapic_looptofinish
 
 PikaPicAnimScript13:
@@ -212,7 +209,6 @@ PikaPicAnimScript18:
 	pikapic_animation PikaPicAnimBGFrames_5, $80, $0, $0
 	pikapic_animation PikaPicAnimBGFrames_24, $99, $0, $0
 	pikapic_waitbgmap
-	pikapic_cry PikachuCry18
 	pikapic_looptofinish
 
 PikaPicAnimScript19:
@@ -245,7 +241,6 @@ PikaPicAnimScript21:
 	pikapic_animation PikaPicAnimBGFrames_4, $80, $0, $0
 	pikapic_animation PikaPicAnimBGFrames_27, $99, $0, $0
 	pikapic_waitbgmap
-	pikapic_cry PikachuCry20
 	pikapic_looptofinish
 
 PikaPicAnimScript22:

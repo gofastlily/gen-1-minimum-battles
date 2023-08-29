@@ -24,7 +24,6 @@ CeladonMansion1Text2:
 	jr c, .asm_485d9
 	ld c, 50
 	call DelayFrames
-	ldpikacry e, PikachuCry23
 	callfar PlayPikachuSoundClip
 .asm_485d9
 	jp TextScriptEnd
