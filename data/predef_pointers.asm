@@ -76,7 +76,6 @@ PredefPointers::
 	add_predef LoadSAV2
 	add_predef LoadSAV
 	add_predef SaveSAVtoSRAM1
-	add_predef DoInGameTradeDialogue
 	add_predef HallOfFamePC
 	add_predef GetTileTwoStepsInFrontOfPlayer
 	add_predef CheckForCollisionWhenPushingBoulder
@@ -85,4 +84,3 @@ PredefPointers::
 	add_predef LoadMovePPs
 	add_predef DrawHP
 	add_predef DrawHP2
-	add_predef DisplayElevatorFloorMenu

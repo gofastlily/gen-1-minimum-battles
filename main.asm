@@ -12,6 +12,7 @@ INCLUDE "engine/overworld/sprite_collisions.asm"
 INCLUDE "engine/overworld/movement.asm"
 INCLUDE "engine/link/cable_club.asm"
 INCLUDE "engine/movie/oak_speech/oak_speech.asm"
+INCLUDE "engine/movie/oak_speech/clear_save.asm"
 INCLUDE "engine/overworld/special_warps.asm"
 INCLUDE "engine/menus/naming_screen.asm"
 INCLUDE "engine/movie/oak_speech/oak_speech2.asm"
@@ -83,15 +84,6 @@ INCLUDE "engine/overworld/doors.asm"
 INCLUDE "engine/overworld/ledges.asm"
 
 
-SECTION "bank7", ROMX
-
-INCLUDE "engine/movie/oak_speech/clear_save.asm"
-INCLUDE "engine/events/elevator.asm"
-
-
-SECTION "Hidden Objects 1", ROMX
-
-
 SECTION "Bill's PC", ROMX
 
 INCLUDE "engine/pokemon/bills_pc.asm"
@@ -144,7 +136,7 @@ INCLUDE "engine/battle/core.asm"
 INCLUDE "engine/battle/effects.asm"
 
 
-SECTION "bank10", ROMX
+SECTION "Pokedex and Intro", ROMX
 
 INCLUDE "engine/menus/pokedex.asm"
 INCLUDE "engine/overworld/emotion_bubbles.asm"
@@ -152,14 +144,6 @@ INCLUDE "engine/movie/trade.asm"
 INCLUDE "engine/movie/intro.asm"
 INCLUDE "engine/movie/trade2.asm"
 INCLUDE "engine/menus/options.asm"
-
-
-SECTION "Pokédex Rating", ROMX
-
-
-SECTION "Dungeon Warps", ROMX
-
-INCLUDE "engine/overworld/dungeon_warps.asm"
 
 
 SECTION "Hidden Objects 2", ROMX
@@ -177,19 +161,15 @@ SECTION "Diploma", ROMX
 INCLUDE "engine/events/diploma.asm"
 
 
-SECTION "Trainer Sight", ROMX
-
-
-SECTION "bank16", ROMX
+SECTION "Pokemon Experience and Status", ROMX
 
 INCLUDE "engine/pokemon/experience.asm"
 INCLUDE "engine/pokemon/status_ailments.asm"
 
 
-SECTION "Saffron Guards", ROMX
+SECTION "Version Graphics", ROMX
 
-
-SECTION "Starter Dex", ROMX
+INCLUDE "gfx/version.asm"
 
 
 SECTION "Hidden Objects 3", ROMX
@@ -198,43 +178,24 @@ INCLUDE "engine/movie/evolution.asm"
 INCLUDE "engine/pokemon/set_types.asm"
 
 
-SECTION "Cinnabar Lab Fossils", ROMX
-
-
-SECTION "Hidden Objects 4", ROMX
-
-
-SECTION "Version Graphics", ROMX
-
-INCLUDE "gfx/version.asm"
-
-
-SECTION "bank1C", ROMX
+SECTION "Hall of Fame and Save", ROMX
 
 INCLUDE "engine/movie/splash.asm"
 INCLUDE "engine/movie/hall_of_fame.asm"
 INCLUDE "engine/battle/battle_transitions.asm"
 INCLUDE "engine/items/town_map.asm"
 INCLUDE "engine/gfx/mon_icons.asm"
-INCLUDE "engine/events/in_game_trades.asm"
 INCLUDE "engine/gfx/palettes.asm"
 INCLUDE "engine/menus/save.asm"
 
 
-SECTION "Itemfinder 1", ROMX
-
-
-SECTION "Vending Machine", ROMX
-
-
-SECTION "Itemfinder 2", ROMX
+SECTION "Itemfinder", ROMX
 
 INCLUDE "engine/menus/league_pc.asm"
-INCLUDE "engine/overworld/elevator.asm"
 INCLUDE "engine/events/hidden_items.asm"
 
 
-SECTION "bank1E", ROMX
+SECTION "Battle Animations", ROMX
 
 INCLUDE "engine/battle/animations.asm"
 INCLUDE "data/moves/animations.asm"
@@ -257,10 +218,7 @@ IF !DEF(_DEBUG)
 ENDC
 
 
-SECTION "bank30", ROMX
-
-
-SECTION "bank3A", ROMX
+SECTION "Pokemon Names and Overworld", ROMX
 
 INCLUDE "data/pokemon/names.asm"
 INCLUDE "engine/overworld/is_player_just_outside_map.asm"
@@ -277,15 +235,9 @@ INCLUDE "engine/overworld/advance_player_sprite.asm"
 INCLUDE "engine/events/black_out.asm"
 
 
-SECTION "Try Pikachu Movement", ROMX
-
-
 SECTION "Credits", ROMX
 
 INCLUDE "engine/movie/credits.asm"
-
-
-SECTION "Hidden Objects Core", ROMX
 
 
 SECTION "Battle Engine 8", ROMX

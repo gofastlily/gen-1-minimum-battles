@@ -676,13 +676,7 @@ ENDU
 
 ; This union spans 39 bytes.
 UNION
-wInGameTradeGiveMonSpecies:: db
-wInGameTradeTextPointerTablePointer:: dw
-wInGameTradeTextPointerTableIndex:: db
-wInGameTradeGiveMonName:: ds NAME_LENGTH
-wInGameTradeReceiveMonName:: ds NAME_LENGTH
-wInGameTradeMonNick:: ds NAME_LENGTH
-wInGameTradeReceiveMonSpecies:: db
+	ds 38
 
 NEXTU
 wPlayerMonUnmodifiedLevel:: db

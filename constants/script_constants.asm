@@ -22,28 +22,6 @@ DEF SLOTS_OUTOFORDER   EQU $fd
 DEF SLOTS_OUTTOLUNCH   EQU $fe
 DEF SLOTS_SOMEONESKEYS EQU $ff
 
-; in game trades
-; TradeMons indexes (see data/events/trades.asm)
-	const_def
-	const TRADE_FOR_GURIO
-	const TRADE_FOR_MILES
-	const TRADE_FOR_STINGER ; unused
-	const TRADE_FOR_STICKY
-	const TRADE_FOR_BART    ; unused
-	const TRADE_FOR_SPIKE
-	const TRADE_FOR_MARTY   ; unused
-	const TRADE_FOR_BUFFY
-	const TRADE_FOR_CEZANNE
-	const TRADE_FOR_RICKY
-DEF NUM_NPC_TRADES EQU const_value
-
-; in game trade dialog sets
-; InGameTradeTextPointers indexes (see engine/events/in_game_trades.asm)
-	const_def
-	const TRADE_DIALOGSET_CASUAL
-	const TRADE_DIALOGSET_EVOLUTION
-	const TRADE_DIALOGSET_HAPPY
-
 ; badges
 ; wObtainedBadges and wBeatGymFlags bits
 	const_def

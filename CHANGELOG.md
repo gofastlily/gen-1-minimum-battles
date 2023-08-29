@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Freed up space in HOME bank](https://github.com/pret/pokeyellow/wiki/Free-some-space-in-the-Home-BANK)
 - Remove unused map sections from `layout.link`
 - [Freed up space in BANK `$1E`](https://github.com/pret/pokeyellow/wiki/Free-some-space-in-BANK-1E)
+- Rearranged contents of `layout.link` to better wrangle free space
 
 ### Removed
 - [Removed dakutens and handakutens](https://github.com/pret/pokered/wiki/Remove-Dakutens-and-Handakutens-feature)
@@ -23,6 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed unused stat functions
 - Removed unused names
 - Removed unused Oak's Aide data
+- Removed unused in-game trade data
+- Removed unused text
 
 
 ## v0.4.0

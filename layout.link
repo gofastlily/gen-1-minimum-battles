@@ -41,8 +41,12 @@ ROMX $2
 	"Sound Effects 1"
 	"Audio Engine 1"
 	"Music 1"
+	"Doors and Ledges"
+	"Version Graphics"
+	"Hidden Objects 3"
 ROMX $3
 	"bank3"
+	"Pokedex and Intro"
 ROMX $4
 	"bank4"
 	"NPC Sprites 1"
@@ -52,11 +56,6 @@ ROMX $5
 	"NPC Sprites 2"
 	"Battle Engine 2"
 ROMX $6
-	"Doors and Ledges"
-ROMX $7
-	"bank7"
-	"Hidden Objects 1"
-ROMX $8
 	"Sound Effect Headers 2"
 	"Music Headers 2"
 	"Sound Effects 2"
@@ -64,105 +63,105 @@ ROMX $8
 	"Bill's PC"
 	"Audio Engine 2"
 	"Music 2"
-ROMX $9
-	"Pics 1"
-	"Battle Engine 3"
-ROMX $A
-	"Pics 2"
-	"Battle Engine 4"
-ROMX $B
-	"Pics 3"
-	"Battle Engine 5"
-ROMX $C
-	"Pics 4"
-ROMX $D
-	"Pics 5"
-	"Slot Machines"
-ROMX $E
-	"Battle Engine 6"
-ROMX $F
-	"Battle Core"
-ROMX $10
-	"bank10"
-ROMX $11
-	"Pokédex Rating"
-	"Dungeon Warps"
-ROMX $12
-ROMX $13
-	"Pics 6"
-	"Maps 9"
-ROMX $14
 	"Hidden Objects 2"
-ROMX $15
 	"Battle Engine 7"
 	"Diploma"
-	"Trainer Sight"
-ROMX $16
-	"bank16"
-	"Saffron Guards"
-ROMX $17
-	"Starter Dex"
-	"Hidden Objects 3"
-ROMX $18
-	"Cinnabar Lab Fossils"
-	"Hidden Objects 4"
-ROMX $19
+ROMX $7
+	"Pics 1"
+	"Battle Engine 3"
+	"Pokemon Experience and Status"
+ROMX $8
+	"Pics 2"
+	"Battle Engine 4"
+ROMX $9
+	"Pics 3"
+	"Battle Engine 5"
+	"Itemfinder"
+ROMX $A
+	"Pics 4"
+ROMX $B
+	"Pics 5"
+	"Slot Machines"
+ROMX $C
+	"Battle Engine 6"
+ROMX $D
+	"Battle Core"
+ROMX $E
+	"Pics 6"
+	"Maps 9"
+ROMX $F
 	"Tilesets 1"
-ROMX $1A
-	"Version Graphics"
+ROMX $10
 	"Tilesets 2"
-ROMX $1B
+ROMX $11
 	"Tilesets 3"
-ROMX $1C
-	"bank1C"
-ROMX $1D
-	"Itemfinder 1"
-	"Vending Machine"
-	"Itemfinder 2"
-ROMX $1E
-	"bank1E"
-ROMX $1F
+ROMX $12
+	"Hall of Fame and Save"
+ROMX $13
+	"Battle Animations"
+ROMX $14
 	"Sound Effect Headers 3"
 	"Music Headers 3"
 	"Sound Effects 3"
 	"Audio Engine 3"
 	"Music 3"
-ROMX $20
+ROMX $15
 	"Sound Effect Headers 4"
 	"Music Headers 4"
 	"Sound Effects 4"
 	"Audio Engine 4"
 	"Music 4"
+	"Overworld Pikachu"
+	"NPC Sprites 3"
+ROMX $16
+	"Text 1"
+	"Text 2"
+	"Text 3"
+	"Text 4"
+	"Text 5"
+	"Text 6"
+	"Text 7"
+	"Text 8"
+ROMX $17
+	"Move Names"
+	"BG Map Attributes (Debug)"
+	org $5000
+	"BG Map Attributes"
+ROMX $18
+	"Pikachu Graphics 1"
+ROMX $19
+	"Pokemon Names and Overworld"
+ROMX $1A
+	"Pikachu PCM"
+	"Tilesets 4"
+	"Pikachu Graphics 2"
+	"Credits"
+	"Battle Engine 8"
+	"Pics 7"
+	"Battle Engine 9"
+ROMX $1B
+	"Surfing Minigame"
+ROMX $1C
+ROMX $1D
+ROMX $1E
+ROMX $1F
+ROMX $20
 ROMX $21
 ROMX $22
 ROMX $23
 ROMX $24
 ROMX $25
 ROMX $26
-	"Text 1"
 ROMX $27
-	"Text 2"
 ROMX $28
-	"Text 3"
 ROMX $29
-	"Text 4"
 ROMX $2A
-	"Text 5"
 ROMX $2B
-	"Text 6"
 ROMX $2C
-	"Text 7"
 ROMX $2D
-	"Text 8"
 ROMX $2E
-	"Pokédex Text"
 ROMX $2f
-	"Move Names"
-	"BG Map Attributes (Debug)"
-	org $5000
-	"BG Map Attributes"
 ROMX $30
-	"bank30"
 ROMX $31
 ROMX $32
 ROMX $33
@@ -172,28 +171,14 @@ ROMX $36
 ROMX $37
 ROMX $38
 ROMX $39
-	"Pikachu Graphics 1"
 ROMX $3A
-	"bank3A"
 ROMX $3B
+ROMX $3C
+ROMX $3D
+ROMX $3E
+ROMX $3F
 	"Minimum Battles Engine"
 	"Minimum Battles Data"
-ROMX $3C
-	"Pikachu PCM"
-	"Tilesets 4"
-	"Try Pikachu Movement"
-	"Pikachu Graphics 2"
-	"Credits"
-	"Hidden Objects Core"
-ROMX $3D
-	"Battle Engine 8"
-	"Pics 7"
-	"Battle Engine 9"
-ROMX $3E
-	"Surfing Minigame"
-ROMX $3F
-	"Overworld Pikachu"
-	"NPC Sprites 3"
 WRAM0
 	"Audio RAM"
 	org $c100
