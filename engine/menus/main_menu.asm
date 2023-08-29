@@ -1,7 +1,6 @@
 MainMenu:
 	call InitOptions
 	; Check save file
-	; Needs to be fixed
 	xor a
 	ld [wOptionsInitialized], a
 	inc a
@@ -21,6 +20,11 @@ MainMenu:
 	ld [hli], a
 	ld [hl], a
 	ld [wDefaultMap], a
+
+	ld a, 0
+	ld [wMenuHeight], a
+	ld a, 13
+	ld [wMenuWidth], a
 
 if DEF(_DEBUG)
 	ld a, %11111111
@@ -83,9 +87,7 @@ Determine_MainMenuChoice_MinBattles:
 
 
 Determine_MainMenuChoice_Options:
-	xor a
-	cp 1
-	ret
+	jp AlwaysShowMenuItem
 
 
 Determine_MainMenuChoice_Unlocks:
@@ -95,13 +97,20 @@ Determine_MainMenuChoice_Unlocks:
 
 
 Action_MainMenuChoices_Continue:
-	; Needs to be refactored
 	call DisplayContinueGameInfo
-	ld a, [wMenuExitMethod]
-	cp CANCELLED_MENU
-	ret z
-
+.confirmContinueLoop
+	call JoypadLowSensitivity
+	ldh a, [hJoy5]
+	bit BIT_B_BUTTON, a
+	jr nz, .bPressed
+	bit BIT_A_BUTTON, a
+	jr nz, .aPressed
+	call DelayFrame
+	jp .confirmContinueLoop
+.aPressed
 	call ContinueMinimumBattles
+.bPressed
+	ret
 
 
 Action_MainMenuChoices_NewGame:
@@ -162,21 +171,9 @@ InitOptions:
 	ld [wPrinterSettings], a
 	ret
 
-Func_5cc1:
-; unused?
-	ld a, $6d
-	cp $80
-	ret c ; will always be executed
-	ld hl, NotEnoughMemoryText
-	call PrintText
-	ret
-
-NotEnoughMemoryText:
-	text_far _NotEnoughMemoryText
-	text_end
 
 StartNewGame:
-	call OakSpeech
+	callfar OakSpeech
 	call ClearScreen
 	call StartMinimumBattles
 
@@ -193,20 +190,10 @@ SpecialEnterMap::
 	call ResetPlayerSpriteData
 	ld c, 20
 	call DelayFrames
-	call Func_5cc1
 	ld a, [wEnteringCableClub]
 	and a
 	ret nz
 	jp EnterMap
-
-ContinueText:
-	db "CONTINUE"
-	next ""
-	; fallthrough
-
-NewGameText:
-	db   "NEW GAME"
-	next "OPTION@"
 
 DisplayContinueGameInfo:
 	xor a

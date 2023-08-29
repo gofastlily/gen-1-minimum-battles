@@ -427,11 +427,6 @@ _ExpressionText::
 	text "."
 	prompt
 
-_NotEnoughMemoryText::
-	text "Not enough Yellow"
-	line "Version memory."
-	done
-
 
 _IntroducePlayerText::
 	text "First, what is"

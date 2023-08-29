@@ -45,8 +45,6 @@ MenuCore:
 	ld a, [wMenuChoicesCount]
 	call UpdateMenuCursorPosition
 	call DelayFrame
-	call DelayFrame
-	call DelayFrame
 	jr .mainMenuLoop
 .aPressed
 	call CallMenuAction
@@ -197,15 +195,23 @@ DrawMenu:
 
 
 DrawMenuBorder:
+	; Draw a static menu height by default
+	ld a, [wMenuHeight]
+	cp 0
+	jp nz, .skipDynamicHeight
+
+	; Draw a dynamic menu height
 	ld a, [wMenuChoicesCount]
 	; Double the menu item count and add one
 	; because we want padding around each item
 	add a
 	inc a
+.skipDynamicHeight
 	
 	hlcoord 0, 0
 	ld b, a
-	ld c, 13
+	ld a, [wMenuWidth]
+	ld c, a
 	call TextBoxBorder
 	ret
 
@@ -222,10 +228,6 @@ DrawMenuItems:
 	jp .loop
 .break
 	ret
-
-
-DemoText:
-	db "Test@"
 
 
 DrawMenuChoiceText:
@@ -245,7 +247,6 @@ DrawMenuChoiceText:
 	push hl
 	call SetMenuHLCoord
 	pop de
-	; ld de, DemoText
 	call PlaceString
 	pop hl
 	pop de
@@ -353,6 +354,12 @@ ClearMenuExtra:
 	ld [wMenuExtraCoords], a
 	ld a, 0
 	ld [wMenuExtraCoords + 1], a
+	ret
+
+
+AlwaysShowMenuItem:
+	xor a
+	cp 1
 	ret
 
 
