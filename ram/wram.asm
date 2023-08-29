@@ -2298,6 +2298,11 @@ wRoute18Gate1FCurScript:: db
 	ds 78
 wGameProgressFlagsEnd::
 
+; $00 = male
+; $01 = female
+; $02 = enby
+wPlayerGender::
+	ds 1
 
 ; Menu values, 33 bytes
 wMenuHeight:: db  ; Max: 16
@@ -2307,8 +2312,9 @@ wMenuActionsItems:: ds MENU_CAPACITY * 2 + 1
 wMenuTextItems:: ds MENU_CAPACITY * 2 + 1
 wMenuExtraText:: dw
 wMenuExtraCoords:: dw
-
-	ds 23
+	
+; unused
+	ds 22
 
 wObtainedHiddenItemsFlags:: flag_array 112
 
