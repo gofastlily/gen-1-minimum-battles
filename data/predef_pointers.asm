@@ -41,7 +41,6 @@ PredefPointers::
 	add_predef UpdateHPBar
 	add_predef HPBarLength
 	add_predef Diploma_TextBoxBorder
-	add_predef DoubleOrHalveSelectedStats
 	add_predef EvolutionAfterBattle
 	add_predef SaveSAVtoSRAM0
 	add_predef InitOpponent

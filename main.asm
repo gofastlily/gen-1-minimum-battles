@@ -6,7 +6,6 @@ INCLUDE "engine/movie/title.asm"
 INCLUDE "engine/pokemon/load_mon_data.asm"
 INCLUDE "data/items/prices.asm"
 INCLUDE "data/items/names.asm"
-INCLUDE "data/text/unused_names.asm"
 INCLUDE "engine/gfx/sprite_oam.asm"
 INCLUDE "engine/link/print_waiting_text.asm"
 INCLUDE "engine/overworld/sprite_collisions.asm"
@@ -117,9 +116,13 @@ INCLUDE "engine/items/tmhm.asm"
 INCLUDE "engine/battle/scale_sprites.asm"
 
 
-SECTION "Slot Machines", ROMX
+SECTION "Title RB", romx
 
 INCLUDE "engine/movie/title_rb.asm"
+
+
+SECTION "Slot Machines", ROMX
+
 INCLUDE "engine/slots/slot_machine.asm"
 INCLUDE "engine/slots/game_corner_slots.asm"
 
@@ -290,7 +293,6 @@ SECTION "Battle Engine 8", ROMX
 
 INCLUDE "engine/battle/common_text.asm"
 INCLUDE "engine/battle/link_battle_versus_text.asm"
-INCLUDE "engine/battle/unused_stats_functions.asm"
 INCLUDE "engine/battle/scroll_draw_trainer_pic.asm"
 INCLUDE "engine/battle/pikachu_entrance_anim.asm"
 INCLUDE "engine/battle/decrement_pp.asm"
@@ -301,7 +303,6 @@ SECTION "Battle Engine 9", ROMX
 
 INCLUDE "engine/movie/title_yellow.asm"
 INCLUDE "engine/menus/link_menu.asm"
-INCLUDE "engine/menus/unused_input.asm"
 INCLUDE "engine/overworld/field_move_messages.asm"
 INCLUDE "engine/items/inventory.asm"
 INCLUDE "gfx/trainer_card.asm"

@@ -8,6 +8,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 ### Changed
 - Refactor of the generic menu system
+- [Improved the Pokémon picture system](https://github.com/pret/pokered/wiki/Improve-the-Pokemon-picture-system)
+- [Moved the **P** to `font_battle_extra.png`](https://github.com/pret/pokered/wiki/Remove-Japanese-Opening-Quote-and-put-BOLD-P-in-gfx-font-font_battle_extra.png)
+- [Speed up save](https://github.com/pret/pokered/wiki/Remove-Artificial-Save-Delay)
+- [Freed up space in HOME bank](https://github.com/pret/pokeyellow/wiki/Free-some-space-in-the-Home-BANK)
+- Remove unused map sections from `layout.link`
+- [Freed up space in BANK `$1E`](https://github.com/pret/pokeyellow/wiki/Free-some-space-in-BANK-1E)
+
+### Removed
+- [Removed dakutens and handakutens](https://github.com/pret/pokered/wiki/Remove-Dakutens-and-Handakutens-feature)
+- Removed unused inputs
+- [Removed unused grammar functions](https://github.com/pret/pokered/wiki/Remove-Some-Japanese-Text-Grammar-Functions)
+- [Removed redundant trainer name pointers](https://github.com/pret/pokered/wiki/Remove-Redundant-TrainerNamePointers)
+- Removed unused stat functions
+- Removed unused names
 
 
 ## v0.4.0
