@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Removed redundant trainer name pointers](https://github.com/pret/pokered/wiki/Remove-Redundant-TrainerNamePointers)
 - Removed unused stat functions
 - Removed unused names
+- Removed unused Oak's Aide data
 
 
 ## v0.4.0
