@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed unused characters
 - Removed unused cries and songs
 - Removed unused critical hit moves
+- Removed `data/pokemon/unknown_list.asm`
 
 
 ## v0.4.0
