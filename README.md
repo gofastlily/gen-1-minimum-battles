@@ -1,46 +1,88 @@
-# Pokémon Yellow [![Build Status][ci-badge]][ci]
+# Generation One Minimum Battles Simulator
 
-This is a disassembly of Pokémon Yellow.
+Dive right in to Gen 1 battles!
 
-It builds the following ROMs:
+This romhack is a "minimum battles" simulator for Pokémon's first generation.  It was inspired by [JRose11's][jrose11] phenomenal Minimum Battles videos on YouTube ([Red][jrose11-min-battles-red], [Yellow][jrose11-min-battles-yellow]).  It was built using [pokeyellow][pokeyellow] as a base.  Currently the Game Corner trainers are skipped.  Check trainer lists [here][min-battles-data].
 
-- Pokemon Yellow (UE) [C][!].gbc  `sha1: cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1`
-- YELLMONS.GB (debug build) `sha1: d44e96eddfbdad633cbe4e6e64915e9e198974b0`
-- Dmgapse0.h08.patch `sha1: f3346a5559d52c296b8feab0cdbbfb0e250ac161`
-
-To set up the repository, see [**INSTALL.md**](INSTALL.md).
+Your losses will be tracked, as well as the number of Rare Candies you use.  If you can beat Yellow Version, you'll unlock Red Version!
 
 
-## See also
+## What People are Saying
 
-- [**Wiki**][wiki] (includes [tutorials][tutorials])
-- [**Symbols**][symbols]
-- **Discord:** [pret][discord]
-- **IRC:** [libera#pret][irc]
+> Feels more like an arcade mode than a "hack"
+>
+> \- Axeljk
 
-Other disassembly projects:
 
-- [**Pokémon Red/Blue**][pokered]
-- [**Pokémon Gold/Silver**][pokegold]
-- [**Pokémon Crystal**][pokecrystal]
-- [**Pokémon Pinball**][pokepinball]
-- [**Pokémon TCG**][poketcg]
-- [**Pokémon Ruby**][pokeruby]
-- [**Pokémon FireRed**][pokefirered]
-- [**Pokémon Emerald**][pokeemerald]
+## Installation
 
-[pokered]: https://github.com/pret/pokered
-[pokegold]: https://github.com/pret/pokegold
-[pokecrystal]: https://github.com/pret/pokecrystal
-[pokepinball]: https://github.com/pret/pokepinball
-[poketcg]: https://github.com/pret/poketcg
-[pokeruby]: https://github.com/pret/pokeruby
-[pokefirered]: https://github.com/pret/pokefirered
-[pokeemerald]: https://github.com/pret/pokeemerald
-[wiki]: https://github.com/pret/pokeyellow/wiki
-[tutorials]: https://github.com/pret/pokeyellow/wiki/Tutorials
-[symbols]: https://github.com/pret/pokeyellow/tree/symbols
-[discord]: https://discord.gg/d5dubZ3
-[irc]: https://web.libera.chat/?#pret
-[ci]: https://github.com/pret/pokeyellow/actions
-[ci-badge]: https://github.com/pret/pokeyellow/actions/workflows/main.yml/badge.svg
+### Easy Installation
+
+Download `minbattles.bps` and patch `pokeyellow.gbc` to generate `minbattles.gbc`.
+
+The `minbattles_debug.bps` file patches `pokeyellow.gbc` to generate `minbattles_debug.gbc`, however for `v0.3.1` only the `minbattles_debug.bps` file patches `pokeyellow_debug.gbc`.
+
+Hashes can be found in [`HASHES.md`][hashes]
+
+
+### Classic Installation
+
+Follow [**`INSTALL.md`**][install]
+
+### Nix Installation
+
+Run `./build.sh` to have [Nix][nix] do the heavy lifting and requirements management for you.
+
+
+## Frequently Asked Questions
+
+**Q:** Where can I download a `.gb`/`.gbc` file?
+
+**A:** Rom files are unavailable for download.  I have no interest in sharing my roms because I don't know at what point they're significantly different enough from Pokémon Yellow that I won't have Nintendo's lawyers at my door.
+
+
+**Q:** Have you thought about addding \[feature\]?
+
+**A:** Have you checked the [issues page][issues]?  You can even [create a new issue][new-issue] if your idea isn't yet documented!
+
+
+**Q:** Do you provide a `.sym` or `.map` file for this romhack?
+
+**A:** As of release [`v0.3.1`][v0.3.1] we provide both the `.sym` and `.map` files, along with their hashes in [`HASHES.md`][hashes].
+
+
+## Special Thanks
+
+- Rangi
+- 33dannye
+- Chatot4444
+- Jojobear13
+- Vortiene
+- ax6
+- Vulcandth
+- Chloerawr
+- CelestialAmber
+- Vimescarrot
+- IIMarckus
+- Snarflaxus
+- SatoMew
+- Mord
+- Sea
+- LJSTAR
+- Rainbow Metal Pigeon
+- The entire [pret][pret] team
+- GameFreak
+
+
+[jrose11]: https://www.youtube.com/@Jrose11
+[jrose11-min-battles-red]: https://www.youtube.com/watch?v=yigDp4JNRL0
+[jrose11-min-battles-yellow]: https://www.youtube.com/watch?v=MYsuGVH6C8c
+[pokeyellow]: https://github.com/pret/pokeyellow
+[min-battles-data]: main/data/min_battles
+[hashes]: HASHES.md
+[install]: INSTALL.md
+[nix]: https://nixos.org/
+[issues]: https://github.com/gofastlily/gen-1-minimum-battles/issues
+[new-issue]: https://github.com/gofastlily/gen-1-minimum-battles/issues/new
+[pret]: https://github.com/pret
+[v0.3.1]: https://github.com/gofastlily/gen-1-minimum-battles/releases/tag/v0.3.1

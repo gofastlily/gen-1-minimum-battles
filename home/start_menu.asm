@@ -1,15 +1,18 @@
 DisplayStartMenu::
-	ld a, BANK(StartMenu_Pokedex) ; also bank for other functions
+	ld a, BANK(StartMenu_Continue) ; also bank for other functions
 	call BankswitchCommon
 	ld a, [wWalkBikeSurfState] ; walking/biking/surfing
 	ld [wWalkBikeSurfStateCopy], a
 	ld a, SFX_START_MENU
 	call PlaySound
+	; Minor pause before opening the menu
+	ld c, 15
+	call DelayFrames
 
 RedisplayStartMenu::
 	farcall DrawStartMenu
 RedisplayStartMenu_DoNotDrawStartMenu::
-	farcall PrintSafariZoneSteps ; print Safari Zone info, if in Safari Zone
+	farcall PrintMinBattlesStatus  ; print Safari Zone info, if in Safari Zone
 	call UpdateSprites
 .loop
 	call HandleMenuInput
@@ -24,11 +27,7 @@ RedisplayStartMenu_DoNotDrawStartMenu::
 	and a
 	jr nz, .loop
 ; if the player pressed tried to go past the top item, wrap around to the bottom
-	CheckEvent EVENT_GOT_POKEDEX
 	ld a, 6 ; there are 7 menu items with the pokedex, so the max index is 6
-	jr nz, .wrapMenuItemId
-	dec a ; there are only 6 menu items without the pokedex
-.wrapMenuItemId
 	ld [wCurrentMenuItem], a
 	call EraseMenuCursor
 	jr .loop
@@ -36,12 +35,8 @@ RedisplayStartMenu_DoNotDrawStartMenu::
 	bit BIT_D_DOWN, a
 	jr z, .buttonPressed
 ; if the player pressed tried to go past the bottom item, wrap around to the top
-	CheckEvent EVENT_GOT_POKEDEX
 	ld a, [wCurrentMenuItem]
 	ld c, 7 ; there are 7 menu items with the pokedex
-	jr nz, .checkIfPastBottom
-	dec c ; there are only 6 menu items without the pokedex
-.checkIfPastBottom
 	cp c
 	jr nz, .loop
 ; the player went past the bottom, so wrap to the top
@@ -57,13 +52,10 @@ RedisplayStartMenu_DoNotDrawStartMenu::
 	and B_BUTTON | START ; was the Start button or B button pressed?
 	jp nz, CloseStartMenu
 	call SaveScreenTilesToBuffer2 ; copy background from wTileMap to wTileMapBackup2
-	CheckEvent EVENT_GOT_POKEDEX
 	ld a, [wCurrentMenuItem]
-	jr nz, .displayMenuItem
-	inc a ; adjust position to account for missing pokedex menu item
 .displayMenuItem
 	cp 0
-	jp z, StartMenu_Pokedex
+	jp z, StartMenu_Continue
 	cp 1
 	jp z, StartMenu_Pokemon
 	cp 2
@@ -75,11 +67,36 @@ RedisplayStartMenu_DoNotDrawStartMenu::
 	cp 5
 	jp z, StartMenu_Option
 
-; EXIT falls through to here
+
+; QUIT falls through to here
 CloseStartMenu::
-	call Joypad
-	ldh a, [hJoyPressed]
-	bit BIT_A_BUTTON, a
-	jr nz, CloseStartMenu
-	call LoadTextBoxTilePatterns
-	jp CloseTextDisplay
+	ld hl, QuitGameConfirmText
+	call QuitConfirm
+	and a
+	jp nz, .redisplayStartMenu
+	call Init
+.redisplayStartMenu
+	call ClearScreen
+	jp RedisplayStartMenu
+
+
+QuitConfirm:
+	call PrintText
+	hlcoord 0, 7
+	lb bc, 8, 1
+	ld a, TWO_OPTION_MENU
+	ld [wTextBoxID], a
+	call DisplayTextBoxID ; yes/no menu
+	ld a, [wCurrentMenuItem]
+	ret
+
+
+QuitGameConfirmText:
+	text_far _QuitGameConfirmText
+	text_end
+
+
+_QuitGameConfirmText::
+	text "Return to the"
+	line "title screen?"
+	done

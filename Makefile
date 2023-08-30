@@ -1,8 +1,8 @@
 roms := \
-	pokeyellow.gbc \
-	pokeyellow_debug.gbc
+	minbattles.gbc \
+	minbattles_debug.gbc
 patches := \
-	pokeyellow.patch
+	minbattles.patch
 
 rom_obj := \
 	audio.o \
@@ -16,9 +16,9 @@ rom_obj := \
 	gfx/sprites.o \
 	gfx/tilesets.o
 
-pokeyellow_obj       := $(rom_obj)
-pokeyellow_debug_obj := $(rom_obj:.o=_debug.o)
-pokeyellow_vc_obj    := $(rom_obj:.o=_vc.o)
+minbattles_obj       := $(rom_obj)
+minbattles_debug_obj := $(rom_obj:.o=_debug.o)
+minbattles_vc_obj    := $(rom_obj:.o=_vc.o)
 
 
 ### Build tools
@@ -42,12 +42,12 @@ RGBLINK ?= $(RGBDS)rgblink
 .SECONDEXPANSION:
 .PRECIOUS:
 .SECONDARY:
-.PHONY: all yellow yellow_debug clean tidy compare tools
+.PHONY: all minbattles minbattles_debug clean tidy compare tools
 
 all: $(roms)
-yellow:       pokeyellow.gbc
-yellow_debug: pokeyellow_debug.gbc
-yellow_vc:    pokeyellow.patch
+minbattles:       minbattles.gbc
+minbattles_debug: minbattles_debug.gbc
+minbattles_vc:    minbattles.patch
 
 clean: tidy
 	find gfx \
@@ -68,9 +68,9 @@ tidy:
 	      $(patches:.patch=_vc.sym) \
 	      $(patches:.patch=_vc.map) \
 	      $(patches:%.patch=vc/%.constants.sym) \
-	      $(pokeyellow_obj) \
-	      $(pokeyellow_vc_obj) \
-	      $(pokeyellow_debug_obj) \
+	      $(minbattles_obj) \
+	      $(minbattles_vc_obj) \
+	      $(minbattles_debug_obj) \
 	      rgbdscheck.o
 	$(MAKE) clean -C tools/
 
@@ -87,8 +87,8 @@ ifeq ($(DEBUG),1)
 RGBASMFLAGS += -E
 endif
 
-$(pokeyellow_debug_obj): RGBASMFLAGS += -D _DEBUG
-$(pokeyellow_vc_obj):    RGBASMFLAGS += -D _YELLOW_VC
+$(minbattles_debug_obj): RGBASMFLAGS += -D _DEBUG
+$(minbattles_vc_obj):    RGBASMFLAGS += -D _MINBATTLES_VC
 
 %.patch: vc/%.constants.sym %_vc.gbc %.gbc vc/%.patch.template
 	tools/make_patch $*_vc.sym $^ $@
@@ -96,28 +96,27 @@ $(pokeyellow_vc_obj):    RGBASMFLAGS += -D _YELLOW_VC
 rgbdscheck.o: rgbdscheck.asm
 	$(RGBASM) -o $@ $<
 
+# The dep rules have to be explicit or else missing files won't be reported.
+# As a side effect, they're evaluated immediately instead of when the rule is invoked.
+# It doesn't look like $(shell) can be deferred so there might not be a better way.
+define DEP
+$1: $2 $$(shell tools/scan_includes $2) | includes.asm rgbdscheck.o
+	$$(RGBASM) $$(RGBASMFLAGS) -o $$@ $$<
+endef
+
 # Build tools when building the rom.
 # This has to happen before the rules are processed, since that's when scan_includes is run.
 ifeq (,$(filter clean tidy tools,$(MAKECMDGOALS)))
 
 $(info $(shell $(MAKE) -C tools))
 
-# The dep rules have to be explicit or else missing files won't be reported.
-# As a side effect, they're evaluated immediately instead of when the rule is invoked.
-# It doesn't look like $(shell) can be deferred so there might not be a better way.
-preinclude_deps := includes.asm $(shell tools/scan_includes includes.asm)
-define DEP
-$1: $2 $$(shell tools/scan_includes $2) $(preinclude_deps) | rgbdscheck.o
-	$$(RGBASM) $$(RGBASMFLAGS) -o $$@ $$<
-endef
-
 # Dependencies for objects
-$(foreach obj, $(pokeyellow_obj), $(eval $(call DEP,$(obj),$(obj:.o=.asm))))
-$(foreach obj, $(pokeyellow_debug_obj), $(eval $(call DEP,$(obj),$(obj:_debug.o=.asm))))
-$(foreach obj, $(pokeyellow_vc_obj), $(eval $(call DEP,$(obj),$(obj:_vc.o=.asm))))
+$(foreach obj, $(minbattles_obj), $(eval $(call DEP,$(obj),$(obj:.o=.asm))))
+$(foreach obj, $(minbattles_debug_obj), $(eval $(call DEP,$(obj),$(obj:_debug.o=.asm))))
+$(foreach obj, $(minbattles_vc_obj), $(eval $(call DEP,$(obj),$(obj:_vc.o=.asm))))
 
 # Dependencies for VC files that need to run scan_includes
-%.constants.sym: %.constants.asm $(shell tools/scan_includes %.constants.asm) $(preinclude_deps) | rgbdscheck.o
+%.constants.sym: %.constants.asm $(shell tools/scan_includes %.constants.asm) | includes.asm rgbdscheck.o
 	$(RGBASM) $(RGBASMFLAGS) $< > $@
 
 endif
@@ -126,11 +125,11 @@ endif
 %.asm: ;
 
 
-pokeyellow_pad       = 0x00
-pokeyellow_debug_pad = 0xff
-pokeyellow_vc_pad    = 0x00
+minbattles_pad       = 0x00
+minbattles_debug_pad = 0xff
+minbattles_vc_pad    = 0x00
 
-opts = -cjsv -k 01 -l 0x33 -m 0x1b -p 0 -r 03 -t "POKEMON YELLOW"
+opts = -cjsv -k 01 -l 0x33 -m 0x1b -p 0 -r 03 -t "MINIMUM BATTLES"
 
 %.gbc: $$(%_obj) layout.link
 	$(RGBLINK) -p $($*_pad) -w -m $*.map -n $*.sym -l layout.link -o $@ $(filter %.o,$^)

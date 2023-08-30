@@ -2,6 +2,15 @@ AskName:
 	call SaveScreenTilesToBuffer1
 	call GetPredefRegisters
 	push hl
+	ld a, [wOptions]
+	bit 3, a
+	jp z, .doNaming
+	ld a, [wcf91]
+	ld [wd11e], a
+	call GetMonName
+	pop hl
+	jp .declinedNickname
+.doNaming
 	ld a, [wIsInBattle]
 	dec a
 	hlcoord 0, 0
@@ -228,13 +237,6 @@ DisplayNamingScreen:
 	ld a, [hl]
 	ld [wNamingScreenLetter], a
 	call CalcStringLength
-	ld a, [wNamingScreenLetter]
-	cp "ﾞ"
-	ld de, Dakutens
-	jr z, .dakutensAndHandakutens
-	cp "ﾟ"
-	ld de, Handakutens
-	jr z, .dakutensAndHandakutens
 	ld a, [wNamingScreenType]
 	cp NAME_MON_SCREEN
 	jr nc, .checkMonNameLength
@@ -248,12 +250,6 @@ DisplayNamingScreen:
 	jr c, .addLetter
 	ret
 
-.dakutensAndHandakutens
-	push hl
-	call DakutensAndHandakutens
-	pop hl
-	ret nc
-	dec hl
 .addLetter
 	ld a, [wNamingScreenLetter]
 	ld [hli], a
@@ -434,22 +430,6 @@ PrintNicknameAndUnderscores:
 	add hl, bc
 	ld [hl], $77 ; raised underscore tile id
 	ret
-
-DakutensAndHandakutens:
-	push de
-	call CalcStringLength
-	dec hl
-	ld a, [hl]
-	pop hl
-	ld de, $2
-	call IsInArray
-	ret nc
-	inc hl
-	ld a, [hl]
-	ld [wNamingScreenLetter], a
-	ret
-
-INCLUDE "data/text/dakutens.asm"
 
 ; calculates the length of the string at wStringBuffer and stores it in c
 CalcStringLength:
