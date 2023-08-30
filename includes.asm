@@ -11,6 +11,8 @@ INCLUDE "macros/coords.asm"
 INCLUDE "macros/vc.asm"
 INCLUDE "macros/menu.asm"
 
+INCLUDE "macros/min_battles.asm"
+
 INCLUDE "macros/scripts/audio.asm"
 INCLUDE "macros/scripts/maps.asm"
 INCLUDE "macros/scripts/events.asm"

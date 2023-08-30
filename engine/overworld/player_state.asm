@@ -219,42 +219,94 @@ IsPlayerStandingOnDoorTileOrWarpTile::
 
 INCLUDE "data/tilesets/warp_tile_ids.asm"
 
-PrintSafariZoneSteps::
-	ld a, [wCurMap]
-	cp SAFARI_ZONE_EAST
-	ret c
-	cp CERULEAN_CAVE_2F
-	ret nc
+
+PrintMinBattlesStatus::
 	hlcoord 0, 0
-	lb bc, 3, 7
+	lb bc, 10, 7
 	call TextBoxBorder
+
+	; Print the battle counter
+	call PlaceString
 	hlcoord 1, 1
-	ld de, wSafariSteps
-	lb bc, 2, 3
+	ld de, MinBattlesMenuTextNext
+	call PlaceString
+	hlcoord 1, 2
+	ld de, MinBattlesMenuTextBattle
+	call PlaceString
+	hlcoord 2, 3
+	; There's no way this dance is necessary
+	; increment min battles progress to get the number of the next battle
+	ld a, [wPlayerMinBattlesProgress]
+	inc a
+	ld [wPlayerMinBattlesProgress], a
+	ld de, wPlayerMinBattlesProgress
+	lb bc, 1, 2  ; 1 byte, 3 digit number
 	call PrintNumber
-	hlcoord 4, 1
-	ld de, SafariSteps
+	; decrement min battles progress again because it's zero-indexed
+	ld a, [wPlayerMinBattlesProgress]
+	dec a
+	ld [wPlayerMinBattlesProgress], a
+	hlcoord 4, 3
+	ld de, MinBattlesCountText
 	call PlaceString
-	hlcoord 1, 3
-	ld de, SafariBallText
-	call PlaceString
-	ld a, [wNumSafariBalls]
-	cp 10
-	jr nc, .tenOrMore
+
 	hlcoord 5, 3
-	ld a, " "
-	ld [hl], a
-.tenOrMore
-	hlcoord 6, 3
-	ld de, wNumSafariBalls
-	lb bc, 1, 2
-	jp PrintNumber
+	ld de, wPlayerMinBattlesProgressTotal
+	lb bc, 1, 2  ; 1 byte, 2 digit number
+	call PrintNumber
 
-SafariSteps:
-	db "/500@"
+	; Print the number of losses
+	hlcoord 1, 5
+	ld de, MinBattlesMenuTextLosses
+	call PlaceString
+	hlcoord 4, 6
+	ld de, wPlayerMinBattlesLosses
+	lb bc, 1, 3  ; 1 byte, 2 digit number
+	call PrintNumber
 
-SafariBallText:
-	db "BALL×× @"
+	; Print the number of Rare Candies used
+	hlcoord 1, 8
+	ld de, MinBattlesMenuTextCandies
+	call PlaceString
+	hlcoord 1, 9
+	ld de, MinBattlesMenuTextUsed
+	call PlaceString
+	hlcoord 2, 10
+	ld de, wMinBattlesRareCandyUseCount
+	lb bc, 1, 2  ; 1 byte, 2 digit number
+	call PrintNumber
+	hlcoord 4, 10
+	ld de, MinBattlesRareCandiesCountText
+	jp PlaceString
+
+
+MinBattlesMenuTextNext:
+	db "NEXT@"
+
+
+MinBattlesMenuTextBattle:
+	db "BATTLE:@"
+
+
+MinBattlesCountText:
+	db "/@"
+
+
+MinBattlesMenuTextLosses:
+	db "LOSSES:@"
+
+
+MinBattlesMenuTextCandies:
+	db "CANDIES@"
+
+
+MinBattlesMenuTextUsed:
+	db "USED:@"
+
+
+MinBattlesRareCandiesCountText:
+	db "/95@"
+
 
 GetTileAndCoordsInFrontOfPlayer:
 	call GetPredefRegisters

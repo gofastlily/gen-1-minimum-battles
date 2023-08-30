@@ -1937,9 +1937,9 @@ wRivalName:: ds NAME_LENGTH
 ;	10: Earphone2
 ;	11: Earphone3
 ; bits 2-0 = text speed (number of frames to delay after printing a letter)
-; 1: Fast
-; 3: Medium
-; 5: Slow
+; 001: Fast
+; 010: Medium
+; 100: Slow
 wOptions:: db
 
 wObtainedBadges:: flag_array NUM_BADGES
@@ -2314,9 +2314,40 @@ wMenuActionsItems:: ds MENU_CAPACITY * 2 + 1
 wMenuTextItems:: ds MENU_CAPACITY * 2 + 1
 wMenuExtraText:: dw
 wMenuExtraCoords:: dw
+
+; Minimum Battles values
+; bit 7 = is the player mid-run?
+; bit 6 = did the player lose to a gym leader?
+; bit 5 = did the player lose to an Elite Four member?
+wMinBattlesTemp:: db
+wMinBattlesGameType:: db
+wMinBattlesTrainerList:: dw
+wMinBattlesGymLeaderList:: dw
+wMinBattlesGymBadgeAndTMList:: dw
+wMinBattlesEliteFourList:: dw
+wMinBattlesRivalList:: dw
+wPlayerMinBattlesProgressTotal:: db
+wPlayerMinBattlesProgress:: db
+wPlayerMinBattlesLosses:: db
+wMinBattlesRareCandyUseCount:: db
+
+; Player Records
+; bit 7 = Beat Yellow at least once, unlock Red/Blue
+; bit 6 = Beat Red/Blue at least once, Unlock Eevee
+; Bit 5 = Beat Yellow with Eevee at least once, Unlock Thunderstone
+; Bit 4 = Beat Red/Blue with Charmander
+; Bit 3 = Beat Red/Blue with Bulbasaur
+; Bit 2 = Beat Red/Blue with Squirtle
+wBeatMinBattles:: db
+; Player Records Two
+; bit 7 = Beat Yellow while not losing to the gym leaders
+; bit 6 = Beat Red/Blue while not losing to the gym leaders
+; bit 5 = Beat Yellow while not losing to the Elite Four
+; bit 4 = Beat Red/Blue while not losing to the Elite Four
+wBeatMinBattlesTwo:: db
 	
 ; unused
-	ds 22
+	ds 4
 
 wObtainedHiddenItemsFlags:: flag_array 112
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell 
-#! nix-shell -i bash --pure
+#! nix-shell -i bash --impure
 #! nix-shell -p bash cacert gnumake gcc git rgbds gawk which haskellPackages.cryptohash-sha1
 
 # The -c flag runs make clean
@@ -10,11 +10,21 @@ make
 
 # Document the free space
 echo "\`\`\`" > FREE_SPACE.md
-tools/free_space.awk BANK=all pokeyellow.map >> FREE_SPACE.md
+tools/free_space.awk BANK=all minbattles.map >> FREE_SPACE.md
 echo "\`\`\`" >> FREE_SPACE.md
+
+# Generate a BPS file
+# Currently relies on the --impure flag because there isn't a nixpkgs BPS generator for aarch64-darwin
+command -v multipatch 1> /dev/null 
+if [ $? -eq 0  ] && [ -d "../pokeyellow" ]; then
+  multipatch --create ../pokeyellow/pokeyellow.gbc minbattles.gbc minbattles.bps
+  multipatch --create ../pokeyellow/pokeyellow.gbc minbattles_debug.gbc minbattles_debug.bps
+else
+  echo "unable to generate a patch file"
+fi
 
 # Generate a file hash
 echo "\`\`\`" > HASHES.md
-sha1sum pokeyellow.gbc pokeyellow.sym pokeyellow.map >> HASHES.md
-sha1sum pokeyellow_debug.gbc pokeyellow_debug.sym pokeyellow_debug.map >> HASHES.md
+sha1sum minbattles.gbc minbattles.bps minbattles.sym minbattles.map >> HASHES.md
+sha1sum minbattles_debug.gbc minbattles_debug.bps minbattles_debug.sym minbattles_debug.map >> HASHES.md
 echo "\`\`\`" >> HASHES.md

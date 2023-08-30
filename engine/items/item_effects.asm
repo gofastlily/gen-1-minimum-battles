@@ -811,6 +811,13 @@ ItemUseEvoStone:
 	jr nc, .noEffect
 	callfar IsThisPartymonStarterPikachu_Party
 	jr nc, .notPlayerPikachu
+
+	; Check if player has beaten Yellow with Eevee
+	; If so, allow Pikachu to evolve
+	ld a, [wBeatMinBattles]
+	bit 5, a
+	jp nz, .notPlayerPikachu
+
 	ld e, $1b
 	callfar PlayPikachuSoundClip
 	ld a, [wWhichPokemon]
@@ -1459,6 +1466,12 @@ ItemUseMedicine:
 	jp CalcStats ; recalculate stats
 .useRareCandy
 	push hl
+
+	; Increment Rare Candy counter
+	ld a, [wMinBattlesRareCandyUseCount]
+	inc a
+	ld [wMinBattlesRareCandyUseCount], a
+
 	ld bc, wPartyMon1Level - wPartyMon1
 	add hl, bc ; hl now points to level
 	ld a, [hl] ; a = level

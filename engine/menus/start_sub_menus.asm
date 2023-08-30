@@ -1,10 +1,10 @@
-StartMenu_Pokedex::
-	predef ShowPokedexMenu
-	call LoadScreenTilesFromBuffer2 ; restore saved screen
-	call Delay3
-	call LoadGBPal
-	call UpdateSprites
-	jp RedisplayStartMenu
+StartMenu_Continue::
+	call Joypad
+	ldh a, [hJoyPressed]
+	bit BIT_A_BUTTON, a
+	jp nz, StartMenu_Continue
+	call LoadTextBoxTilePatterns
+	jpfar MinimumBattlesLoop
 
 StartMenu_Pokemon::
 	ld a, [wPartyCount]
@@ -674,7 +674,7 @@ StartMenu_SaveReset::
 	jp nz, Init
 	predef SaveSAV ; save the game
 	call LoadScreenTilesFromBuffer2 ; restore saved screen
-	jp HoldTextDisplayOpen
+	jp RedisplayStartMenu
 
 StartMenu_Option::
 	xor a

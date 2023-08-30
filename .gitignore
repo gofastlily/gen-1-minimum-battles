@@ -13,6 +13,7 @@
 *.gbc
 *.gb
 *.patch
+*.bps
 
 # rgbds extras
 *.map
@@ -32,3 +33,7 @@
 *.sn*
 *.sa*
 *.sg1
+
+# macOS
+.DS_Store
+._*

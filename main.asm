@@ -429,3 +429,30 @@ SECTION "Menu", romx
 
 INCLUDE "engine/menus/menu_core.asm"
 INCLUDE "engine/menus/main_menu.asm"
+INCLUDE "engine/menus/min_battles.asm"
+INCLUDE "engine/menus/unlocks.asm"
+INCLUDE "engine/menus/starters.asm"
+
+
+SECTION "Minimum Battles Engine", romx
+
+INCLUDE "engine/min_battles.asm"
+INCLUDE "engine/movie/min_battles/intro.asm"
+
+
+SECTION "Minimum Battles Data", romx
+
+INCLUDE "data/min_battles/game_types.asm"
+INCLUDE "data/min_battles/red.asm"
+INCLUDE "data/min_battles/yellow.asm"
+INCLUDE "data/min_battles/rivals.asm"
+INCLUDE "data/min_battles/rival_starters.asm"
+INCLUDE "data/min_battles/gym_rush.asm"
+INCLUDE "data/min_battles/rival_rush.asm"
+INCLUDE "data/min_battles/boss_rush.asm"
+INCLUDE "data/min_battles/gyms/badges_and_tms.asm"
+INCLUDE "data/min_battles/gyms/red.asm"
+INCLUDE "data/min_battles/gyms/yellow.asm"
+INCLUDE "data/min_battles/elite_four/red.asm"
+INCLUDE "data/min_battles/elite_four/yellow.asm"
+

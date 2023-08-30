@@ -1,19 +1,18 @@
 MainMenu:
-; Check save file
 	call InitOptions
+	; Check save file
 	xor a
 	ld [wOptionsInitialized], a
 	inc a
 	ld [wSaveFileStatus], a
 	call CheckForPlayerNameInSRAM
-	jr nc, .mainMenuLoop
-
+	jr nc, .loadSkip
 	predef LoadSAV
 
-.mainMenuLoop
-	ld c, 20
+.loadSkip
+	ld c, 1
 	call DelayFrames
-	xor a ; LINK_STATE_NONE
+	xor a  ; LINK_STATE_NONE
 	ld [wLinkState], a
 	ld hl, wPartyAndBillsPCSavedMenuItem
 	ld [hli], a
@@ -21,26 +20,22 @@ MainMenu:
 	ld [hli], a
 	ld [hl], a
 	ld [wDefaultMap], a
-	ld hl, wd72e
-	res 6, [hl]
 
-	ld a, [wSaveFileStatus]
-	cp 1
-	jp z, .tallerMenu
-	ld a, 6
+	ld a, 0
 	ld [wMenuHeight], a
-	jp .setMenuWidth
-.tallerMenu
-	ld a, 4
-	ld [wMenuHeight], a
-.setMenuWidth
 	ld a, 13
 	ld [wMenuWidth], a
+
+if DEF(_DEBUG)
+	ld a, %11111111
+	ld [wBeatMinBattles], a
+	ld [wBeatMinBattlesTwo], a
+ENDC
 
 .menuLoop
 	call ClearScreen
 
-	ld hl, .emptyString
+	ld hl, VersionText
 	ld a, h
 	ld [wMenuExtraText], a
 	ld a, l
@@ -55,29 +50,50 @@ MainMenu:
 	call MenuCore
 	jp .menuLoop
 
-.emptyString
-	db "@"
+
+INCLUDE "version.asm"
 
 
 MainMenuChoicesList:
-	menu_choice Determine_MainMenuChoice_Continue, Action_MainMenuChoices_Continue, Text_MainMenuChoices_Continue
-	menu_choice Determine_MainMenuChoice_NewGame,  Action_MainMenuChoices_NewGame,  Text_MainMenuChoices_NewGame
-	menu_choice Determine_MainMenuChoice_Options,  Action_MainMenuChoices_Options,  Text_MainMenuChoices_Options
+	menu_choice Determine_MainMenuChoice_Continue,   Action_MainMenuChoices_Continue,   Text_MainMenuChoices_Continue
+	menu_choice Determine_MainMenuChoice_NewGame,    Action_MainMenuChoices_NewGame,    Text_MainMenuChoices_NewGame
+	menu_choice Determine_MainMenuChoice_MinBattles, Action_MainMenuChoices_MinBattles, Text_MainMenuChoices_MinBattles
+	menu_choice Determine_MainMenuChoice_Options,    Action_MainMenuChoices_Options,    Text_MainMenuChoices_Options
+	menu_choice Determine_MainMenuChoice_Unlocks,    Action_MainMenuChoices_Unlocks,    Text_MainMenuChoices_Unlocks
 	dw MENU_CHOICES_LIST_END
 
 
 Determine_MainMenuChoice_Continue:
+	; Change to displaying Continue only when the player is mid-run
 	ld a, [wSaveFileStatus]
 	cp 1
 	ret z
+	ld a, [wMinBattlesTemp]
+	bit 7, a
+	ret
 
 
 Determine_MainMenuChoice_NewGame:
-	jp AlwaysShowMenuItem
+	ld a, [wBeatMinBattles]
+	bit 7, a
+	call InvertZeroFlag
+	ret
+
+
+Determine_MainMenuChoice_MinBattles:
+	ld a, [wBeatMinBattles]
+	bit 7, a
+	ret
 
 
 Determine_MainMenuChoice_Options:
 	jp AlwaysShowMenuItem
+
+
+Determine_MainMenuChoice_Unlocks:
+	ld a, [wBeatMinBattles]
+	bit 7, a
+	ret
 
 
 Action_MainMenuChoices_Continue:
@@ -92,22 +108,37 @@ Action_MainMenuChoices_Continue:
 	call DelayFrame
 	jp .confirmContinueLoop
 .aPressed
-	ld hl, wCurrentMapScriptFlags
-	set 5, [hl]
-	call ContinueGame
+	call ContinueMinimumBattles
 .bPressed
 	ret
 
 
 Action_MainMenuChoices_NewGame:
+	ld a, MIN_BATTLES_YELLOW
+	ld [wMinBattlesGameType], a
 	call StartNewGame
 	ret
 
 
+Action_MainMenuChoices_MinBattles:
+	farcall MinBattlesMenu
+	ld a, [wMenuExitMethod]
+	cp CANCELLED_MENU
+	jp z, .exitMenu
+	call StartNewGame
+.exitMenu
+	ret
+
+
 Action_MainMenuChoices_Options:
-	callfar DisplayOptionMenu
+	farcall DisplayOptionMenu
 	ld a, 1
 	ld [wOptionsInitialized], a
+	ret
+
+
+Action_MainMenuChoices_Unlocks:
+	farcall UnlocksMenu
 	ret
 
 
@@ -119,35 +150,32 @@ Text_MainMenuChoices_NewGame:
 	db "NEW GAME@"
 
 
+Text_MainMenuChoices_MinBattles:
+	db "MIN BATTLES@"
+
+
 Text_MainMenuChoices_Options:
 	db "OPTIONS@"
 
 
+Text_MainMenuChoices_Unlocks:
+	db "UNLOCKS@"
+
+
 InitOptions:
-	ld a, TEXT_DELAY_FAST
+	ld a, TEXT_DELAY_FAST  ; no delay
 	ld [wLetterPrintingDelayFlags], a
-	ld a, TEXT_DELAY_MEDIUM
+	ld a, %11001001   ; animations off, set battle style, mono audio, nicknaming off, fast speed
 	ld [wOptions], a
-	ld a, 64 ; audio?
+	ld a, 64
 	ld [wPrinterSettings], a
 	ret
 
 
-NotEnoughMemoryText:
-	text_far _NotEnoughMemoryText
-	text_end
-
-
 StartNewGame:
-	ld hl, wd732
-	res 1, [hl]
-	; fallthrough
-StartNewGameDebug:
-	farcall OakSpeech
-	ld a, $8
-	ld [wPlayerMovingDirection], a
-	ld c, 20
-	call DelayFrames
+	farcall MinBattlesIntro
+	call ClearScreen
+	farcall StartMinimumBattles
 
 
 ; enter map after using a special warp or loading the game from the main menu
@@ -166,27 +194,6 @@ SpecialEnterMap::
 	and a
 	ret nz
 	farjp EnterMap
-
-
-ContinueGame:
-	call GBPalWhiteOutWithDelay3
-	call ClearScreen
-	ld a, PLAYER_DIR_DOWN
-	ld [wPlayerDirection], a
-	ld c, 10
-	call DelayFrames
-	ld a, [wNumHoFTeams]
-	and a
-	jp z, SpecialEnterMap
-	ld a, [wCurMap] ; map ID
-	cp HALL_OF_FAME
-	jp nz, SpecialEnterMap
-	xor a
-	ld [wDestinationMap], a
-	ld hl, wd732
-	set 2, [hl] ; fly warp or dungeon warp
-	call SpecialWarpIn
-	jp SpecialEnterMap
 
 
 DisplayContinueGameInfo:
@@ -280,7 +287,7 @@ SaveScreenInfoText:
 
 
 DisplayOptionMenu:
-	callfar DisplayOptionMenu_
+	farcall DisplayOptionMenu_
 	ret
 
 
