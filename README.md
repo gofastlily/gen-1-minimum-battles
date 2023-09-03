@@ -83,10 +83,10 @@ Run `./build.sh` to have [Nix][nix] do the heavy lifting and requirements manage
 [jrose11-min-battles-red]: https://www.youtube.com/watch?v=yigDp4JNRL0
 [jrose11-min-battles-yellow]: https://www.youtube.com/watch?v=MYsuGVH6C8c
 [pokeyellow]: https://github.com/pret/pokeyellow
-[min-battles-data]: main/data/min_battles
-[changelog]: CHANGELOG.md
-[hashes]: HASHES.md
-[install]: INSTALL.md
+[min-battles-data]: ./data/min_battles
+[changelog]: ./CHANGELOG.md
+[hashes]: ./HASHES.md
+[install]: ./INSTALL.md
 [nix]: https://nixos.org/
 [issues]: https://github.com/gofastlily/gen-1-minimum-battles/issues
 [new-issue]: https://github.com/gofastlily/gen-1-minimum-battles/issues/new
