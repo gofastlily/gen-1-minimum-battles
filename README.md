@@ -8,6 +8,8 @@ This romhack is a "minimum battles" simulator for Pokémon's first generation.  
 
 Your losses will be tracked, as well as the number of Rare Candies you use.  If you can beat Yellow Version, you'll unlock Red Version!
 
+Read the [changelog][changelog] for the full list of changes.
+
 
 ## What People are Saying
 
@@ -82,6 +84,7 @@ Run `./build.sh` to have [Nix][nix] do the heavy lifting and requirements manage
 [jrose11-min-battles-yellow]: https://www.youtube.com/watch?v=MYsuGVH6C8c
 [pokeyellow]: https://github.com/pret/pokeyellow
 [min-battles-data]: main/data/min_battles
+[changelog]: CHANGELOG.md
 [hashes]: HASHES.md
 [install]: INSTALL.md
 [nix]: https://nixos.org/
