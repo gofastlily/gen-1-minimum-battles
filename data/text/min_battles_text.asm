@@ -84,3 +84,8 @@ _UnlocksTextBossRush::
 	text "Face the BOSS RUSH"
 	line "challenge!"
 	prompt
+
+
+_UnlocksTextSurfingMinigameLocked::
+	text "Secret game?!"
+	prompt

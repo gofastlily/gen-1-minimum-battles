@@ -6,17 +6,19 @@ UnlocksMenu:
 
 
 UnlocksChoicesList:
-	menu_choice Determine_UnlocksChoice_RedBlue,            Action_UnlocksChoice_RedBlue,            Text_UnlocksChoice_RedBlue
-	menu_choice Determine_UnlocksChoice_EeveeLocked,        Action_UnlocksChoice_EeveeLocked,        Text_UnlocksChoice_EeveeLocked
-	menu_choice Determine_UnlocksChoice_Eevee,              Action_UnlocksChoice_Eevee,              Text_UnlocksChoice_Eevee
-	menu_choice Determine_UnlocksChoice_MixStartersLocked,  Action_UnlocksChoice_MixStartersLocked,  Text_UnlocksChoice_MixStartersLocked
-	menu_choice Determine_UnlocksChoice_MixStarters,        Action_UnlocksChoice_MixStarters,        Text_UnlocksChoice_MixStarters
-	menu_choice Determine_UnlocksChoice_ThunderstoneLocked, Action_UnlocksChoice_ThunderstoneLocked, Text_UnlocksChoice_ThunderstoneLocked
-	menu_choice Determine_UnlocksChoice_Thunderstone,       Action_UnlocksChoice_Thunderstone,       Text_UnlocksChoice_Thunderstone
-	menu_choice Determine_UnlocksChoice_GymRushLocked,      Action_UnlocksChoice_GymRushLocked,      Text_UnlocksChoice_GymRushLocked
-	menu_choice Determine_UnlocksChoice_GymRush,            Action_UnlocksChoice_GymRush,            Text_UnlocksChoice_GymRush
-	menu_choice Determine_UnlocksChoice_BossRushLocked,     Action_UnlocksChoice_BossRushLocked,     Text_UnlocksChoice_BossRushLocked
-	menu_choice Determine_UnlocksChoice_BossRush,           Action_UnlocksChoice_BossRush,           Text_UnlocksChoice_BossRush
+	menu_choice Determine_UnlocksChoice_RedBlue,               Action_UnlocksChoice_RedBlue,               Text_UnlocksChoice_RedBlue
+	menu_choice Determine_UnlocksChoice_EeveeLocked,           Action_UnlocksChoice_EeveeLocked,           Text_UnlocksChoice_EeveeLocked
+	menu_choice Determine_UnlocksChoice_Eevee,                 Action_UnlocksChoice_Eevee,                 Text_UnlocksChoice_Eevee
+	menu_choice Determine_UnlocksChoice_MixStartersLocked,     Action_UnlocksChoice_MixStartersLocked,     Text_UnlocksChoice_MixStartersLocked
+	menu_choice Determine_UnlocksChoice_MixStarters,           Action_UnlocksChoice_MixStarters,           Text_UnlocksChoice_MixStarters
+	menu_choice Determine_UnlocksChoice_ThunderstoneLocked,    Action_UnlocksChoice_ThunderstoneLocked,    Text_UnlocksChoice_ThunderstoneLocked
+	menu_choice Determine_UnlocksChoice_Thunderstone,          Action_UnlocksChoice_Thunderstone,          Text_UnlocksChoice_Thunderstone
+	menu_choice Determine_UnlocksChoice_GymRushLocked,         Action_UnlocksChoice_GymRushLocked,         Text_UnlocksChoice_GymRushLocked
+	menu_choice Determine_UnlocksChoice_GymRush,               Action_UnlocksChoice_GymRush,               Text_UnlocksChoice_GymRush
+	; menu_choice Determine_UnlocksChoice_BossRushLocked,        Action_UnlocksChoice_BossRushLocked,        Text_UnlocksChoice_BossRushLocked
+	; menu_choice Determine_UnlocksChoice_BossRush,              Action_UnlocksChoice_BossRush,              Text_UnlocksChoice_BossRush
+	menu_choice Determine_UnlocksChoice_SurfingMinigameLocked, Action_UnlocksChoice_SurfingMinigameLocked, Text_UnlocksChoice_SurfingMinigameLocked
+	menu_choice Determine_UnlocksChoice_SurfingMinigame,       Action_UnlocksChoice_SurfingMinigame,       Text_UnlocksChoice_SurfingMinigame
 	dw MENU_CHOICES_LIST_END
 
 
@@ -281,3 +283,46 @@ Text_UnlocksChoice_BossRush:
 UnlocksTextBossRush:
 	text_far _UnlocksTextBossRush
 	text_end
+
+
+Determine_UnlocksChoice_SurfingMinigameLocked:
+	ld a, [wBeatMinBattlesTwo]
+	and %00000001
+	cp %00000001
+	ret
+
+
+Action_UnlocksChoice_SurfingMinigameLocked:
+	ld hl, UnlocksTextSurfingMinigameLocked
+	call PrintText
+	jp UnlocksMenu
+	ret
+
+
+Text_UnlocksChoice_SurfingMinigameLocked:
+	db "???????@"
+
+
+UnlocksTextSurfingMinigameLocked:
+	text_far _UnlocksTextSurfingMinigameLocked
+	text_end
+
+
+Determine_UnlocksChoice_SurfingMinigame:
+	ld a, [wBeatMinBattlesTwo]
+	and %00000001
+	cp %00000001
+	call InvertZeroFlag
+	ret
+
+
+Action_UnlocksChoice_SurfingMinigame:
+	ld a, 1
+	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
+	farcall SurfingPikachuMinigame
+	ret
+
+
+Text_UnlocksChoice_SurfingMinigame:
+	db "SURFING@"
+
