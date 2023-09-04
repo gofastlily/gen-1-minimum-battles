@@ -37,7 +37,7 @@ OptionMenuJumpTable:
 	dw OptionsMenu_SpeakerSettings
 	dw OptionsMenu_GBPrinterBrightness
 	dw OptionsMenu_DoNickname
-	dw OptionsMenu_DoEvolution
+	dw OptionsMenu_Dummy
 	dw OptionsMenu_Cancel
 
 OptionsMenu_TextSpeed:
@@ -350,55 +350,27 @@ OptionsMenu_DoNickname:
 	ld bc, $0
 	sla a
 	rl c
-	ld hl, YesNoOptionStringsPointerTable
+	ld hl, NicknameOptionStringsPointerTable
 	add hl, bc
 	add hl, bc
 	ld e, [hl]
 	inc hl
 	ld d, [hl]
-	hlcoord 13, 12
+	hlcoord 11, 12
 	call PlaceString
 	and a
 	ret
 
 
-OptionsMenu_DoEvolution:
-	ldh a, [hJoy5]
-	and D_RIGHT | D_LEFT
-	jr nz, .changeOption
-	ld a, [wMinBattlesOptions]
-	and %01000000  ; mask other bits
-	jr .writeOption
-.changeOption
-	ld a, [wMinBattlesOptions]
-	xor %01000000  ; mask other bits
-	ld [wMinBattlesOptions], a
-.writeOption
-	ld bc, $0
-	sla a
-	sla a
-	rl c
-	ld hl, YesNoOptionStringsPointerTable
-	add hl, bc
-	add hl, bc
-	ld e, [hl]
-	inc hl
-	ld d, [hl]
-	hlcoord 13, 14
-	call PlaceString
-	and a
-	ret
+NicknameOptionStringsPointerTable:
+	dw NicknameYesText
+	dw NicknameNoText
 
 
-YesNoOptionStringsPointerTable:
-	dw OptionYesText
-	dw OptionNoText
-
-
-OptionYesText:
+NicknameYesText:
 	db "YES@"
 
-OptionNoText:
+NicknameNoText:
 	db "NO @"
 
 
@@ -433,7 +405,7 @@ OptionsControl:
 	scf
 	ret
 .doNotWrapAround
-	cp $6
+	cp $5
 	jr c, .regularIncrement
 	ld [hl], $6
 .regularIncrement
@@ -444,7 +416,7 @@ OptionsControl:
 	ld a, [hl]
 	cp $7
 	jr nz, .doNotMoveCursorToPrintOption
-	ld [hl], $6
+	ld [hl], $5
 	scf
 	ret
 .doNotMoveCursorToPrintOption
@@ -484,7 +456,7 @@ InitOptionsMenu:
 	call PlaceString
 	xor a
 	ld [wOptionsCursorLocation], a
-	ld c, 7  ; the number of options to loop through
+	ld c, 6  ; the number of options to loop through
 .loop
 	push bc
 	call GetOptionPointer ; updates the next option
@@ -506,8 +478,7 @@ AllOptionsText:
 	next "BATTLESTYLE:"
 	next "SOUND:"
 	next "PRINT:"
-	next "NICKNAME:"
-	next "EVOLUTION:@"
+	next "NICKNAME:@"
 
 OptionMenuCancelText:
 	db "CANCEL@"
