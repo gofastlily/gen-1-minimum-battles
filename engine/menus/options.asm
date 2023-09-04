@@ -37,7 +37,7 @@ OptionMenuJumpTable:
 	dw OptionsMenu_SpeakerSettings
 	dw OptionsMenu_GBPrinterBrightness
 	dw OptionsMenu_DoNickname
-	dw OptionsMenu_Dummy
+	dw OptionsMenu_DoEvolution
 	dw OptionsMenu_Cancel
 
 OptionsMenu_TextSpeed:
@@ -338,40 +338,67 @@ Func_41e7b:
 OptionsMenu_DoNickname:
 	ldh a, [hJoy5]
 	and D_RIGHT | D_LEFT
-	jr nz, .asm_41d33a
-	ld a, [wOptions]
-	and $8  ; mask other bits
-	jr .asm_41d3ba
-.asm_41d33a
-	ld a, [wOptions]
-	xor $8  ; mask other bits
-	ld [wOptions], a
-.asm_41d3ba
+	jr nz, .changeOption
+	ld a, [wMinBattlesOptions]
+	and %10000000  ; mask other bits
+	jr .writeOption
+.changeOption
+	ld a, [wMinBattlesOptions]
+	xor %10000000  ; mask other bits
+	ld [wMinBattlesOptions], a
+.writeOption
 	ld bc, $0
-	swap a
 	sla a
 	rl c
-	ld hl, NicknameOptionStringsPointerTable
+	ld hl, YesNoOptionStringsPointerTable
 	add hl, bc
 	add hl, bc
 	ld e, [hl]
 	inc hl
 	ld d, [hl]
-	hlcoord 11, 12
+	hlcoord 13, 12
 	call PlaceString
 	and a
 	ret
 
 
-NicknameOptionStringsPointerTable:
-	dw NicknameYesText
-	dw NicknameNoText
+OptionsMenu_DoEvolution:
+	ldh a, [hJoy5]
+	and D_RIGHT | D_LEFT
+	jr nz, .changeOption
+	ld a, [wMinBattlesOptions]
+	and %01000000  ; mask other bits
+	jr .writeOption
+.changeOption
+	ld a, [wMinBattlesOptions]
+	xor %01000000  ; mask other bits
+	ld [wMinBattlesOptions], a
+.writeOption
+	ld bc, $0
+	sla a
+	sla a
+	rl c
+	ld hl, YesNoOptionStringsPointerTable
+	add hl, bc
+	add hl, bc
+	ld e, [hl]
+	inc hl
+	ld d, [hl]
+	hlcoord 13, 14
+	call PlaceString
+	and a
+	ret
 
 
-NicknameYesText:
+YesNoOptionStringsPointerTable:
+	dw OptionYesText
+	dw OptionNoText
+
+
+OptionYesText:
 	db "YES@"
 
-NicknameNoText:
+OptionNoText:
 	db "NO @"
 
 
@@ -406,7 +433,7 @@ OptionsControl:
 	scf
 	ret
 .doNotWrapAround
-	cp $5
+	cp $6
 	jr c, .regularIncrement
 	ld [hl], $6
 .regularIncrement
@@ -417,7 +444,7 @@ OptionsControl:
 	ld a, [hl]
 	cp $7
 	jr nz, .doNotMoveCursorToPrintOption
-	ld [hl], $5
+	ld [hl], $6
 	scf
 	ret
 .doNotMoveCursorToPrintOption
@@ -457,7 +484,7 @@ InitOptionsMenu:
 	call PlaceString
 	xor a
 	ld [wOptionsCursorLocation], a
-	ld c, 6  ; the number of options to loop through
+	ld c, 7  ; the number of options to loop through
 .loop
 	push bc
 	call GetOptionPointer ; updates the next option
@@ -479,7 +506,8 @@ AllOptionsText:
 	next "BATTLESTYLE:"
 	next "SOUND:"
 	next "PRINT:"
-	next "NICKNAME:@"
+	next "NICKNAME:"
+	next "EVOLUTION:@"
 
 OptionMenuCancelText:
 	db "CANCEL@"

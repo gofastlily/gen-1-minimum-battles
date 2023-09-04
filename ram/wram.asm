@@ -2316,6 +2316,9 @@ wMenuExtraText:: dw
 wMenuExtraCoords:: dw
 
 ; Minimum Battles values
+; bit 7 = skip nicknames prompt
+; bit 6 = skip evolution
+wMinBattlesOptions:: db
 ; bit 7 = is the player mid-run?
 ; bit 6 = did the player lose to a gym leader?
 ; bit 5 = did the player lose to an Elite Four member?
@@ -2347,7 +2350,7 @@ wBeatMinBattles:: db
 wBeatMinBattlesTwo:: db
 	
 ; unused
-	ds 4
+	ds 3
 
 wObtainedHiddenItemsFlags:: flag_array 112
 

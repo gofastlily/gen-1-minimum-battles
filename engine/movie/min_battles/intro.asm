@@ -151,7 +151,7 @@ ChooseStarter:
 IF DEF(_DEBUG)
 	; ld a, MEWTWO
 	; ld b, a
-	ld c, 100
+	ld c, 15
 ENDC
 
 	call GivePokemon
