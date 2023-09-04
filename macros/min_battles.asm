@@ -53,17 +53,3 @@ MACRO rival_info
 	db \9
 	db \<10>
 ENDM
-
-
-OPP_GYM_LEAD                 EQU $fc
-OPP_ELITE_FOUR               EQU $fd
-OPP_RIVAL                    EQU $fe
-OPP_LIST_END                 EQU $ff
-
-
-MIN_BATTLES_RED              EQU 1
-MIN_BATTLES_YELLOW           EQU 2
-MIN_BATTLES_GYM_RUSH_RED     EQU 3
-MIN_BATTLES_GYM_RUSH_YELLOW  EQU 4
-MIN_BATTLES_BOSS_RUSH_RED    EQU 5
-MIN_BATTLES_BOSS_RUSH_YELLOW EQU 6

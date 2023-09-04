@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](httpsx://semver.org/spec/v2.0.
 
 ### Changed
 - Rebased on [gofastlily/pokeyellow](https://github.com/gofastlily/pokeyellow) and its various feature branches
+- Refactored Minimum Battles trainer lists
 
 
 ## v0.4.0
