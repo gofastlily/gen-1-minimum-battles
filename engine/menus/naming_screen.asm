@@ -2,8 +2,8 @@ AskName:
 	call SaveScreenTilesToBuffer1
 	call GetPredefRegisters
 	push hl
-	ld a, [wOptions]
-	bit 3, a
+	ld a, [wMinBattlesOptions]
+	bit BIT_MIN_BATTLES_OPTIONS_NICKNAME, a
 	jp z, .doNaming
 	ld a, [wcf91]
 	ld [wd11e], a

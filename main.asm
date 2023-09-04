@@ -432,6 +432,7 @@ INCLUDE "engine/menus/main_menu.asm"
 INCLUDE "engine/menus/min_battles.asm"
 INCLUDE "engine/menus/unlocks.asm"
 INCLUDE "engine/menus/starters.asm"
+INCLUDE "engine/menus/min_battles_options.asm"
 
 
 SECTION "Minimum Battles Engine", romx

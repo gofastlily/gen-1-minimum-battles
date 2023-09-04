@@ -1,5 +1,6 @@
 MainMenu:
 	call InitOptions
+	call InitMinBattlesOptions
 	; Check save file
 	xor a
 	ld [wOptionsInitialized], a
@@ -165,14 +166,21 @@ Text_MainMenuChoices_Unlocks:
 InitOptions:
 	ld a, TEXT_DELAY_FAST  ; no delay
 	ld [wLetterPrintingDelayFlags], a
-	ld a, %11001001   ; animations off, set battle style, mono audio, nicknaming off, fast speed
+	ld a, %11000001   ; animations off, set battle style, mono audio, fast speed
 	ld [wOptions], a
 	ld a, 64
 	ld [wPrinterSettings], a
 	ret
 
 
+InitMinBattlesOptions:
+	ld a, %10000000
+	ld [wMinBattlesOptions], a  ; Nicknaming off, evolution on
+	ret
+
+
 StartNewGame:
+	call DisplayMinBattlesOptionsMenu
 	farcall MinBattlesIntro
 	call ClearScreen
 	farcall StartMinimumBattles

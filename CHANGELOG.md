@@ -5,6 +5,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](httpsx://semver.org/spec/v2.0.0.html).
 
 
+## Unreleased
+### Added
+- Minimum Battles specific options screen appears when starting a new run
+- Players can now turn off evolutions
+
+### Changed
+- Moved the nickname option to the new Minimum Battles options menu
+
+### Known Issues
+- Screen shows graphical glitches after a Pokémon evolves from the items menu.  Exists (undocumented) in prior versions.
+
+
 ## v1.0.0
 ### Added
 - Boss Rush mode after beating both Red/Blue and Yellow without losing to the Gym Leaders or Elite Four

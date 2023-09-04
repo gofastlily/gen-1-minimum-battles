@@ -31,6 +31,11 @@ Evolution_PartyMonLoop: ; loop over party mons
 	ld a, [hl]
 	cp $ff ; have we reached the end of the party?
 	jp z, .done
+	push af
+	ld a, [wMinBattlesOptions]
+	bit BIT_MIN_BATTLES_OPTIONS_EVOLUTION, a
+	jp nz, .done
+	pop af
 	ld [wEvoOldSpecies], a
 	push hl
 	ld a, [wWhichPokemon]
