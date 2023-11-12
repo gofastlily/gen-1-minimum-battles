@@ -89,6 +89,6 @@ Run `./build.sh` to have [Nix][nix] do the heavy lifting and requirements manage
 [install]: ./INSTALL.md
 [nix]: https://nixos.org/
 [issues]: https://github.com/gofastlily/gen-1-minimum-battles/issues
-[new-issue]: https://github.com/gofastlily/gen-1-minimum-battles/issues/new
+[new-issue]: https://github.com/gofastlily/gen-1-minimum-battles/issues/new/choose
 [pret]: https://github.com/pret
 [v0.3.1]: https://github.com/gofastlily/gen-1-minimum-battles/releases/tag/v0.3.1
