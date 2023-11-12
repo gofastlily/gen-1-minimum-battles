@@ -1,7 +1,5 @@
 # Generation One Minimum Battles Simulator
 
-[![Build Status][ci-badge]][ci]
-
 Dive right in to Gen 1 battles!
 
 This romhack is a "minimum battles" simulator for Pokémon's first generation.  It was inspired by [JRose11's][jrose11] phenomenal Minimum Battles videos on YouTube ([Red][jrose11-min-battles-red], [Yellow][jrose11-min-battles-yellow]).  It was built using [pokeyellow][pokeyellow] as a base.  Currently the Game Corner trainers are skipped.  Check trainer lists [here][min-battles-data].
@@ -77,8 +75,7 @@ Run `./build.sh` to have [Nix][nix] do the heavy lifting and requirements manage
 - The entire [pret][pret] team
 - GameFreak
 
-[ci]: https://github.com/gofastlily/gen-1-minimum-battles/actions
-[ci-badge]: https://github.com/gofastlily/gen-1-minimum-battles/actions/workflows/main.yml/badge.svg
+
 [jrose11]: https://www.youtube.com/@Jrose11
 [jrose11-min-battles-red]: https://www.youtube.com/watch?v=yigDp4JNRL0
 [jrose11-min-battles-yellow]: https://www.youtube.com/watch?v=MYsuGVH6C8c
